@@ -23,6 +23,7 @@ Partial Class Course
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         pnlSidebar = New Panel()
+        btnCourseOffer = New Button()
         btnManagePrerequisites = New Button()
         btnUpdateDeleteCourse = New Button()
         btnViewCourses = New Button()
@@ -101,6 +102,7 @@ Partial Class Course
         ' pnlSidebar
         ' 
         pnlSidebar.BackColor = Color.Navy
+        pnlSidebar.Controls.Add(btnCourseOffer)
         pnlSidebar.Controls.Add(btnManagePrerequisites)
         pnlSidebar.Controls.Add(btnUpdateDeleteCourse)
         pnlSidebar.Controls.Add(btnViewCourses)
@@ -112,6 +114,21 @@ Partial Class Course
         pnlSidebar.Name = "pnlSidebar"
         pnlSidebar.Size = New Size(200, 800)
         pnlSidebar.TabIndex = 0
+        ' 
+        ' btnCourseOffer
+        ' 
+        btnCourseOffer.BackColor = Color.FromArgb(CByte(35), CByte(35), CByte(38))
+        btnCourseOffer.Dock = DockStyle.Top
+        btnCourseOffer.FlatAppearance.BorderSize = 0
+        btnCourseOffer.FlatStyle = FlatStyle.Flat
+        btnCourseOffer.Font = New Font("Times New Roman", 11.0F)
+        btnCourseOffer.ForeColor = Color.White
+        btnCourseOffer.Location = New Point(0, 280)
+        btnCourseOffer.Name = "btnCourseOffer"
+        btnCourseOffer.Size = New Size(200, 50)
+        btnCourseOffer.TabIndex = 5
+        btnCourseOffer.Text = "Course Offering Management"
+        btnCourseOffer.UseVisualStyleBackColor = False
         ' 
         ' btnManagePrerequisites
         ' 
@@ -913,6 +930,7 @@ Partial Class Course
     Friend WithEvents btnViewCourses As Button
     Friend WithEvents btnUpdateDeleteCourse As Button
     Friend WithEvents btnManagePrerequisites As Button
+    Friend WithEvents btnCourseOffer As Button
     Friend WithEvents btnClose As Button
 
     ' Main Content

@@ -95,6 +95,14 @@ Public Class Course
         ClearPrerequisitesForm()
     End Sub
 
+    Private Sub btnCourseOffer_Click(sender As Object, e As EventArgs) Handles btnCourseOffer.Click
+        ' Open Course Offering form
+        Dim courseOfferingForm As New CourseOffering()
+        courseOfferingForm.Show()
+        ' Optionally hide or close the current form
+        ' Me.Hide() ' Use this if you want to hide the Course form
+    End Sub
+
     Private Sub btnClose_Click(sender As Object, e As EventArgs) Handles btnClose.Click
         Me.Close()
     End Sub
