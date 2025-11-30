@@ -166,6 +166,7 @@ Public Class Admin
         btnUserManagement.BackColor = Color.FromArgb(45, 45, 48)
         btnDepartmentManagement.BackColor = Color.FromArgb(45, 45, 48)
         btnCourseManagement.BackColor = Color.FromArgb(45, 45, 48)
+        btnEnrollmentManagement.BackColor = Color.FromArgb(45, 45, 48)
         btnAddUser.BackColor = Color.FromArgb(35, 35, 38)
         btnUserDetails.BackColor = Color.FromArgb(35, 35, 38)
         btnUpdateDeleteUser.BackColor = Color.FromArgb(35, 35, 38)
@@ -211,6 +212,15 @@ Public Class Admin
 
         ' Set active button
         SetActiveButton(btnCourseManagement)
+    End Sub
+
+    Private Sub btnEnrollmentManagement_Click(sender As Object, e As EventArgs) Handles btnEnrollmentManagement.Click
+        ' Open Enrollment Management form as a dialog
+        Dim enrollmentForm As New Enrollment()
+        enrollmentForm.ShowDialog()
+
+        ' Set active button
+        SetActiveButton(btnEnrollmentManagement)
     End Sub
 
     Private Sub btnAddUserNav_Click(sender As Object, e As EventArgs) Handles btnAddUser.Click
@@ -2428,7 +2438,7 @@ Public Class Admin
             If Not (Char.IsLetter(e.KeyChar) OrElse Char.IsDigit(e.KeyChar)) Then
                 e.Handled = True
                 MessageBox.Show("Department Name can only contain letters, numbers, and spaces." & vbCrLf &
-                          "Letters must come before numbers.",
+                          "Must start with a letter.",
                           "Invalid Input", MessageBoxButtons.OK, MessageBoxIcon.Warning)
                 Return
             End If

@@ -38,6 +38,7 @@ Partial Class Admin
         lblAdminTitle = New Label()
         btnLogout = New Button()
         btnCourseManagement = New Button()
+        btnEnrollmentManagement = New Button()
         pnlMainContent = New Panel()
         pnlDepartmentManagement = New Panel()
         lblDepartmentManagementTitle = New Label()
@@ -205,6 +206,7 @@ Partial Class Admin
         ' pnlSidebar
         ' 
         pnlSidebar.BackColor = Color.Navy
+        pnlSidebar.Controls.Add(btnEnrollmentManagement)
         pnlSidebar.Controls.Add(btnCourseManagement)
         pnlSidebar.Controls.Add(pnlDepartmentManagementSubmenu)
         pnlSidebar.Controls.Add(btnDepartmentManagement)
@@ -462,6 +464,23 @@ Partial Class Admin
         btnCourseManagement.Text = "📚Course Management"
         btnCourseManagement.TextAlign = ContentAlignment.MiddleLeft
         btnCourseManagement.UseVisualStyleBackColor = False
+        ' 
+        ' btnEnrollmentManagement
+        ' 
+        btnEnrollmentManagement.BackColor = SystemColors.MenuHighlight
+        btnEnrollmentManagement.Dock = DockStyle.Top
+        btnEnrollmentManagement.FlatAppearance.BorderSize = 0
+        btnEnrollmentManagement.FlatStyle = FlatStyle.Flat
+        btnEnrollmentManagement.Font = New Font("Times New Roman", 12.0F)
+        btnEnrollmentManagement.ForeColor = Color.White
+        btnEnrollmentManagement.Location = New Point(0, 596)
+        btnEnrollmentManagement.Name = "btnEnrollmentManagement"
+        btnEnrollmentManagement.Padding = New Padding(10, 0, 0, 0)
+        btnEnrollmentManagement.Size = New Size(189, 50)
+        btnEnrollmentManagement.TabIndex = 8
+        btnEnrollmentManagement.Text = "📝Enrollment Management"
+        btnEnrollmentManagement.TextAlign = ContentAlignment.MiddleLeft
+        btnEnrollmentManagement.UseVisualStyleBackColor = False
         ' 
         ' pnlMainContent
         ' 
@@ -1881,7 +1900,7 @@ Partial Class Admin
         lblUpdateEnrollmentStatus.Font = New Font("Times New Roman", 12.0F)
         lblUpdateEnrollmentStatus.Location = New Point(20, 270)
         lblUpdateEnrollmentStatus.Name = "lblUpdateEnrollmentStatus"
-        lblUpdateEnrollmentStatus.Size = New Size(180, 19)
+        lblUpdateEnrollmentStatus.Size = New Size(191, 19)
         lblUpdateEnrollmentStatus.TabIndex = 11
         lblUpdateEnrollmentStatus.Text = "Enrollment Status (Optional)"
         ' 
@@ -2069,6 +2088,23 @@ Partial Class Admin
         btnCourseManagement.TextAlign = ContentAlignment.MiddleLeft
         btnCourseManagement.UseVisualStyleBackColor = False
         ' 
+        ' btnEnrollmentManagement
+        ' 
+        btnEnrollmentManagement.BackColor = SystemColors.MenuHighlight
+        btnEnrollmentManagement.Dock = DockStyle.Top
+        btnEnrollmentManagement.FlatAppearance.BorderSize = 0
+        btnEnrollmentManagement.FlatStyle = FlatStyle.Flat
+        btnEnrollmentManagement.Font = New Font("Times New Roman", 12.0F)
+        btnEnrollmentManagement.ForeColor = Color.White
+        btnEnrollmentManagement.Location = New Point(0, 596)
+        btnEnrollmentManagement.Name = "btnEnrollmentManagement"
+        btnEnrollmentManagement.Padding = New Padding(10, 0, 0, 0)
+        btnEnrollmentManagement.Size = New Size(189, 50)
+        btnEnrollmentManagement.TabIndex = 8
+        btnEnrollmentManagement.Text = "📝Enrollment Management"
+        btnEnrollmentManagement.TextAlign = ContentAlignment.MiddleLeft
+        btnEnrollmentManagement.UseVisualStyleBackColor = False
+        ' 
         ' Admin
         ' 
         AutoScaleDimensions = New SizeF(12.0F, 23.0F)
@@ -2137,6 +2173,7 @@ Partial Class Admin
     Friend WithEvents btnDepartmentDetails As Button
     Friend WithEvents btnLogout As Button
     Friend WithEvents btnCourseManagement As Button
+    Friend WithEvents btnEnrollmentManagement As Button
 
     ' Main Content Panel
     Friend WithEvents pnlMainContent As Panel
