@@ -22,7 +22,10 @@ Partial Class Admin
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
+        Dim DataGridViewCellStyle1 As DataGridViewCellStyle = New DataGridViewCellStyle()
         pnlSidebar = New Panel()
+        btnEnrollmentManagement = New Button()
+        btnCourseManagement = New Button()
         pnlDepartmentManagementSubmenu = New Panel()
         btnDepartmentDetails = New Button()
         btnUpdateDeleteDepartment = New Button()
@@ -37,13 +40,11 @@ Partial Class Admin
         btnDashboard = New Button()
         lblAdminTitle = New Label()
         btnLogout = New Button()
-        btnCourseManagement = New Button()
-        btnEnrollmentManagement = New Button()
         pnlMainContent = New Panel()
         pnlDepartmentManagement = New Panel()
-        lblDepartmentManagementTitle = New Label()
-        dgvDepartments = New DataGridView()
         btnRefreshDepartments = New Button()
+        dgvDepartments = New DataGridView()
+        lblDepartmentManagementTitle = New Label()
         pnlAddDepartment = New Panel()
         lblAddDepartmentTitle = New Label()
         lblDeptCode = New Label()
@@ -218,8 +219,42 @@ Partial Class Admin
         pnlSidebar.Dock = DockStyle.Left
         pnlSidebar.Location = New Point(0, 0)
         pnlSidebar.Name = "pnlSidebar"
-        pnlSidebar.Size = New Size(189, 800)
+        pnlSidebar.Size = New Size(227, 800)
         pnlSidebar.TabIndex = 0
+        ' 
+        ' btnEnrollmentManagement
+        ' 
+        btnEnrollmentManagement.BackColor = SystemColors.MenuHighlight
+        btnEnrollmentManagement.Dock = DockStyle.Top
+        btnEnrollmentManagement.FlatAppearance.BorderSize = 0
+        btnEnrollmentManagement.FlatStyle = FlatStyle.Flat
+        btnEnrollmentManagement.Font = New Font("Times New Roman", 12.0F)
+        btnEnrollmentManagement.ForeColor = Color.White
+        btnEnrollmentManagement.Location = New Point(0, 596)
+        btnEnrollmentManagement.Name = "btnEnrollmentManagement"
+        btnEnrollmentManagement.Padding = New Padding(10, 0, 0, 0)
+        btnEnrollmentManagement.Size = New Size(227, 50)
+        btnEnrollmentManagement.TabIndex = 8
+        btnEnrollmentManagement.Text = "📝Enrollment Management"
+        btnEnrollmentManagement.TextAlign = ContentAlignment.MiddleLeft
+        btnEnrollmentManagement.UseVisualStyleBackColor = False
+        ' 
+        ' btnCourseManagement
+        ' 
+        btnCourseManagement.BackColor = SystemColors.MenuHighlight
+        btnCourseManagement.Dock = DockStyle.Top
+        btnCourseManagement.FlatAppearance.BorderSize = 0
+        btnCourseManagement.FlatStyle = FlatStyle.Flat
+        btnCourseManagement.Font = New Font("Times New Roman", 12.0F)
+        btnCourseManagement.ForeColor = Color.White
+        btnCourseManagement.Location = New Point(0, 546)
+        btnCourseManagement.Name = "btnCourseManagement"
+        btnCourseManagement.Padding = New Padding(10, 0, 0, 0)
+        btnCourseManagement.Size = New Size(227, 50)
+        btnCourseManagement.TabIndex = 7
+        btnCourseManagement.Text = "📚Course Management"
+        btnCourseManagement.TextAlign = ContentAlignment.MiddleLeft
+        btnCourseManagement.UseVisualStyleBackColor = False
         ' 
         ' pnlDepartmentManagementSubmenu
         ' 
@@ -230,7 +265,7 @@ Partial Class Admin
         pnlDepartmentManagementSubmenu.Dock = DockStyle.Top
         pnlDepartmentManagementSubmenu.Location = New Point(0, 407)
         pnlDepartmentManagementSubmenu.Name = "pnlDepartmentManagementSubmenu"
-        pnlDepartmentManagementSubmenu.Size = New Size(189, 139)
+        pnlDepartmentManagementSubmenu.Size = New Size(227, 139)
         pnlDepartmentManagementSubmenu.TabIndex = 6
         pnlDepartmentManagementSubmenu.Visible = False
         ' 
@@ -245,7 +280,7 @@ Partial Class Admin
         btnDepartmentDetails.Location = New Point(0, 94)
         btnDepartmentDetails.Name = "btnDepartmentDetails"
         btnDepartmentDetails.Padding = New Padding(30, 0, 0, 0)
-        btnDepartmentDetails.Size = New Size(189, 45)
+        btnDepartmentDetails.Size = New Size(227, 45)
         btnDepartmentDetails.TabIndex = 2
         btnDepartmentDetails.Text = "Department Details"
         btnDepartmentDetails.TextAlign = ContentAlignment.MiddleLeft
@@ -262,7 +297,7 @@ Partial Class Admin
         btnUpdateDeleteDepartment.Location = New Point(0, 49)
         btnUpdateDeleteDepartment.Name = "btnUpdateDeleteDepartment"
         btnUpdateDeleteDepartment.Padding = New Padding(30, 0, 0, 0)
-        btnUpdateDeleteDepartment.Size = New Size(189, 45)
+        btnUpdateDeleteDepartment.Size = New Size(227, 45)
         btnUpdateDeleteDepartment.TabIndex = 1
         btnUpdateDeleteDepartment.Text = "Update/Delete Dept"
         btnUpdateDeleteDepartment.TextAlign = ContentAlignment.MiddleLeft
@@ -279,7 +314,7 @@ Partial Class Admin
         btnAddDepartment.Location = New Point(0, 0)
         btnAddDepartment.Name = "btnAddDepartment"
         btnAddDepartment.Padding = New Padding(30, 0, 0, 0)
-        btnAddDepartment.Size = New Size(189, 49)
+        btnAddDepartment.Size = New Size(227, 49)
         btnAddDepartment.TabIndex = 0
         btnAddDepartment.Text = "+ Add Department"
         btnAddDepartment.TextAlign = ContentAlignment.MiddleLeft
@@ -296,7 +331,7 @@ Partial Class Admin
         btnDepartmentManagement.Location = New Point(0, 357)
         btnDepartmentManagement.Name = "btnDepartmentManagement"
         btnDepartmentManagement.Padding = New Padding(10, 0, 0, 0)
-        btnDepartmentManagement.Size = New Size(189, 50)
+        btnDepartmentManagement.Size = New Size(227, 50)
         btnDepartmentManagement.TabIndex = 5
         btnDepartmentManagement.Text = "Department Management"
         btnDepartmentManagement.TextAlign = ContentAlignment.MiddleLeft
@@ -312,7 +347,7 @@ Partial Class Admin
         pnlUserManagementSubmenu.Dock = DockStyle.Top
         pnlUserManagementSubmenu.Location = New Point(0, 178)
         pnlUserManagementSubmenu.Name = "pnlUserManagementSubmenu"
-        pnlUserManagementSubmenu.Size = New Size(189, 179)
+        pnlUserManagementSubmenu.Size = New Size(227, 179)
         pnlUserManagementSubmenu.TabIndex = 3
         pnlUserManagementSubmenu.Visible = False
         ' 
@@ -327,7 +362,7 @@ Partial Class Admin
         btnResetPassword.Location = New Point(0, 139)
         btnResetPassword.Name = "btnResetPassword"
         btnResetPassword.Padding = New Padding(30, 0, 0, 0)
-        btnResetPassword.Size = New Size(189, 45)
+        btnResetPassword.Size = New Size(227, 45)
         btnResetPassword.TabIndex = 3
         btnResetPassword.Text = "Reset Password"
         btnResetPassword.TextAlign = ContentAlignment.MiddleLeft
@@ -344,7 +379,7 @@ Partial Class Admin
         btnUserDetails.Location = New Point(0, 94)
         btnUserDetails.Name = "btnUserDetails"
         btnUserDetails.Padding = New Padding(30, 0, 0, 0)
-        btnUserDetails.Size = New Size(189, 45)
+        btnUserDetails.Size = New Size(227, 45)
         btnUserDetails.TabIndex = 2
         btnUserDetails.Text = "User Details"
         btnUserDetails.TextAlign = ContentAlignment.MiddleLeft
@@ -361,7 +396,7 @@ Partial Class Admin
         btnUpdateDeleteUser.Location = New Point(0, 49)
         btnUpdateDeleteUser.Name = "btnUpdateDeleteUser"
         btnUpdateDeleteUser.Padding = New Padding(30, 0, 0, 0)
-        btnUpdateDeleteUser.Size = New Size(189, 45)
+        btnUpdateDeleteUser.Size = New Size(227, 45)
         btnUpdateDeleteUser.TabIndex = 1
         btnUpdateDeleteUser.Text = "Update/Delete User"
         btnUpdateDeleteUser.TextAlign = ContentAlignment.MiddleLeft
@@ -378,7 +413,7 @@ Partial Class Admin
         btnAddUser.Location = New Point(0, 0)
         btnAddUser.Name = "btnAddUser"
         btnAddUser.Padding = New Padding(30, 0, 0, 0)
-        btnAddUser.Size = New Size(189, 49)
+        btnAddUser.Size = New Size(227, 49)
         btnAddUser.TabIndex = 0
         btnAddUser.Text = "+ Add User"
         btnAddUser.TextAlign = ContentAlignment.MiddleLeft
@@ -395,7 +430,7 @@ Partial Class Admin
         btnUserManagement.Location = New Point(0, 128)
         btnUserManagement.Name = "btnUserManagement"
         btnUserManagement.Padding = New Padding(10, 0, 0, 0)
-        btnUserManagement.Size = New Size(189, 50)
+        btnUserManagement.Size = New Size(227, 50)
         btnUserManagement.TabIndex = 2
         btnUserManagement.Text = "User Management"
         btnUserManagement.TextAlign = ContentAlignment.MiddleLeft
@@ -412,7 +447,7 @@ Partial Class Admin
         btnDashboard.Location = New Point(0, 80)
         btnDashboard.Name = "btnDashboard"
         btnDashboard.Padding = New Padding(10, 0, 0, 0)
-        btnDashboard.Size = New Size(189, 48)
+        btnDashboard.Size = New Size(227, 48)
         btnDashboard.TabIndex = 1
         btnDashboard.Text = "Dashboard"
         btnDashboard.TextAlign = ContentAlignment.MiddleLeft
@@ -426,7 +461,7 @@ Partial Class Admin
         lblAdminTitle.ForeColor = Color.White
         lblAdminTitle.Location = New Point(0, 0)
         lblAdminTitle.Name = "lblAdminTitle"
-        lblAdminTitle.Size = New Size(189, 80)
+        lblAdminTitle.Size = New Size(227, 80)
         lblAdminTitle.TabIndex = 0
         lblAdminTitle.Text = "MGOD LMS"
         lblAdminTitle.TextAlign = ContentAlignment.MiddleCenter
@@ -442,45 +477,11 @@ Partial Class Admin
         btnLogout.Location = New Point(0, 750)
         btnLogout.Name = "btnLogout"
         btnLogout.Padding = New Padding(10, 0, 0, 0)
-        btnLogout.Size = New Size(189, 50)
+        btnLogout.Size = New Size(227, 50)
         btnLogout.TabIndex = 4
         btnLogout.Text = "🚪 Logout"
         btnLogout.TextAlign = ContentAlignment.MiddleLeft
         btnLogout.UseVisualStyleBackColor = False
-        ' 
-        ' btnCourseManagement
-        ' 
-        btnCourseManagement.BackColor = SystemColors.MenuHighlight
-        btnCourseManagement.Dock = DockStyle.Top
-        btnCourseManagement.FlatAppearance.BorderSize = 0
-        btnCourseManagement.FlatStyle = FlatStyle.Flat
-        btnCourseManagement.Font = New Font("Times New Roman", 12.0F)
-        btnCourseManagement.ForeColor = Color.White
-        btnCourseManagement.Location = New Point(0, 546)
-        btnCourseManagement.Name = "btnCourseManagement"
-        btnCourseManagement.Padding = New Padding(10, 0, 0, 0)
-        btnCourseManagement.Size = New Size(189, 50)
-        btnCourseManagement.TabIndex = 7
-        btnCourseManagement.Text = "📚Course Management"
-        btnCourseManagement.TextAlign = ContentAlignment.MiddleLeft
-        btnCourseManagement.UseVisualStyleBackColor = False
-        ' 
-        ' btnEnrollmentManagement
-        ' 
-        btnEnrollmentManagement.BackColor = SystemColors.MenuHighlight
-        btnEnrollmentManagement.Dock = DockStyle.Top
-        btnEnrollmentManagement.FlatAppearance.BorderSize = 0
-        btnEnrollmentManagement.FlatStyle = FlatStyle.Flat
-        btnEnrollmentManagement.Font = New Font("Times New Roman", 12.0F)
-        btnEnrollmentManagement.ForeColor = Color.White
-        btnEnrollmentManagement.Location = New Point(0, 596)
-        btnEnrollmentManagement.Name = "btnEnrollmentManagement"
-        btnEnrollmentManagement.Padding = New Padding(10, 0, 0, 0)
-        btnEnrollmentManagement.Size = New Size(189, 50)
-        btnEnrollmentManagement.TabIndex = 8
-        btnEnrollmentManagement.Text = "📝Enrollment Management"
-        btnEnrollmentManagement.TextAlign = ContentAlignment.MiddleLeft
-        btnEnrollmentManagement.UseVisualStyleBackColor = False
         ' 
         ' pnlMainContent
         ' 
@@ -494,12 +495,12 @@ Partial Class Admin
         pnlMainContent.Controls.Add(pnlResetPassword)
         pnlMainContent.Controls.Add(pnlUpdateDeleteUser)
         pnlMainContent.Dock = DockStyle.Fill
-        pnlMainContent.Location = New Point(189, 0)
+        pnlMainContent.Location = New Point(227, 0)
         pnlMainContent.Name = "pnlMainContent"
-        pnlMainContent.Size = New Size(1011, 800)
+        pnlMainContent.Size = New Size(973, 800)
         pnlMainContent.TabIndex = 1
         ' 
-        ' pnlDepartmentManagement (Department Details Panel)
+        ' pnlDepartmentManagement
         ' 
         pnlDepartmentManagement.AutoScroll = True
         pnlDepartmentManagement.BackColor = Color.White
@@ -510,21 +511,23 @@ Partial Class Admin
         pnlDepartmentManagement.Location = New Point(0, 0)
         pnlDepartmentManagement.Name = "pnlDepartmentManagement"
         pnlDepartmentManagement.Padding = New Padding(20)
-        pnlDepartmentManagement.Size = New Size(1011, 800)
+        pnlDepartmentManagement.Size = New Size(973, 800)
         pnlDepartmentManagement.TabIndex = 5
         pnlDepartmentManagement.Visible = False
         ' 
-        ' lblDepartmentManagementTitle
+        ' btnRefreshDepartments
         ' 
-        lblDepartmentManagementTitle.Anchor = AnchorStyles.Top Or AnchorStyles.Left
-        lblDepartmentManagementTitle.AutoSize = True
-        lblDepartmentManagementTitle.Font = New Font("Times New Roman", 24.0F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
-        lblDepartmentManagementTitle.ForeColor = Color.FromArgb(CByte(0), CByte(122), CByte(204))
-        lblDepartmentManagementTitle.Location = New Point(20, 20)
-        lblDepartmentManagementTitle.Name = "lblDepartmentManagementTitle"
-        lblDepartmentManagementTitle.Size = New Size(363, 36)
-        lblDepartmentManagementTitle.TabIndex = 0
-        lblDepartmentManagementTitle.Text = "Department Management"
+        btnRefreshDepartments.Anchor = AnchorStyles.Bottom Or AnchorStyles.Left
+        btnRefreshDepartments.BackColor = Color.FromArgb(CByte(0), CByte(122), CByte(204))
+        btnRefreshDepartments.FlatStyle = FlatStyle.Flat
+        btnRefreshDepartments.Font = New Font("Times New Roman", 12.0F, FontStyle.Bold)
+        btnRefreshDepartments.ForeColor = Color.White
+        btnRefreshDepartments.Location = New Point(752, 23)
+        btnRefreshDepartments.Name = "btnRefreshDepartments"
+        btnRefreshDepartments.Size = New Size(200, 45)
+        btnRefreshDepartments.TabIndex = 2
+        btnRefreshDepartments.Text = "🔄 Refresh Data"
+        btnRefreshDepartments.UseVisualStyleBackColor = False
         ' 
         ' dgvDepartments
         ' 
@@ -534,7 +537,14 @@ Partial Class Admin
         dgvDepartments.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill
         dgvDepartments.BackgroundColor = SystemColors.Control
         dgvDepartments.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        dgvDepartments.ColumnHeadersHeight = 40
+        DataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle1.BackColor = SystemColors.Window
+        DataGridViewCellStyle1.Font = New Font("Times New Roman", 11.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        DataGridViewCellStyle1.ForeColor = SystemColors.ControlText
+        DataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight
+        DataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText
+        DataGridViewCellStyle1.WrapMode = DataGridViewTriState.True
+        dgvDepartments.DefaultCellStyle = DataGridViewCellStyle1
         dgvDepartments.Font = New Font("Times New Roman", 11.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         dgvDepartments.Location = New Point(20, 80)
         dgvDepartments.Name = "dgvDepartments"
@@ -542,23 +552,19 @@ Partial Class Admin
         dgvDepartments.RowHeadersWidth = 25
         dgvDepartments.RowTemplate.Height = 30
         dgvDepartments.SelectionMode = DataGridViewSelectionMode.FullRowSelect
-        dgvDepartments.Size = New Size(970, 630)
+        dgvDepartments.Size = New Size(932, 630)
         dgvDepartments.TabIndex = 1
-        dgvDepartments.DefaultCellStyle.WrapMode = DataGridViewTriState.True
         ' 
-        ' btnRefreshDepartments
+        ' lblDepartmentManagementTitle
         ' 
-        btnRefreshDepartments.Anchor = AnchorStyles.Bottom Or AnchorStyles.Left
-        btnRefreshDepartments.BackColor = Color.FromArgb(CByte(0), CByte(122), CByte(204))
-        btnRefreshDepartments.FlatStyle = FlatStyle.Flat
-        btnRefreshDepartments.Font = New Font("Times New Roman", 12.0F, FontStyle.Bold)
-        btnRefreshDepartments.ForeColor = Color.White
-        btnRefreshDepartments.Location = New Point(20, 730)
-        btnRefreshDepartments.Name = "btnRefreshDepartments"
-        btnRefreshDepartments.Size = New Size(200, 45)
-        btnRefreshDepartments.TabIndex = 2
-        btnRefreshDepartments.Text = "🔄 Refresh Data"
-        btnRefreshDepartments.UseVisualStyleBackColor = False
+        lblDepartmentManagementTitle.AutoSize = True
+        lblDepartmentManagementTitle.Font = New Font("Times New Roman", 24.0F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
+        lblDepartmentManagementTitle.ForeColor = Color.FromArgb(CByte(0), CByte(122), CByte(204))
+        lblDepartmentManagementTitle.Location = New Point(20, 20)
+        lblDepartmentManagementTitle.Name = "lblDepartmentManagementTitle"
+        lblDepartmentManagementTitle.Size = New Size(370, 36)
+        lblDepartmentManagementTitle.TabIndex = 0
+        lblDepartmentManagementTitle.Text = "Department Management"
         ' 
         ' pnlAddDepartment
         ' 
@@ -578,7 +584,7 @@ Partial Class Admin
         pnlAddDepartment.Location = New Point(0, 0)
         pnlAddDepartment.Name = "pnlAddDepartment"
         pnlAddDepartment.Padding = New Padding(30, 20, 30, 20)
-        pnlAddDepartment.Size = New Size(1011, 800)
+        pnlAddDepartment.Size = New Size(973, 800)
         pnlAddDepartment.TabIndex = 6
         pnlAddDepartment.Visible = False
         ' 
@@ -589,7 +595,7 @@ Partial Class Admin
         lblAddDepartmentTitle.ForeColor = Color.FromArgb(CByte(0), CByte(122), CByte(204))
         lblAddDepartmentTitle.Location = New Point(30, 20)
         lblAddDepartmentTitle.Name = "lblAddDepartmentTitle"
-        lblAddDepartmentTitle.Size = New Size(266, 31)
+        lblAddDepartmentTitle.Size = New Size(268, 31)
         lblAddDepartmentTitle.TabIndex = 0
         lblAddDepartmentTitle.Text = "Add New Department"
         ' 
@@ -599,18 +605,18 @@ Partial Class Admin
         lblDeptCode.Font = New Font("Times New Roman", 12.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         lblDeptCode.Location = New Point(50, 75)
         lblDeptCode.Name = "lblDeptCode"
-        lblDeptCode.Size = New Size(138, 19)
+        lblDeptCode.Size = New Size(130, 19)
         lblDeptCode.TabIndex = 1
         lblDeptCode.Text = "Department Code *"
         ' 
         ' txtDeptCode
         ' 
+        txtDeptCode.CharacterCasing = CharacterCasing.Upper
         txtDeptCode.Font = New Font("Times New Roman", 12.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         txtDeptCode.Location = New Point(50, 97)
         txtDeptCode.Name = "txtDeptCode"
         txtDeptCode.Size = New Size(400, 26)
         txtDeptCode.TabIndex = 2
-        txtDeptCode.CharacterCasing = CharacterCasing.Upper
         ' 
         ' lblDeptName
         ' 
@@ -618,7 +624,7 @@ Partial Class Admin
         lblDeptName.Font = New Font("Times New Roman", 12.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         lblDeptName.Location = New Point(50, 145)
         lblDeptName.Name = "lblDeptName"
-        lblDeptName.Size = New Size(139, 19)
+        lblDeptName.Size = New Size(133, 19)
         lblDeptName.TabIndex = 3
         lblDeptName.Text = "Department Name *"
         ' 
@@ -636,7 +642,7 @@ Partial Class Admin
         lblDeptDescription.Font = New Font("Times New Roman", 12.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         lblDeptDescription.Location = New Point(50, 215)
         lblDeptDescription.Name = "lblDeptDescription"
-        lblDeptDescription.Size = New Size(152, 19)
+        lblDeptDescription.Size = New Size(144, 19)
         lblDeptDescription.TabIndex = 5
         lblDeptDescription.Text = "Description (Optional)"
         ' 
@@ -655,7 +661,7 @@ Partial Class Admin
         lblDeptHeadInstructor.Font = New Font("Times New Roman", 12.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         lblDeptHeadInstructor.Location = New Point(50, 340)
         lblDeptHeadInstructor.Name = "lblDeptHeadInstructor"
-        lblDeptHeadInstructor.Size = New Size(181, 19)
+        lblDeptHeadInstructor.Size = New Size(170, 19)
         lblDeptHeadInstructor.TabIndex = 7
         lblDeptHeadInstructor.Text = "Head Instructor (Optional)"
         ' 
@@ -697,7 +703,7 @@ Partial Class Admin
         pnlUpdateDeleteDepartment.Location = New Point(0, 0)
         pnlUpdateDeleteDepartment.Name = "pnlUpdateDeleteDepartment"
         pnlUpdateDeleteDepartment.Padding = New Padding(20)
-        pnlUpdateDeleteDepartment.Size = New Size(1011, 800)
+        pnlUpdateDeleteDepartment.Size = New Size(973, 800)
         pnlUpdateDeleteDepartment.TabIndex = 7
         pnlUpdateDeleteDepartment.Visible = False
         ' 
@@ -708,7 +714,7 @@ Partial Class Admin
         lblUpdateDeleteDeptTitle.ForeColor = Color.FromArgb(CByte(0), CByte(122), CByte(204))
         lblUpdateDeleteDeptTitle.Location = New Point(20, 20)
         lblUpdateDeleteDeptTitle.Name = "lblUpdateDeleteDeptTitle"
-        lblUpdateDeleteDeptTitle.Size = New Size(461, 36)
+        lblUpdateDeleteDeptTitle.Size = New Size(448, 36)
         lblUpdateDeleteDeptTitle.TabIndex = 0
         lblUpdateDeleteDeptTitle.Text = "Update/Delete Department Info"
         ' 
@@ -718,7 +724,7 @@ Partial Class Admin
         lblSelectDepartment.Font = New Font("Times New Roman", 14.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         lblSelectDepartment.Location = New Point(40, 80)
         lblSelectDepartment.Name = "lblSelectDepartment"
-        lblSelectDepartment.Size = New Size(149, 21)
+        lblSelectDepartment.Size = New Size(146, 21)
         lblSelectDepartment.TabIndex = 1
         lblSelectDepartment.Text = "Select Department"
         ' 
@@ -770,18 +776,18 @@ Partial Class Admin
         lblUpdateDeptCode.Font = New Font("Times New Roman", 12.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         lblUpdateDeptCode.Location = New Point(50, 30)
         lblUpdateDeptCode.Name = "lblUpdateDeptCode"
-        lblUpdateDeptCode.Size = New Size(138, 19)
+        lblUpdateDeptCode.Size = New Size(130, 19)
         lblUpdateDeptCode.TabIndex = 1
         lblUpdateDeptCode.Text = "Department Code *"
         ' 
         ' txtUpdateDeptCode
         ' 
+        txtUpdateDeptCode.CharacterCasing = CharacterCasing.Upper
         txtUpdateDeptCode.Font = New Font("Times New Roman", 12.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         txtUpdateDeptCode.Location = New Point(50, 52)
         txtUpdateDeptCode.Name = "txtUpdateDeptCode"
         txtUpdateDeptCode.Size = New Size(400, 26)
         txtUpdateDeptCode.TabIndex = 2
-        txtUpdateDeptCode.CharacterCasing = CharacterCasing.Upper
         ' 
         ' lblUpdateDeptName
         ' 
@@ -789,7 +795,7 @@ Partial Class Admin
         lblUpdateDeptName.Font = New Font("Times New Roman", 12.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         lblUpdateDeptName.Location = New Point(50, 100)
         lblUpdateDeptName.Name = "lblUpdateDeptName"
-        lblUpdateDeptName.Size = New Size(139, 19)
+        lblUpdateDeptName.Size = New Size(133, 19)
         lblUpdateDeptName.TabIndex = 3
         lblUpdateDeptName.Text = "Department Name *"
         ' 
@@ -807,7 +813,7 @@ Partial Class Admin
         lblUpdateDeptDescription.Font = New Font("Times New Roman", 12.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         lblUpdateDeptDescription.Location = New Point(50, 170)
         lblUpdateDeptDescription.Name = "lblUpdateDeptDescription"
-        lblUpdateDeptDescription.Size = New Size(152, 19)
+        lblUpdateDeptDescription.Size = New Size(144, 19)
         lblUpdateDeptDescription.TabIndex = 5
         lblUpdateDeptDescription.Text = "Description (Optional)"
         ' 
@@ -826,7 +832,7 @@ Partial Class Admin
         lblUpdateDeptHeadInstructor.Font = New Font("Times New Roman", 12.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         lblUpdateDeptHeadInstructor.Location = New Point(50, 295)
         lblUpdateDeptHeadInstructor.Name = "lblUpdateDeptHeadInstructor"
-        lblUpdateDeptHeadInstructor.Size = New Size(181, 19)
+        lblUpdateDeptHeadInstructor.Size = New Size(170, 19)
         lblUpdateDeptHeadInstructor.TabIndex = 7
         lblUpdateDeptHeadInstructor.Text = "Head Instructor (Optional)"
         ' 
@@ -878,7 +884,7 @@ Partial Class Admin
         pnlDashboard.Location = New Point(0, 0)
         pnlDashboard.Name = "pnlDashboard"
         pnlDashboard.Padding = New Padding(20)
-        pnlDashboard.Size = New Size(1011, 800)
+        pnlDashboard.Size = New Size(973, 800)
         pnlDashboard.TabIndex = 0
         ' 
         ' lblDashboardTitle
@@ -972,7 +978,7 @@ Partial Class Admin
         pnlAddUser.Location = New Point(0, 0)
         pnlAddUser.Name = "pnlAddUser"
         pnlAddUser.Padding = New Padding(30, 20, 30, 20)
-        pnlAddUser.Size = New Size(1011, 800)
+        pnlAddUser.Size = New Size(973, 800)
         pnlAddUser.TabIndex = 1
         pnlAddUser.Visible = False
         ' 
@@ -1390,7 +1396,7 @@ Partial Class Admin
         pnlUserDetails.Location = New Point(0, 0)
         pnlUserDetails.Name = "pnlUserDetails"
         pnlUserDetails.Padding = New Padding(20)
-        pnlUserDetails.Size = New Size(1011, 800)
+        pnlUserDetails.Size = New Size(973, 800)
         pnlUserDetails.TabIndex = 2
         pnlUserDetails.Visible = False
         ' 
@@ -1488,7 +1494,7 @@ Partial Class Admin
         pnlResetPassword.Location = New Point(0, 0)
         pnlResetPassword.Name = "pnlResetPassword"
         pnlResetPassword.Padding = New Padding(20)
-        pnlResetPassword.Size = New Size(1011, 800)
+        pnlResetPassword.Size = New Size(973, 800)
         pnlResetPassword.TabIndex = 3
         pnlResetPassword.Visible = False
         ' 
@@ -1583,7 +1589,7 @@ Partial Class Admin
         pnlUpdateDeleteUser.Location = New Point(0, 0)
         pnlUpdateDeleteUser.Name = "pnlUpdateDeleteUser"
         pnlUpdateDeleteUser.Padding = New Padding(20)
-        pnlUpdateDeleteUser.Size = New Size(1011, 800)
+        pnlUpdateDeleteUser.Size = New Size(973, 800)
         pnlUpdateDeleteUser.TabIndex = 4
         pnlUpdateDeleteUser.Visible = False
         ' 
@@ -1900,7 +1906,7 @@ Partial Class Admin
         lblUpdateEnrollmentStatus.Font = New Font("Times New Roman", 12.0F)
         lblUpdateEnrollmentStatus.Location = New Point(20, 270)
         lblUpdateEnrollmentStatus.Name = "lblUpdateEnrollmentStatus"
-        lblUpdateEnrollmentStatus.Size = New Size(191, 19)
+        lblUpdateEnrollmentStatus.Size = New Size(180, 19)
         lblUpdateEnrollmentStatus.TabIndex = 11
         lblUpdateEnrollmentStatus.Text = "Enrollment Status (Optional)"
         ' 
@@ -2070,40 +2076,6 @@ Partial Class Admin
         btnDeleteUser.Text = "Delete User"
         btnDeleteUser.UseVisualStyleBackColor = False
         btnDeleteUser.Visible = False
-        ' 
-        ' btnCourseManagement
-        ' 
-        btnCourseManagement.BackColor = SystemColors.MenuHighlight
-        btnCourseManagement.Dock = DockStyle.Top
-        btnCourseManagement.FlatAppearance.BorderSize = 0
-        btnCourseManagement.FlatStyle = FlatStyle.Flat
-        btnCourseManagement.Font = New Font("Times New Roman", 12.0F)
-        btnCourseManagement.ForeColor = Color.White
-        btnCourseManagement.Location = New Point(0, 546)
-        btnCourseManagement.Name = "btnCourseManagement"
-        btnCourseManagement.Padding = New Padding(10, 0, 0, 0)
-        btnCourseManagement.Size = New Size(189, 50)
-        btnCourseManagement.TabIndex = 7
-        btnCourseManagement.Text = "📚Course Management"
-        btnCourseManagement.TextAlign = ContentAlignment.MiddleLeft
-        btnCourseManagement.UseVisualStyleBackColor = False
-        ' 
-        ' btnEnrollmentManagement
-        ' 
-        btnEnrollmentManagement.BackColor = SystemColors.MenuHighlight
-        btnEnrollmentManagement.Dock = DockStyle.Top
-        btnEnrollmentManagement.FlatAppearance.BorderSize = 0
-        btnEnrollmentManagement.FlatStyle = FlatStyle.Flat
-        btnEnrollmentManagement.Font = New Font("Times New Roman", 12.0F)
-        btnEnrollmentManagement.ForeColor = Color.White
-        btnEnrollmentManagement.Location = New Point(0, 596)
-        btnEnrollmentManagement.Name = "btnEnrollmentManagement"
-        btnEnrollmentManagement.Padding = New Padding(10, 0, 0, 0)
-        btnEnrollmentManagement.Size = New Size(189, 50)
-        btnEnrollmentManagement.TabIndex = 8
-        btnEnrollmentManagement.Text = "📝Enrollment Management"
-        btnEnrollmentManagement.TextAlign = ContentAlignment.MiddleLeft
-        btnEnrollmentManagement.UseVisualStyleBackColor = False
         ' 
         ' Admin
         ' 
