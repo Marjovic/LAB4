@@ -100,7 +100,7 @@ Partial Class Enrollment
         btnViewTerm.Dock = DockStyle.Top
         btnViewTerm.FlatAppearance.BorderSize = 0
         btnViewTerm.FlatStyle = FlatStyle.Flat
-        btnViewTerm.Font = New Font("Times New Roman", 10.0F)
+        btnViewTerm.Font = New Font("Times New Roman", 10F)
         btnViewTerm.ForeColor = Color.White
         btnViewTerm.Location = New Point(0, 100)
         btnViewTerm.Name = "btnViewTerm"
@@ -117,7 +117,7 @@ Partial Class Enrollment
         btnUpdateDeleteTerm.Dock = DockStyle.Top
         btnUpdateDeleteTerm.FlatAppearance.BorderSize = 0
         btnUpdateDeleteTerm.FlatStyle = FlatStyle.Flat
-        btnUpdateDeleteTerm.Font = New Font("Times New Roman", 10.0F)
+        btnUpdateDeleteTerm.Font = New Font("Times New Roman", 10F)
         btnUpdateDeleteTerm.ForeColor = Color.White
         btnUpdateDeleteTerm.Location = New Point(0, 50)
         btnUpdateDeleteTerm.Name = "btnUpdateDeleteTerm"
@@ -134,7 +134,7 @@ Partial Class Enrollment
         btnCreateTerm.Dock = DockStyle.Top
         btnCreateTerm.FlatAppearance.BorderSize = 0
         btnCreateTerm.FlatStyle = FlatStyle.Flat
-        btnCreateTerm.Font = New Font("Times New Roman", 10.0F)
+        btnCreateTerm.Font = New Font("Times New Roman", 10F)
         btnCreateTerm.ForeColor = Color.White
         btnCreateTerm.Location = New Point(0, 0)
         btnCreateTerm.Name = "btnCreateTerm"
@@ -151,7 +151,7 @@ Partial Class Enrollment
         btnTermManagement.Dock = DockStyle.Top
         btnTermManagement.FlatAppearance.BorderSize = 0
         btnTermManagement.FlatStyle = FlatStyle.Flat
-        btnTermManagement.Font = New Font("Times New Roman", 11.0F, FontStyle.Bold)
+        btnTermManagement.Font = New Font("Times New Roman", 11F, FontStyle.Bold)
         btnTermManagement.ForeColor = Color.White
         btnTermManagement.Location = New Point(0, 280)
         btnTermManagement.Name = "btnTermManagement"
@@ -179,7 +179,7 @@ Partial Class Enrollment
         btnViewSemester.Dock = DockStyle.Top
         btnViewSemester.FlatAppearance.BorderSize = 0
         btnViewSemester.FlatStyle = FlatStyle.Flat
-        btnViewSemester.Font = New Font("Times New Roman", 10.0F)
+        btnViewSemester.Font = New Font("Times New Roman", 10F)
         btnViewSemester.ForeColor = Color.White
         btnViewSemester.Location = New Point(0, 100)
         btnViewSemester.Name = "btnViewSemester"
@@ -196,7 +196,7 @@ Partial Class Enrollment
         btnUpdateDeleteSemester.Dock = DockStyle.Top
         btnUpdateDeleteSemester.FlatAppearance.BorderSize = 0
         btnUpdateDeleteSemester.FlatStyle = FlatStyle.Flat
-        btnUpdateDeleteSemester.Font = New Font("Times New Roman", 10.0F)
+        btnUpdateDeleteSemester.Font = New Font("Times New Roman", 10F)
         btnUpdateDeleteSemester.ForeColor = Color.White
         btnUpdateDeleteSemester.Location = New Point(0, 50)
         btnUpdateDeleteSemester.Name = "btnUpdateDeleteSemester"
@@ -213,7 +213,7 @@ Partial Class Enrollment
         btnCreateSemester.Dock = DockStyle.Top
         btnCreateSemester.FlatAppearance.BorderSize = 0
         btnCreateSemester.FlatStyle = FlatStyle.Flat
-        btnCreateSemester.Font = New Font("Times New Roman", 10.0F)
+        btnCreateSemester.Font = New Font("Times New Roman", 10F)
         btnCreateSemester.ForeColor = Color.White
         btnCreateSemester.Location = New Point(0, 0)
         btnCreateSemester.Name = "btnCreateSemester"
@@ -230,7 +230,7 @@ Partial Class Enrollment
         btnSemesterManagement.Dock = DockStyle.Top
         btnSemesterManagement.FlatAppearance.BorderSize = 0
         btnSemesterManagement.FlatStyle = FlatStyle.Flat
-        btnSemesterManagement.Font = New Font("Times New Roman", 11.0F, FontStyle.Bold)
+        btnSemesterManagement.Font = New Font("Times New Roman", 11F, FontStyle.Bold)
         btnSemesterManagement.ForeColor = Color.White
         btnSemesterManagement.Location = New Point(0, 80)
         btnSemesterManagement.Name = "btnSemesterManagement"
@@ -243,7 +243,7 @@ Partial Class Enrollment
         ' 
         lblEnrollmentTitle.BackColor = Color.Navy
         lblEnrollmentTitle.Dock = DockStyle.Top
-        lblEnrollmentTitle.Font = New Font("Times New Roman", 14.0F, FontStyle.Bold)
+        lblEnrollmentTitle.Font = New Font("Times New Roman", 14F, FontStyle.Bold)
         lblEnrollmentTitle.ForeColor = Color.White
         lblEnrollmentTitle.Location = New Point(0, 0)
         lblEnrollmentTitle.Name = "lblEnrollmentTitle"
@@ -258,7 +258,7 @@ Partial Class Enrollment
         btnClose.Dock = DockStyle.Bottom
         btnClose.FlatAppearance.BorderSize = 0
         btnClose.FlatStyle = FlatStyle.Flat
-        btnClose.Font = New Font("Times New Roman", 12.0F, FontStyle.Bold)
+        btnClose.Font = New Font("Times New Roman", 12F, FontStyle.Bold)
         btnClose.ForeColor = Color.White
         btnClose.Location = New Point(0, 750)
         btnClose.Name = "btnClose"
@@ -298,7 +298,7 @@ Partial Class Enrollment
         ' lblCreateSemesterTitle
         ' 
         lblCreateSemesterTitle.AutoSize = True
-        lblCreateSemesterTitle.Font = New Font("Times New Roman", 20.0F, FontStyle.Bold)
+        lblCreateSemesterTitle.Font = New Font("Times New Roman", 20F, FontStyle.Bold)
         lblCreateSemesterTitle.ForeColor = Color.FromArgb(CByte(0), CByte(122), CByte(204))
         lblCreateSemesterTitle.Location = New Point(30, 20)
         lblCreateSemesterTitle.Name = "lblCreateSemesterTitle"
@@ -337,7 +337,7 @@ Partial Class Enrollment
         ' lblViewSemesterTitle
         ' 
         lblViewSemesterTitle.AutoSize = True
-        lblViewSemesterTitle.Font = New Font("Times New Roman", 24.0F, FontStyle.Bold)
+        lblViewSemesterTitle.Font = New Font("Times New Roman", 24F, FontStyle.Bold)
         lblViewSemesterTitle.ForeColor = Color.FromArgb(CByte(0), CByte(122), CByte(204))
         lblViewSemesterTitle.Location = New Point(23, 20)
         lblViewSemesterTitle.Name = "lblViewSemesterTitle"
@@ -350,7 +350,7 @@ Partial Class Enrollment
         btnRefreshSemesters.Anchor = AnchorStyles.Top Or AnchorStyles.Right
         btnRefreshSemesters.BackColor = Color.FromArgb(CByte(0), CByte(122), CByte(204))
         btnRefreshSemesters.FlatStyle = FlatStyle.Flat
-        btnRefreshSemesters.Font = New Font("Times New Roman", 12.0F, FontStyle.Bold)
+        btnRefreshSemesters.Font = New Font("Times New Roman", 12F, FontStyle.Bold)
         btnRefreshSemesters.ForeColor = Color.White
         btnRefreshSemesters.Location = New Point(718, 20)
         btnRefreshSemesters.Name = "btnRefreshSemesters"
@@ -375,7 +375,7 @@ Partial Class Enrollment
         ' lblUpdateDeleteSemesterTitle
         ' 
         lblUpdateDeleteSemesterTitle.AutoSize = True
-        lblUpdateDeleteSemesterTitle.Font = New Font("Times New Roman", 24.0F, FontStyle.Bold)
+        lblUpdateDeleteSemesterTitle.Font = New Font("Times New Roman", 24F, FontStyle.Bold)
         lblUpdateDeleteSemesterTitle.ForeColor = Color.FromArgb(CByte(0), CByte(122), CByte(204))
         lblUpdateDeleteSemesterTitle.Location = New Point(20, 20)
         lblUpdateDeleteSemesterTitle.Name = "lblUpdateDeleteSemesterTitle"
@@ -399,11 +399,11 @@ Partial Class Enrollment
         ' lblCreateTermTitle
         ' 
         lblCreateTermTitle.AutoSize = True
-        lblCreateTermTitle.Font = New Font("Times New Roman", 20.0F, FontStyle.Bold)
+        lblCreateTermTitle.Font = New Font("Times New Roman", 20F, FontStyle.Bold)
         lblCreateTermTitle.ForeColor = Color.FromArgb(CByte(0), CByte(122), CByte(204))
         lblCreateTermTitle.Location = New Point(30, 20)
         lblCreateTermTitle.Name = "lblCreateTermTitle"
-        lblCreateTermTitle.Size = New Size(213, 31)
+        lblCreateTermTitle.Size = New Size(220, 31)
         lblCreateTermTitle.TabIndex = 0
         lblCreateTermTitle.Text = "Create New Term"
         ' 
@@ -438,11 +438,11 @@ Partial Class Enrollment
         ' lblViewTermTitle
         ' 
         lblViewTermTitle.AutoSize = True
-        lblViewTermTitle.Font = New Font("Times New Roman", 24.0F, FontStyle.Bold)
+        lblViewTermTitle.Font = New Font("Times New Roman", 24F, FontStyle.Bold)
         lblViewTermTitle.ForeColor = Color.FromArgb(CByte(0), CByte(122), CByte(204))
         lblViewTermTitle.Location = New Point(23, 20)
         lblViewTermTitle.Name = "lblViewTermTitle"
-        lblViewTermTitle.Size = New Size(150, 36)
+        lblViewTermTitle.Size = New Size(148, 36)
         lblViewTermTitle.TabIndex = 0
         lblViewTermTitle.Text = "All Terms"
         ' 
@@ -451,7 +451,7 @@ Partial Class Enrollment
         btnRefreshTerms.Anchor = AnchorStyles.Top Or AnchorStyles.Right
         btnRefreshTerms.BackColor = Color.FromArgb(CByte(0), CByte(122), CByte(204))
         btnRefreshTerms.FlatStyle = FlatStyle.Flat
-        btnRefreshTerms.Font = New Font("Times New Roman", 12.0F, FontStyle.Bold)
+        btnRefreshTerms.Font = New Font("Times New Roman", 12F, FontStyle.Bold)
         btnRefreshTerms.ForeColor = Color.White
         btnRefreshTerms.Location = New Point(718, 20)
         btnRefreshTerms.Name = "btnRefreshTerms"
@@ -476,17 +476,17 @@ Partial Class Enrollment
         ' lblUpdateDeleteTermTitle
         ' 
         lblUpdateDeleteTermTitle.AutoSize = True
-        lblUpdateDeleteTermTitle.Font = New Font("Times New Roman", 24.0F, FontStyle.Bold)
+        lblUpdateDeleteTermTitle.Font = New Font("Times New Roman", 24F, FontStyle.Bold)
         lblUpdateDeleteTermTitle.ForeColor = Color.FromArgb(CByte(0), CByte(122), CByte(204))
         lblUpdateDeleteTermTitle.Location = New Point(20, 20)
         lblUpdateDeleteTermTitle.Name = "lblUpdateDeleteTermTitle"
-        lblUpdateDeleteTermTitle.Size = New Size(355, 36)
+        lblUpdateDeleteTermTitle.Size = New Size(354, 36)
         lblUpdateDeleteTermTitle.TabIndex = 0
         lblUpdateDeleteTermTitle.Text = "Update/Delete Term Info"
         ' 
         ' Enrollment
         ' 
-        AutoScaleDimensions = New SizeF(7.0F, 15.0F)
+        AutoScaleDimensions = New SizeF(7F, 15F)
         AutoScaleMode = AutoScaleMode.Font
         ClientSize = New Size(1200, 800)
         Controls.Add(pnlMainContent)

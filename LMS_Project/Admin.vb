@@ -5,7 +5,7 @@ Imports System.Text.RegularExpressions
 
 Public Class Admin
     ' Connection string - same as login form
-    Private connectionString As String = "Server=localhost;Database=db_alejado;Uid=root;Password=Sheamar@442211;"
+    Private connectionString As String = "Server=localhost;Database=db_alejado;Uid=root;Password=;"
 
     Private Sub Admin_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         ' Set the form title with current user info
@@ -2204,12 +2204,6 @@ Public Class Admin
         End Try
     End Sub
 
-    ' Refresh Departments Button
-    Private Sub btnRefreshDepartments_Click(sender As Object, e As EventArgs) Handles btnRefreshDepartments.Click
-        LoadDepartmentsData()
-        MessageBox.Show("Departments data refreshed successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information)
-    End Sub
-
     ' Load Department Data Button
     Private Sub btnLoadDepartmentData_Click(sender As Object, e As EventArgs) Handles btnLoadDepartmentData.Click
         If cmbSelectDepartment.SelectedValue Is Nothing Then
@@ -2670,6 +2664,10 @@ Public Class Admin
     End Sub
 
     Private Sub pnlSidebar_Paint(sender As Object, e As PaintEventArgs) Handles pnlSidebar.Paint
+
+    End Sub
+
+    Private Sub dgvDepartments_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgvDepartments.CellContentClick
 
     End Sub
 End Class

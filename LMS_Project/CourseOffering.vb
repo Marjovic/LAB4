@@ -1,7 +1,7 @@
 ﻿Imports MySql.Data.MySqlClient
 Public Class CourseOffering
     ' Connection string - same as other forms
-    Private connectionString As String = "Server=localhost;Database=db_alejado;Uid=root;Password=Sheamar@442211;"
+    Private connectionString As String = "Server=localhost;Database=db_alejado;Uid=root;Password=;"
 
     ' Store current offering ID for update/delete
     Private currentOfferingId As Integer = 0
@@ -583,5 +583,9 @@ Public Class CourseOffering
         grpOfferingInfo.Visible = False
         btnUpdateOffering.Visible = False
         btnDeleteOffering.Visible = False
+    End Sub
+
+    Private Sub pnlCreateOffering_Paint(sender As Object, e As PaintEventArgs) Handles pnlCreateOffering.Paint
+
     End Sub
 End Class

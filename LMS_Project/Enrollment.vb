@@ -3,20 +3,20 @@ Imports System.Text.RegularExpressions
 
 Public Class Enrollment
     ' Connection string
-    Private connectionString As String = "Server=localhost;Database=db_alejado;Uid=root;Password=Sheamar@442211;"
+    Private connectionString As String = "Server=localhost;Database=db_alejado;Uid=root;Password=;"
 
     Private Sub Enrollment_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         ' Set form title
         Me.Text = "Enrollment Management - MGOD LMS"
 
         ' Only load data for View panels (these use designer controls that already exist)
-      LoadSemestersData()
+        LoadSemestersData()
 
-     ' Show View Semester panel by default
+        ' Show View Semester panel by default
         ShowPanel(pnlViewSemester)
 
         ' Set initial button state
-     SetActiveButton(btnViewSemester)
+        SetActiveButton(btnViewSemester)
     End Sub
 
     ' ============= NAVIGATION METHODS =============
@@ -28,25 +28,25 @@ Public Class Enrollment
         pnlUpdateDeleteSemester.Visible = False
         pnlCreateTerm.Visible = False
         pnlViewTerm.Visible = False
-     pnlUpdateDeleteTerm.Visible = False
+        pnlUpdateDeleteTerm.Visible = False
 
-      ' Show selected panel
+        ' Show selected panel
         panelToShow.Visible = True
 
- ' Update button colors
+        ' Update button colors
         ResetButtonColors()
     End Sub
 
     Private Sub ResetButtonColors()
         ' Semester Management submenu buttons
         btnCreateSemester.BackColor = Color.FromArgb(35, 35, 38)
-    btnUpdateDeleteSemester.BackColor = Color.FromArgb(35, 35, 38)
-  btnViewSemester.BackColor = Color.FromArgb(35, 35, 38)
+        btnUpdateDeleteSemester.BackColor = Color.FromArgb(35, 35, 38)
+        btnViewSemester.BackColor = Color.FromArgb(35, 35, 38)
 
-      ' Term Management submenu buttons
-   btnCreateTerm.BackColor = Color.FromArgb(35, 35, 38)
+        ' Term Management submenu buttons
+        btnCreateTerm.BackColor = Color.FromArgb(35, 35, 38)
         btnUpdateDeleteTerm.BackColor = Color.FromArgb(35, 35, 38)
-  btnViewTerm.BackColor = Color.FromArgb(35, 35, 38)
+        btnViewTerm.BackColor = Color.FromArgb(35, 35, 38)
 
         ' Main buttons
         btnSemesterManagement.BackColor = Color.FromArgb(45, 45, 48)
@@ -59,34 +59,34 @@ Public Class Enrollment
 
     ' Semester Management Navigation
     Private Sub btnSemesterManagement_Click(sender As Object, e As EventArgs) Handles btnSemesterManagement.Click
-' Toggle submenu visibility
-  pnlSemesterSubmenu.Visible = Not pnlSemesterSubmenu.Visible
+        ' Toggle submenu visibility
+        pnlSemesterSubmenu.Visible = Not pnlSemesterSubmenu.Visible
         ' Hide term submenu when semester is clicked
         If pnlSemesterSubmenu.Visible Then
-         pnlTermSubmenu.Visible = False
+            pnlTermSubmenu.Visible = False
         End If
-  End Sub
+    End Sub
 
     Private Sub btnCreateSemester_Click(sender As Object, e As EventArgs) Handles btnCreateSemester.Click
- ShowPanel(pnlCreateSemester)
+        ShowPanel(pnlCreateSemester)
         SetActiveButton(btnCreateSemester)
         SetActiveButton(btnSemesterManagement)
-    InitializeCreateSemesterControls()
-     ClearCreateSemesterForm()
+        InitializeCreateSemesterControls()
+        ClearCreateSemesterForm()
     End Sub
 
     Private Sub btnViewSemester_Click(sender As Object, e As EventArgs) Handles btnViewSemester.Click
-   ShowPanel(pnlViewSemester)
-SetActiveButton(btnViewSemester)
+        ShowPanel(pnlViewSemester)
+        SetActiveButton(btnViewSemester)
         SetActiveButton(btnSemesterManagement)
         LoadSemestersData()
-  End Sub
+    End Sub
 
     Private Sub btnUpdateDeleteSemester_Click(sender As Object, e As EventArgs) Handles btnUpdateDeleteSemester.Click
         ShowPanel(pnlUpdateDeleteSemester)
         SetActiveButton(btnUpdateDeleteSemester)
         SetActiveButton(btnSemesterManagement)
-     InitializeUpdateSemesterControls()
+        InitializeUpdateSemesterControls()
         ClearUpdateSemesterForm()
     End Sub
 
@@ -96,30 +96,30 @@ SetActiveButton(btnViewSemester)
         pnlTermSubmenu.Visible = Not pnlTermSubmenu.Visible
         ' Hide semester submenu when term is clicked
         If pnlTermSubmenu.Visible Then
-     pnlSemesterSubmenu.Visible = False
+            pnlSemesterSubmenu.Visible = False
         End If
     End Sub
 
     Private Sub btnCreateTerm_Click(sender As Object, e As EventArgs) Handles btnCreateTerm.Click
         ShowPanel(pnlCreateTerm)
- SetActiveButton(btnCreateTerm)
+        SetActiveButton(btnCreateTerm)
         SetActiveButton(btnTermManagement)
-      InitializeCreateTermControls()
+        InitializeCreateTermControls()
         ClearCreateTermForm()
     End Sub
 
     Private Sub btnViewTerm_Click(sender As Object, e As EventArgs) Handles btnViewTerm.Click
         ShowPanel(pnlViewTerm)
-      SetActiveButton(btnViewTerm)
-   SetActiveButton(btnTermManagement)
-     LoadTermsData()
+        SetActiveButton(btnViewTerm)
+        SetActiveButton(btnTermManagement)
+        LoadTermsData()
     End Sub
 
     Private Sub btnUpdateDeleteTerm_Click(sender As Object, e As EventArgs) Handles btnUpdateDeleteTerm.Click
         ShowPanel(pnlUpdateDeleteTerm)
         SetActiveButton(btnUpdateDeleteTerm)
-    SetActiveButton(btnTermManagement)
-      InitializeUpdateTermControls()
+        SetActiveButton(btnTermManagement)
+        InitializeUpdateTermControls()
         ClearUpdateTermForm()
     End Sub
 
@@ -127,7 +127,7 @@ SetActiveButton(btnViewSemester)
         Me.Close()
     End Sub
 
-  ' ============= INITIALIZATION METHODS =============
+    ' ============= INITIALIZATION METHODS =============
 
     Private Sub InitializeAcademicYearDropdown()
         Try
@@ -219,95 +219,95 @@ SetActiveButton(btnViewSemester)
 
     Private Sub InitializeSemesterDropdownForTerms()
         Try
-   Using connection As New MySqlConnection(connectionString)
-     connection.Open()
-      Dim query As String = "SELECT s.semester_id, " &
-   "CONCAT(ay.academic_year_name, ' - ', st.type_name) as display_name " &
- "FROM Semesters s " &
-     "INNER JOIN Academic_Years ay ON s.academic_year_id = ay.academic_year_id " &
-    "INNER JOIN Semester_Types st ON s.semester_type_id = st.semester_type_id " &
-         "WHERE s.is_active = TRUE " &
-  "ORDER BY ay.year_start DESC, st.display_order"
-    Using adapter As New MySqlDataAdapter(query, connection)
-    Dim semesterTable As New DataTable()
-      adapter.Fill(semesterTable)
+            Using connection As New MySqlConnection(connectionString)
+                connection.Open()
+                Dim query As String = "SELECT s.semester_id, " &
+             "CONCAT(ay.academic_year_name, ' - ', st.type_name) as display_name " &
+           "FROM Semesters s " &
+               "INNER JOIN Academic_Years ay ON s.academic_year_id = ay.academic_year_id " &
+              "INNER JOIN Semester_Types st ON s.semester_type_id = st.semester_type_id " &
+                   "WHERE s.is_active = TRUE " &
+            "ORDER BY ay.year_start DESC, st.display_order"
+                Using adapter As New MySqlDataAdapter(query, connection)
+                    Dim semesterTable As New DataTable()
+                    adapter.Fill(semesterTable)
 
-      ' Bind to Create Term dropdown (only if it exists)
-     If cmbTermSemester IsNot Nothing Then
-  If semesterTable.Rows.Count = 0 Then
-    MessageBox.Show("No active semesters found. Please create and activate a semester first before creating terms.", _
-   "No Active Semesters", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-cmbTermSemester.DataSource = Nothing
-       Return
-     End If
+                    ' Bind to Create Term dropdown (only if it exists)
+                    If cmbTermSemester IsNot Nothing Then
+                        If semesterTable.Rows.Count = 0 Then
+                            MessageBox.Show("No active semesters found. Please create and activate a semester first before creating terms.", _
+                           "No Active Semesters", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                            cmbTermSemester.DataSource = Nothing
+                            Return
+                        End If
 
-     cmbTermSemester.DataSource = semesterTable.Copy()
-   cmbTermSemester.DisplayMember = "display_name"
-cmbTermSemester.ValueMember = "semester_id"
+                        cmbTermSemester.DataSource = semesterTable.Copy()
+                        cmbTermSemester.DisplayMember = "display_name"
+                        cmbTermSemester.ValueMember = "semester_id"
 
-      If cmbTermSemester.Items.Count > 0 Then
-            cmbTermSemester.SelectedIndex = 0
-            End If
-      End If
+                        If cmbTermSemester.Items.Count > 0 Then
+                            cmbTermSemester.SelectedIndex = 0
+                        End If
+                    End If
 
-     ' Bind to Update Term dropdown (only if it exists)
- If cmbUpdateTermSemester IsNot Nothing Then
-  If semesterTable.Rows.Count = 0 Then
-       cmbUpdateTermSemester.DataSource = Nothing
- Return
-    End If
+                    ' Bind to Update Term dropdown (only if it exists)
+                    If cmbUpdateTermSemester IsNot Nothing Then
+                        If semesterTable.Rows.Count = 0 Then
+                            cmbUpdateTermSemester.DataSource = Nothing
+                            Return
+                        End If
 
- cmbUpdateTermSemester.DataSource = semesterTable.Copy()
-  cmbUpdateTermSemester.DisplayMember = "display_name"
-   cmbUpdateTermSemester.ValueMember = "semester_id"
+                        cmbUpdateTermSemester.DataSource = semesterTable.Copy()
+                        cmbUpdateTermSemester.DisplayMember = "display_name"
+                        cmbUpdateTermSemester.ValueMember = "semester_id"
 
-      If cmbUpdateTermSemester.Items.Count > 0 Then
-          cmbUpdateTermSemester.SelectedIndex = 0
-  End If
-     End If
-     End Using
-      End Using
+                        If cmbUpdateTermSemester.Items.Count > 0 Then
+                            cmbUpdateTermSemester.SelectedIndex = 0
+                        End If
+                    End If
+                End Using
+            End Using
         Catch ex As Exception
- MessageBox.Show($"Error loading semesters: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
-      End Try
+            MessageBox.Show($"Error loading semesters: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
     End Sub
 
     Private Sub InitializeTermTypeDropdown()
         Try
-     Using connection As New MySqlConnection(connectionString)
-     connection.Open()
+            Using connection As New MySqlConnection(connectionString)
+                connection.Open()
                 Dim query As String = "SELECT term_type_id, type_name, type_code " &
            "FROM Term_Types " &
          "ORDER BY display_order"
-  Using adapter As New MySqlDataAdapter(query, connection)
-         Dim typeTable As New DataTable()
-           adapter.Fill(typeTable)
+                Using adapter As New MySqlDataAdapter(query, connection)
+                    Dim typeTable As New DataTable()
+                    adapter.Fill(typeTable)
 
-     ' Bind to Create Term dropdown (only if it exists)
-    If cmbTermType IsNot Nothing Then
-     cmbTermType.DataSource = typeTable.Copy()
-        cmbTermType.DisplayMember = "type_name"
-      cmbTermType.ValueMember = "term_type_id"
+                    ' Bind to Create Term dropdown (only if it exists)
+                    If cmbTermType IsNot Nothing Then
+                        cmbTermType.DataSource = typeTable.Copy()
+                        cmbTermType.DisplayMember = "type_name"
+                        cmbTermType.ValueMember = "term_type_id"
 
-             If cmbTermType.Items.Count > 0 Then
-                cmbTermType.SelectedIndex = 0
-        End If
-         End If
+                        If cmbTermType.Items.Count > 0 Then
+                            cmbTermType.SelectedIndex = 0
+                        End If
+                    End If
 
- ' Bind to Update Term dropdown (only if it exists)
-             If cmbUpdateTermType IsNot Nothing Then
-  cmbUpdateTermType.DataSource = typeTable.Copy()
-      cmbUpdateTermType.DisplayMember = "type_name"
-            cmbUpdateTermType.ValueMember = "term_type_id"
+                    ' Bind to Update Term dropdown (only if it exists)
+                    If cmbUpdateTermType IsNot Nothing Then
+                        cmbUpdateTermType.DataSource = typeTable.Copy()
+                        cmbUpdateTermType.DisplayMember = "type_name"
+                        cmbUpdateTermType.ValueMember = "term_type_id"
 
-           If cmbUpdateTermType.Items.Count > 0 Then
-  cmbUpdateTermType.SelectedIndex = 0
-            End If
-           End If
-   End Using
- End Using
+                        If cmbUpdateTermType.Items.Count > 0 Then
+                            cmbUpdateTermType.SelectedIndex = 0
+                        End If
+                    End If
+                End Using
+            End Using
         Catch ex As Exception
-         MessageBox.Show($"Error loading term types: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            MessageBox.Show($"Error loading term types: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
     End Sub
 
@@ -672,17 +672,17 @@ cmbTermSemester.ValueMember = "semester_id"
     End Sub
 
     Private Sub InitializeCreateTermControls()
-  ' Create and add controls dynamically for Create Term panel
+        ' Create and add controls dynamically for Create Term panel
         pnlCreateTerm.Controls.Clear()
 
         ' Title Label
-     Dim lblTitle As New Label With {
-  .Text = "Create New Term",
-   .Font = New Font("Times New Roman", 20, FontStyle.Bold),
-            .ForeColor = Color.FromArgb(0, 122, 204),
-       .Location = New Point(30, 20),
-            .AutoSize = True
-        }
+        Dim lblTitle As New Label With {
+     .Text = "Create New Term",
+      .Font = New Font("Times New Roman", 20, FontStyle.Bold),
+               .ForeColor = Color.FromArgb(0, 122, 204),
+          .Location = New Point(30, 20),
+               .AutoSize = True
+           }
         pnlCreateTerm.Controls.Add(lblTitle)
 
         ' Semester
@@ -704,12 +704,12 @@ cmbTermSemester.ValueMember = "semester_id"
         pnlCreateTerm.Controls.Add(cmbTermSemester)
 
         ' Term Type
-      Dim lblTermType As New Label With {
-            .Text = "Term Type:",
-        .Font = New Font("Times New Roman", 12, FontStyle.Bold),
-          .Location = New Point(30, 150),
- .Size = New Size(200, 25)
- }
+        Dim lblTermType As New Label With {
+              .Text = "Term Type:",
+          .Font = New Font("Times New Roman", 12, FontStyle.Bold),
+            .Location = New Point(30, 150),
+   .Size = New Size(200, 25)
+   }
         pnlCreateTerm.Controls.Add(lblTermType)
 
         cmbTermType = New ComboBox With {
@@ -737,15 +737,15 @@ cmbTermSemester.ValueMember = "semester_id"
         .Size = New Size(400, 30),
        .Format = DateTimePickerFormat.Short
         }
-     pnlCreateTerm.Controls.Add(dtpTermStartDate)
+        pnlCreateTerm.Controls.Add(dtpTermStartDate)
 
         ' End Date
-    Dim lblTermEndDate As New Label With {
-   .Text = "End Date:",
-  .Font = New Font("Times New Roman", 12, FontStyle.Bold),
-            .Location = New Point(30, 290),
-    .Size = New Size(200, 25)
- }
+        Dim lblTermEndDate As New Label With {
+       .Text = "End Date:",
+      .Font = New Font("Times New Roman", 12, FontStyle.Bold),
+                .Location = New Point(30, 290),
+        .Size = New Size(200, 25)
+     }
         pnlCreateTerm.Controls.Add(lblTermEndDate)
 
         dtpTermEndDate = New DateTimePicker With {
@@ -757,7 +757,7 @@ cmbTermSemester.ValueMember = "semester_id"
         }
         pnlCreateTerm.Controls.Add(dtpTermEndDate)
 
-      ' Is Active Checkbox
+        ' Is Active Checkbox
         chkTermIsActive = New CheckBox With {
   .Name = "chkTermIsActive",
             .Text = "Set as Active Term",
@@ -768,7 +768,7 @@ cmbTermSemester.ValueMember = "semester_id"
         }
         pnlCreateTerm.Controls.Add(chkTermIsActive)
 
- ' Submit Button
+        ' Submit Button
         Dim btnSubmit As New Button With {
             .Name = "btnSubmitTerm",
             .Text = "Create Term",
@@ -784,16 +784,16 @@ cmbTermSemester.ValueMember = "semester_id"
 
         ' Reinitialize dropdowns
         InitializeSemesterDropdownForTerms()
-    InitializeTermTypeDropdown()
+        InitializeTermTypeDropdown()
     End Sub
 
     Private Sub InitializeUpdateTermControls()
         ' Clear existing controls except title
         Dim controlsToRemove As New List(Of Control)()
         For Each ctrl As Control In pnlUpdateDeleteTerm.Controls
-   If TypeOf ctrl IsNot Label OrElse ctrl.Name <> "lblUpdateDeleteTermTitle" Then
-controlsToRemove.Add(ctrl)
-    End If
+            If TypeOf ctrl IsNot Label OrElse ctrl.Name <> "lblUpdateDeleteTermTitle" Then
+                controlsToRemove.Add(ctrl)
+            End If
         Next
 
         For Each ctrl As Control In controlsToRemove
@@ -807,7 +807,7 @@ controlsToRemove.Add(ctrl)
   .Location = New Point(30, 80),
       .Size = New Size(300, 25)
         }
-   pnlUpdateDeleteTerm.Controls.Add(lblSelectTerm)
+        pnlUpdateDeleteTerm.Controls.Add(lblSelectTerm)
 
         cmbSelectTerm = New ComboBox With {
  .Name = "cmbSelectTerm",
@@ -830,7 +830,7 @@ controlsToRemove.Add(ctrl)
     .FlatStyle = FlatStyle.Flat
   }
         AddHandler btnLoad.Click, AddressOf btnLoadTermData_Click
-      pnlUpdateDeleteTerm.Controls.Add(btnLoad)
+        pnlUpdateDeleteTerm.Controls.Add(btnLoad)
 
         ' Group Box for term details
         grpTermInfo = New GroupBox With {
@@ -841,16 +841,16 @@ controlsToRemove.Add(ctrl)
             .Size = New Size(750, 400),
         .Visible = False
         }
-      pnlUpdateDeleteTerm.Controls.Add(grpTermInfo)
+        pnlUpdateDeleteTerm.Controls.Add(grpTermInfo)
 
-      ' Semester (Update)
+        ' Semester (Update)
         Dim lblUpdateSemester As New Label With {
           .Text = "Semester:",
             .Font = New Font("Times New Roman", 11, FontStyle.Bold),
             .Location = New Point(20, 40),
             .Size = New Size(200, 25)
         }
- grpTermInfo.Controls.Add(lblUpdateSemester)
+        grpTermInfo.Controls.Add(lblUpdateSemester)
 
         cmbUpdateTermSemester = New ComboBox With {
        .Name = "cmbUpdateTermSemester",
@@ -859,7 +859,7 @@ controlsToRemove.Add(ctrl)
             .Size = New Size(350, 30),
             .DropDownStyle = ComboBoxStyle.DropDownList
         }
-   grpTermInfo.Controls.Add(cmbUpdateTermSemester)
+        grpTermInfo.Controls.Add(cmbUpdateTermSemester)
 
         ' Term Type (Update)
         Dim lblUpdateTermType As New Label With {
@@ -880,21 +880,21 @@ controlsToRemove.Add(ctrl)
         grpTermInfo.Controls.Add(cmbUpdateTermType)
 
         ' Update Start Date
-     Dim lblUpdateTermStartDate As New Label With {
-       .Text = "Start Date:",
-            .Font = New Font("Times New Roman", 11, FontStyle.Bold),
-   .Location = New Point(20, 180),
-    .Size = New Size(200, 25)
-        }
-    grpTermInfo.Controls.Add(lblUpdateTermStartDate)
+        Dim lblUpdateTermStartDate As New Label With {
+          .Text = "Start Date:",
+               .Font = New Font("Times New Roman", 11, FontStyle.Bold),
+      .Location = New Point(20, 180),
+       .Size = New Size(200, 25)
+           }
+        grpTermInfo.Controls.Add(lblUpdateTermStartDate)
 
- dtpUpdateTermStartDate = New DateTimePicker With {
-    .Name = "dtpUpdateTermStartDate",
-        .Font = New Font("Times New Roman", 11),
-      .Location = New Point(20, 210),
-            .Size = New Size(350, 30),
-  .Format = DateTimePickerFormat.Short
-        }
+        dtpUpdateTermStartDate = New DateTimePicker With {
+           .Name = "dtpUpdateTermStartDate",
+               .Font = New Font("Times New Roman", 11),
+             .Location = New Point(20, 210),
+                   .Size = New Size(350, 30),
+         .Format = DateTimePickerFormat.Short
+               }
         grpTermInfo.Controls.Add(dtpUpdateTermStartDate)
 
         ' Update End Date
@@ -906,13 +906,13 @@ controlsToRemove.Add(ctrl)
         }
         grpTermInfo.Controls.Add(lblUpdateTermEndDate)
 
-      dtpUpdateTermEndDate = New DateTimePicker With {
-        .Name = "dtpUpdateTermEndDate",
-            .Font = New Font("Times New Roman", 11),
-.Location = New Point(20, 280),
-        .Size = New Size(350, 30),
-        .Format = DateTimePickerFormat.Short
-        }
+        dtpUpdateTermEndDate = New DateTimePicker With {
+          .Name = "dtpUpdateTermEndDate",
+              .Font = New Font("Times New Roman", 11),
+  .Location = New Point(20, 280),
+          .Size = New Size(350, 30),
+          .Format = DateTimePickerFormat.Short
+          }
         grpTermInfo.Controls.Add(dtpUpdateTermEndDate)
 
         ' Update Is Active Checkbox
@@ -926,36 +926,36 @@ controlsToRemove.Add(ctrl)
         grpTermInfo.Controls.Add(chkUpdateTermIsActive)
 
         ' Update Button
-      Dim btnUpdate As New Button With {
-.Name = "btnUpdateTerm",
-      .Text = "Update Term",
-            .Font = New Font("Times New Roman", 12, FontStyle.Bold),
-      .Location = New Point(400, 150),
-     .Size = New Size(200, 40),
-          .BackColor = Color.FromArgb(0, 122, 204),
-            .ForeColor = Color.White,
-   .FlatStyle = FlatStyle.Flat
- }
+        Dim btnUpdate As New Button With {
+  .Name = "btnUpdateTerm",
+        .Text = "Update Term",
+              .Font = New Font("Times New Roman", 12, FontStyle.Bold),
+        .Location = New Point(400, 150),
+       .Size = New Size(200, 40),
+            .BackColor = Color.FromArgb(0, 122, 204),
+              .ForeColor = Color.White,
+     .FlatStyle = FlatStyle.Flat
+   }
         AddHandler btnUpdate.Click, AddressOf btnUpdateTerm_Click
         grpTermInfo.Controls.Add(btnUpdate)
 
-      ' Delete Button
-      Dim btnDelete As New Button With {
-        .Name = "btnDeleteTerm",
-       .Text = "Delete Term",
-.Font = New Font("Times New Roman", 12, FontStyle.Bold),
-      .Location = New Point(400, 200),
-  .Size = New Size(200, 40),
-    .BackColor = Color.FromArgb(192, 0, 0),
-    .ForeColor = Color.White,
-         .FlatStyle = FlatStyle.Flat
-      }
+        ' Delete Button
+        Dim btnDelete As New Button With {
+          .Name = "btnDeleteTerm",
+         .Text = "Delete Term",
+  .Font = New Font("Times New Roman", 12, FontStyle.Bold),
+        .Location = New Point(400, 200),
+    .Size = New Size(200, 40),
+      .BackColor = Color.FromArgb(192, 0, 0),
+      .ForeColor = Color.White,
+           .FlatStyle = FlatStyle.Flat
+        }
         AddHandler btnDelete.Click, AddressOf btnDeleteTerm_Click
         grpTermInfo.Controls.Add(btnDelete)
 
-      ' Reinitialize dropdowns
-   InitializeSemesterDropdownForTerms()
-InitializeTermTypeDropdown()
+        ' Reinitialize dropdowns
+        InitializeSemesterDropdownForTerms()
+        InitializeTermTypeDropdown()
         LoadTermUpdateDropdown()
     End Sub
 
@@ -985,7 +985,7 @@ InitializeTermTypeDropdown()
     Private WithEvents dtpTermEndDate As DateTimePicker
     Private WithEvents chkTermIsActive As CheckBox
 
-  Private WithEvents cmbSelectTerm As ComboBox
+    Private WithEvents cmbSelectTerm As ComboBox
     Private WithEvents cmbUpdateTermSemester As ComboBox
     Private WithEvents cmbUpdateTermType As ComboBox
     Private WithEvents dtpUpdateTermStartDate As DateTimePicker
@@ -1185,7 +1185,7 @@ InitializeTermTypeDropdown()
 
     ' ============= VIEW SEMESTERS METHODS =============
 
- Private Sub LoadSemestersData()
+    Private Sub LoadSemestersData()
         Try
             Using connection As New MySqlConnection(connectionString)
                 connection.Open()
@@ -1263,7 +1263,7 @@ InitializeTermTypeDropdown()
         End Try
     End Sub
 
-  Private Sub LoadSemesterDataForUpdate(semesterId As Integer)
+    Private Sub LoadSemesterDataForUpdate(semesterId As Integer)
         Try
             Using connection As New MySqlConnection(connectionString)
                 connection.Open()
@@ -1497,7 +1497,7 @@ InitializeTermTypeDropdown()
 
     Private Sub ClearUpdateSemesterForm()
         If grpSemesterInfo IsNot Nothing Then
-         grpSemesterInfo.Visible = False
+            grpSemesterInfo.Visible = False
         End If
     End Sub
 
@@ -1507,37 +1507,37 @@ InitializeTermTypeDropdown()
         ' Validate input
         If cmbTermSemester.SelectedValue Is Nothing Then
             MessageBox.Show("Please select a Semester.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-         Return
+            Return
         End If
 
         If cmbTermType.SelectedValue Is Nothing Then
-          MessageBox.Show("Please select a Term Type.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-      Return
+            MessageBox.Show("Please select a Term Type.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            Return
         End If
 
         ' Get semester date range
         Dim semesterStart As Date
-    Dim semesterEnd As Date
+        Dim semesterEnd As Date
 
-  Try
+        Try
             Using connection As New MySqlConnection(connectionString)
-   connection.Open()
-      Dim semQuery As String = "SELECT start_date, end_date FROM Semesters WHERE semester_id = @semester_id"
- Using semCmd As New MySqlCommand(semQuery, connection)
-          semCmd.Parameters.AddWithValue("@semester_id", Convert.ToInt32(cmbTermSemester.SelectedValue))
-  Using reader As MySqlDataReader = semCmd.ExecuteReader()
-          If reader.Read() Then
-   semesterStart = Convert.ToDateTime(reader("start_date"))
-            semesterEnd = Convert.ToDateTime(reader("end_date"))
-      Else
-     MessageBox.Show("Unable to retrieve semester information.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
-      Return
-              End If
-    End Using
+                connection.Open()
+                Dim semQuery As String = "SELECT start_date, end_date FROM Semesters WHERE semester_id = @semester_id"
+                Using semCmd As New MySqlCommand(semQuery, connection)
+                    semCmd.Parameters.AddWithValue("@semester_id", Convert.ToInt32(cmbTermSemester.SelectedValue))
+                    Using reader As MySqlDataReader = semCmd.ExecuteReader()
+                        If reader.Read() Then
+                            semesterStart = Convert.ToDateTime(reader("start_date"))
+                            semesterEnd = Convert.ToDateTime(reader("end_date"))
+                        Else
+                            MessageBox.Show("Unable to retrieve semester information.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                            Return
+                        End If
+                    End Using
                 End Using
-End Using
-      Catch ex As Exception
-          MessageBox.Show($"Error retrieving semester dates: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            End Using
+        Catch ex As Exception
+            MessageBox.Show($"Error retrieving semester dates: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
             Return
         End Try
 
@@ -1546,63 +1546,63 @@ End Using
             MessageBox.Show($"Term Start Date must be within the Semester period:" & vbCrLf &
        $"{semesterStart:MMMM dd, yyyy} to {semesterEnd:MMMM dd, yyyy}",
    "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-          dtpTermStartDate.Focus()
-   Return
-  End If
+            dtpTermStartDate.Focus()
+            Return
+        End If
 
-      If dtpTermEndDate.Value.Date < semesterStart OrElse dtpTermEndDate.Value.Date > semesterEnd Then
+        If dtpTermEndDate.Value.Date < semesterStart OrElse dtpTermEndDate.Value.Date > semesterEnd Then
             MessageBox.Show($"Term End Date must be within the Semester period:" & vbCrLf &
       $"{semesterStart:MMMM dd, yyyy} to {semesterEnd:MMMM dd, yyyy}",
    "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-   dtpTermEndDate.Focus()
-         Return
+            dtpTermEndDate.Focus()
+            Return
         End If
 
-  ' Validate end date is after start date
-  If dtpTermEndDate.Value.Date <= dtpTermStartDate.Value.Date Then
+        ' Validate end date is after start date
+        If dtpTermEndDate.Value.Date <= dtpTermStartDate.Value.Date Then
             MessageBox.Show("Term End Date must be after Start Date.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-  dtpTermEndDate.Focus()
-      Return
+            dtpTermEndDate.Focus()
+            Return
         End If
 
         Try
             Using connection As New MySqlConnection(connectionString)
-         connection.Open()
+                connection.Open()
 
-           ' Check for duplicate term (same semester + term type)
-  Dim checkQuery As String = "SELECT COUNT(*) FROM Terms WHERE semester_id = @semester_id AND term_type_id = @term_type_id"
-              Using checkCmd As New MySqlCommand(checkQuery, connection)
-           checkCmd.Parameters.AddWithValue("@semester_id", Convert.ToInt32(cmbTermSemester.SelectedValue))
-       checkCmd.Parameters.AddWithValue("@term_type_id", Convert.ToInt32(cmbTermType.SelectedValue))
-          Dim count As Integer = Convert.ToInt32(checkCmd.ExecuteScalar())
+                ' Check for duplicate term (same semester + term type)
+                Dim checkQuery As String = "SELECT COUNT(*) FROM Terms WHERE semester_id = @semester_id AND term_type_id = @term_type_id"
+                Using checkCmd As New MySqlCommand(checkQuery, connection)
+                    checkCmd.Parameters.AddWithValue("@semester_id", Convert.ToInt32(cmbTermSemester.SelectedValue))
+                    checkCmd.Parameters.AddWithValue("@term_type_id", Convert.ToInt32(cmbTermType.SelectedValue))
+                    Dim count As Integer = Convert.ToInt32(checkCmd.ExecuteScalar())
 
-   If count > 0 Then
-   MessageBox.Show("A term with this Semester and Term Type already exists.", "Duplicate Term", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-    Return
-   End If
-    End Using
+                    If count > 0 Then
+                        MessageBox.Show("A term with this Semester and Term Type already exists.", "Duplicate Term", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                        Return
+                    End If
+                End Using
 
-        ' If setting as active, deactivate all other terms
-    If chkTermIsActive.Checked Then
-   Dim deactivateQuery As String = "UPDATE Terms SET is_active = FALSE"
-            Using deactivateCmd As New MySqlCommand(deactivateQuery, connection)
-              deactivateCmd.ExecuteNonQuery()
-     End Using
-       End If
+                ' If setting as active, deactivate all other terms
+                If chkTermIsActive.Checked Then
+                    Dim deactivateQuery As String = "UPDATE Terms SET is_active = FALSE"
+                    Using deactivateCmd As New MySqlCommand(deactivateQuery, connection)
+                        deactivateCmd.ExecuteNonQuery()
+                    End Using
+                End If
 
-   ' Insert new term
-        Dim insertQuery As String = "INSERT INTO Terms (semester_id, term_type_id, start_date, end_date, is_active, created_at) " &
- "VALUES (@semester_id, @term_type_id, @start_date, @end_date, @is_active, NOW())"
+                ' Insert new term
+                Dim insertQuery As String = "INSERT INTO Terms (semester_id, term_type_id, start_date, end_date, is_active, created_at) " &
+         "VALUES (@semester_id, @term_type_id, @start_date, @end_date, @is_active, NOW())"
 
-       Using insertCmd As New MySqlCommand(insertQuery, connection)
-         insertCmd.Parameters.AddWithValue("@semester_id", Convert.ToInt32(cmbTermSemester.SelectedValue))
-           insertCmd.Parameters.AddWithValue("@term_type_id", Convert.ToInt32(cmbTermType.SelectedValue))
-      insertCmd.Parameters.AddWithValue("@start_date", dtpTermStartDate.Value.Date)
-    insertCmd.Parameters.AddWithValue("@end_date", dtpTermEndDate.Value.Date)
-        insertCmd.Parameters.AddWithValue("@is_active", chkTermIsActive.Checked)
+                Using insertCmd As New MySqlCommand(insertQuery, connection)
+                    insertCmd.Parameters.AddWithValue("@semester_id", Convert.ToInt32(cmbTermSemester.SelectedValue))
+                    insertCmd.Parameters.AddWithValue("@term_type_id", Convert.ToInt32(cmbTermType.SelectedValue))
+                    insertCmd.Parameters.AddWithValue("@start_date", dtpTermStartDate.Value.Date)
+                    insertCmd.Parameters.AddWithValue("@end_date", dtpTermEndDate.Value.Date)
+                    insertCmd.Parameters.AddWithValue("@is_active", chkTermIsActive.Checked)
 
-         insertCmd.ExecuteNonQuery()
-             End Using
+                    insertCmd.ExecuteNonQuery()
+                End Using
 
                 MessageBox.Show("Term created successfully!" & vbCrLf & vbCrLf &
         $"Semester: {cmbTermSemester.Text}" & vbCrLf &
@@ -1610,32 +1610,32 @@ End Using
       $"Duration: {dtpTermStartDate.Value:MMM dd, yyyy} - {dtpTermEndDate.Value:MMM dd, yyyy}",
                "Success", MessageBoxButtons.OK, MessageBoxIcon.Information)
 
-           ' Clear form and reload data
-          ClearCreateTermForm()
+                ' Clear form and reload data
+                ClearCreateTermForm()
                 LoadTermsData()
-     LoadTermUpdateDropdown()
+                LoadTermUpdateDropdown()
 
-       End Using
+            End Using
         Catch ex As Exception
-    MessageBox.Show($"Error creating term: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            MessageBox.Show($"Error creating term: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
     End Sub
 
     Private Sub ClearCreateTermForm()
         If cmbTermSemester IsNot Nothing AndAlso cmbTermSemester.Items.Count > 0 Then
-        cmbTermSemester.SelectedIndex = 0
+            cmbTermSemester.SelectedIndex = 0
         End If
         If cmbTermType IsNot Nothing AndAlso cmbTermType.Items.Count > 0 Then
             cmbTermType.SelectedIndex = 0
         End If
         If dtpTermStartDate IsNot Nothing Then
-       dtpTermStartDate.Value = DateTime.Now
+            dtpTermStartDate.Value = DateTime.Now
         End If
-    If dtpTermEndDate IsNot Nothing Then
- dtpTermEndDate.Value = DateTime.Now.AddMonths(2)
+        If dtpTermEndDate IsNot Nothing Then
+            dtpTermEndDate.Value = DateTime.Now.AddMonths(2)
         End If
-      If chkTermIsActive IsNot Nothing Then
-      chkTermIsActive.Checked = False
+        If chkTermIsActive IsNot Nothing Then
+            chkTermIsActive.Checked = False
         End If
     End Sub
 
@@ -1643,113 +1643,113 @@ End Using
 
     Private Sub LoadTermsData()
         Try
- Using connection As New MySqlConnection(connectionString)
-         connection.Open()
+            Using connection As New MySqlConnection(connectionString)
+                connection.Open()
 
-       Dim query As String = "SELECT t.term_id as 'Term ID', " &
-        "CONCAT(ay.academic_year_name, ' - ', st.type_name, ' - ', tt.type_name) as 'Semester', " &
-     "tt.type_name as 'Term Type', " &
-    "DATE_FORMAT(t.start_date, '%Y-%m-%d') as 'Start Date', " &
- "DATE_FORMAT(t.end_date, '%Y-%m-%d') as 'End Date', " &
-   "IF(t.is_active, 'Active', 'Inactive') as 'Status', " &
-  "DATE_FORMAT(t.created_at, '%Y-%m-%d') as 'Created' " &
-       "FROM Terms t " &
-          "INNER JOIN Semesters s ON t.semester_id = s.semester_id " &
-      "INNER JOIN Academic_Years ay ON s.academic_year_id = ay.academic_year_id " &
-            "INNER JOIN Semester_Types st ON s.semester_type_id = st.semester_type_id " &
-         "INNER JOIN Term_Types tt ON t.term_type_id = tt.term_type_id " &
-            "ORDER BY ay.year_start DESC, st.display_order, tt.display_order"
+                Dim query As String = "SELECT t.term_id as 'Term ID', " &
+                 "CONCAT(ay.academic_year_name, ' - ', st.type_name, ' - ', tt.type_name) as 'Semester', " &
+              "tt.type_name as 'Term Type', " &
+             "DATE_FORMAT(t.start_date, '%Y-%m-%d') as 'Start Date', " &
+          "DATE_FORMAT(t.end_date, '%Y-%m-%d') as 'End Date', " &
+            "IF(t.is_active, 'Active', 'Inactive') as 'Status', " &
+           "DATE_FORMAT(t.created_at, '%Y-%m-%d') as 'Created' " &
+                "FROM Terms t " &
+                   "INNER JOIN Semesters s ON t.semester_id = s.semester_id " &
+               "INNER JOIN Academic_Years ay ON s.academic_year_id = ay.academic_year_id " &
+                     "INNER JOIN Semester_Types st ON s.semester_type_id = st.semester_type_id " &
+                  "INNER JOIN Term_Types tt ON t.term_type_id = tt.term_type_id " &
+                     "ORDER BY ay.year_start DESC, st.display_order, tt.display_order"
 
-     Using adapter As New MySqlDataAdapter(query, connection)
-      Dim termsTable As New DataTable()
-     adapter.Fill(termsTable)
-       dgvTerms.DataSource = termsTable
-    dgvTerms.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells)
-  End Using
+                Using adapter As New MySqlDataAdapter(query, connection)
+                    Dim termsTable As New DataTable()
+                    adapter.Fill(termsTable)
+                    dgvTerms.DataSource = termsTable
+                    dgvTerms.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells)
+                End Using
             End Using
- Catch ex As Exception
+        Catch ex As Exception
             MessageBox.Show($"Error loading terms: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
     End Sub
 
     Private Sub btnRefreshTerms_Click(sender As Object, e As EventArgs) Handles btnRefreshTerms.Click
-  LoadTermsData()
-  MessageBox.Show("Terms data refreshed successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information)
+        LoadTermsData()
+        MessageBox.Show("Terms data refreshed successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information)
     End Sub
 
     ' ============= UPDATE/DELETE TERM METHODS =============
 
     Private Sub LoadTermUpdateDropdown()
         Try
-   Using connection As New MySqlConnection(connectionString)
-        connection.Open()
-         Dim query As String = "SELECT t.term_id, " &
-     "CONCAT(ay.academic_year_name, ' - ', st.type_name, ' - ', tt.type_name) as display_name " &
-   "FROM Terms t " &
-        "INNER JOIN Semesters s ON t.semester_id = s.semester_id " &
-     "INNER JOIN Academic_Years ay ON s.academic_year_id = ay.academic_year_id " &
-              "INNER JOIN Semester_Types st ON s.semester_type_id = st.semester_type_id " &
-    "INNER JOIN Term_Types tt ON t.term_type_id = tt.term_type_id " &
-       "ORDER BY ay.year_start DESC, st.display_order, tt.display_order"
+            Using connection As New MySqlConnection(connectionString)
+                connection.Open()
+                Dim query As String = "SELECT t.term_id, " &
+            "CONCAT(ay.academic_year_name, ' - ', st.type_name, ' - ', tt.type_name) as display_name " &
+          "FROM Terms t " &
+               "INNER JOIN Semesters s ON t.semester_id = s.semester_id " &
+            "INNER JOIN Academic_Years ay ON s.academic_year_id = ay.academic_year_id " &
+                     "INNER JOIN Semester_Types st ON s.semester_type_id = st.semester_type_id " &
+           "INNER JOIN Term_Types tt ON t.term_type_id = tt.term_type_id " &
+              "ORDER BY ay.year_start DESC, st.display_order, tt.display_order"
                 Using adapter As New MySqlDataAdapter(query, connection)
-          Dim termTable As New DataTable()
-    adapter.Fill(termTable)
-          If cmbSelectTerm Is Nothing Then
-    Exit Sub
-   End If
-       cmbSelectTerm.DataSource = termTable
-  cmbSelectTerm.DisplayMember = "display_name"
-        cmbSelectTerm.ValueMember = "term_id"
-    End Using
-   End Using
+                    Dim termTable As New DataTable()
+                    adapter.Fill(termTable)
+                    If cmbSelectTerm Is Nothing Then
+                        Exit Sub
+                    End If
+                    cmbSelectTerm.DataSource = termTable
+                    cmbSelectTerm.DisplayMember = "display_name"
+                    cmbSelectTerm.ValueMember = "term_id"
+                End Using
+            End Using
         Catch ex As Exception
-      MessageBox.Show($"Error loading terms for update: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            MessageBox.Show($"Error loading terms for update: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
     End Sub
 
     Private Sub btnLoadTermData_Click(sender As Object, e As EventArgs)
         If cmbSelectTerm Is Nothing OrElse cmbSelectTerm.SelectedValue Is Nothing Then
-        MessageBox.Show("Please select a term to load.", "Selection Required", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-        Return
+            MessageBox.Show("Please select a term to load.", "Selection Required", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            Return
         End If
 
-  Try
+        Try
             Dim selectedTermId As Integer = Convert.ToInt32(cmbSelectTerm.SelectedValue)
- LoadTermDataForUpdate(selectedTermId)
+            LoadTermDataForUpdate(selectedTermId)
         Catch ex As Exception
-    MessageBox.Show($"Error loading term data: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            MessageBox.Show($"Error loading term data: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
- End Sub
+    End Sub
 
     Private Sub LoadTermDataForUpdate(termId As Integer)
         Try
-Using connection As New MySqlConnection(connectionString)
-      connection.Open()
+            Using connection As New MySqlConnection(connectionString)
+                connection.Open()
 
-     Dim query As String = "SELECT semester_id, term_type_id, start_date, end_date, is_active " &
-   "FROM Terms WHERE term_id = @term_id"
+                Dim query As String = "SELECT semester_id, term_type_id, start_date, end_date, is_active " &
+              "FROM Terms WHERE term_id = @term_id"
 
-              Using cmd As New MySqlCommand(query, connection)
-         cmd.Parameters.AddWithValue("@term_id", termId)
+                Using cmd As New MySqlCommand(query, connection)
+                    cmd.Parameters.AddWithValue("@term_id", termId)
 
-           Using reader As MySqlDataReader = cmd.ExecuteReader()
-          If reader.Read() Then
-          cmbUpdateTermSemester.SelectedValue = Convert.ToInt32(reader("semester_id"))
-           cmbUpdateTermType.SelectedValue = Convert.ToInt32(reader("term_type_id"))
-                dtpUpdateTermStartDate.Value = Convert.ToDateTime(reader("start_date"))
-       dtpUpdateTermEndDate.Value = Convert.ToDateTime(reader("end_date"))
-         chkUpdateTermIsActive.Checked = Convert.ToBoolean(reader("is_active"))
+                    Using reader As MySqlDataReader = cmd.ExecuteReader()
+                        If reader.Read() Then
+                            cmbUpdateTermSemester.SelectedValue = Convert.ToInt32(reader("semester_id"))
+                            cmbUpdateTermType.SelectedValue = Convert.ToInt32(reader("term_type_id"))
+                            dtpUpdateTermStartDate.Value = Convert.ToDateTime(reader("start_date"))
+                            dtpUpdateTermEndDate.Value = Convert.ToDateTime(reader("end_date"))
+                            chkUpdateTermIsActive.Checked = Convert.ToBoolean(reader("is_active"))
 
-           grpTermInfo.Visible = True
-         Else
-  MessageBox.Show("Term data not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
-             End If
-               End Using
-      End Using
-     End Using
-     Catch ex As Exception
+                            grpTermInfo.Visible = True
+                        Else
+                            MessageBox.Show("Term data not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                        End If
+                    End Using
+                End Using
+            End Using
+        Catch ex As Exception
             MessageBox.Show($"Error loading term data for update: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
-   End Try
+        End Try
     End Sub
 
     Private Sub btnUpdateTerm_Click(sender As Object, e As EventArgs)
@@ -1758,84 +1758,84 @@ Using connection As New MySqlConnection(connectionString)
             Return
         End If
 
-    ' Get semester date range
+        ' Get semester date range
         Dim semesterStart As Date
         Dim semesterEnd As Date
 
         Try
-         Using connection As New MySqlConnection(connectionString)
-            connection.Open()
-        Dim semQuery As String = "SELECT start_date, end_date FROM Semesters WHERE semester_id = @semester_id"
-     Using semCmd As New MySqlCommand(semQuery, connection)
-      semCmd.Parameters.AddWithValue("@semester_id", Convert.ToInt32(cmbUpdateTermSemester.SelectedValue))
-         Using reader As MySqlDataReader = semCmd.ExecuteReader()
-      If reader.Read() Then
-     semesterStart = Convert.ToDateTime(reader("start_date"))
-           semesterEnd = Convert.ToDateTime(reader("end_date"))
-         Else
-      MessageBox.Show("Unable to retrieve semester information.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
-     Return
-            End If
-             End Using
-           End Using
-       End Using
+            Using connection As New MySqlConnection(connectionString)
+                connection.Open()
+                Dim semQuery As String = "SELECT start_date, end_date FROM Semesters WHERE semester_id = @semester_id"
+                Using semCmd As New MySqlCommand(semQuery, connection)
+                    semCmd.Parameters.AddWithValue("@semester_id", Convert.ToInt32(cmbUpdateTermSemester.SelectedValue))
+                    Using reader As MySqlDataReader = semCmd.ExecuteReader()
+                        If reader.Read() Then
+                            semesterStart = Convert.ToDateTime(reader("start_date"))
+                            semesterEnd = Convert.ToDateTime(reader("end_date"))
+                        Else
+                            MessageBox.Show("Unable to retrieve semester information.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                            Return
+                        End If
+                    End Using
+                End Using
+            End Using
         Catch ex As Exception
-         MessageBox.Show($"Error retrieving semester dates: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            MessageBox.Show($"Error retrieving semester dates: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
             Return
         End Try
 
-  ' Validate term dates fall within semester
-     If dtpUpdateTermStartDate.Value.Date < semesterStart OrElse dtpUpdateTermStartDate.Value.Date > semesterEnd Then
+        ' Validate term dates fall within semester
+        If dtpUpdateTermStartDate.Value.Date < semesterStart OrElse dtpUpdateTermStartDate.Value.Date > semesterEnd Then
             MessageBox.Show($"Term Start Date must be within the Semester period:" & vbCrLf &
      $"{semesterStart:MMMM dd, yyyy} to {semesterEnd:MMMM dd, yyyy}",
      "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
             dtpUpdateTermStartDate.Focus()
- Return
-  End If
+            Return
+        End If
 
         If dtpUpdateTermEndDate.Value.Date < semesterStart OrElse dtpUpdateTermEndDate.Value.Date > semesterEnd Then
             MessageBox.Show($"Term End Date must be within the Semester period:" & vbCrLf &
       $"{semesterStart:MMMM dd, yyyy} to {semesterEnd:MMMM dd, yyyy}",
         "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-  dtpUpdateTermEndDate.Focus()
-    Return
-   End If
+            dtpUpdateTermEndDate.Focus()
+            Return
+        End If
 
-  ' Validate end date is after start date
+        ' Validate end date is after start date
         If dtpUpdateTermEndDate.Value.Date <= dtpUpdateTermStartDate.Value.Date Then
             MessageBox.Show("Term End Date must be after Start Date.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-         dtpUpdateTermEndDate.Focus()
-Return
-  End If
+            dtpUpdateTermEndDate.Focus()
+            Return
+        End If
 
         Dim result As DialogResult = MessageBox.Show("Are you sure you want to update this term?", "Confirm Update", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
 
         If result = DialogResult.Yes Then
             Try
-       Dim selectedTermId As Integer = Convert.ToInt32(cmbSelectTerm.SelectedValue)
+                Dim selectedTermId As Integer = Convert.ToInt32(cmbSelectTerm.SelectedValue)
 
-   Using connection As New MySqlConnection(connectionString)
-  connection.Open()
+                Using connection As New MySqlConnection(connectionString)
+                    connection.Open()
 
-         ' If setting as active, deactivate all other terms
-     If chkUpdateTermIsActive.Checked Then
-           Dim deactivateQuery As String = "UPDATE Terms SET is_active = FALSE WHERE term_id != @term_id"
-        Using deactivateCmd As New MySqlCommand(deactivateQuery, connection)
-       deactivateCmd.Parameters.AddWithValue("@term_id", selectedTermId)
-      deactivateCmd.ExecuteNonQuery()
-              End Using
-          End If
+                    ' If setting as active, deactivate all other terms
+                    If chkUpdateTermIsActive.Checked Then
+                        Dim deactivateQuery As String = "UPDATE Terms SET is_active = FALSE WHERE term_id != @term_id"
+                        Using deactivateCmd As New MySqlCommand(deactivateQuery, connection)
+                            deactivateCmd.Parameters.AddWithValue("@term_id", selectedTermId)
+                            deactivateCmd.ExecuteNonQuery()
+                        End Using
+                    End If
 
-           ' Update term
-         Dim updateQuery As String = "UPDATE Terms SET " &
-         "semester_id = @semester_id, " &
-     "term_type_id = @term_type_id, " &
-     "start_date = @start_date, " &
-    "end_date = @end_date, " &
-      "is_active = @is_active " &
- "WHERE term_id = @term_id"
+                    ' Update term
+                    Dim updateQuery As String = "UPDATE Terms SET " &
+                    "semester_id = @semester_id, " &
+                "term_type_id = @term_type_id, " &
+                "start_date = @start_date, " &
+               "end_date = @end_date, " &
+                 "is_active = @is_active " &
+            "WHERE term_id = @term_id"
 
-             Using updateCmd As New MySqlCommand(updateQuery, connection)
+                    Using updateCmd As New MySqlCommand(updateQuery, connection)
                         updateCmd.Parameters.AddWithValue("@semester_id", Convert.ToInt32(cmbUpdateTermSemester.SelectedValue))
                         updateCmd.Parameters.AddWithValue("@term_type_id", Convert.ToInt32(cmbUpdateTermType.SelectedValue))
                         updateCmd.Parameters.AddWithValue("@start_date", dtpUpdateTermStartDate.Value.Date)
@@ -1844,28 +1844,28 @@ Return
                         updateCmd.Parameters.AddWithValue("@term_id", selectedTermId)
 
                         updateCmd.ExecuteNonQuery()
-    End Using
+                    End Using
 
-   MessageBox.Show("Term updated successfully!" & vbCrLf & vbCrLf &
- $"Semester: {cmbUpdateTermSemester.Text}" & vbCrLf &
-    $"Term: {cmbUpdateTermType.Text}" & vbCrLf &
-$"Duration: {dtpUpdateTermStartDate.Value:MMM dd, yyyy} - {dtpUpdateTermEndDate.Value:MMM dd, yyyy}",
-       "Success", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                    MessageBox.Show("Term updated successfully!" & vbCrLf & vbCrLf &
+                  $"Semester: {cmbUpdateTermSemester.Text}" & vbCrLf &
+                     $"Term: {cmbUpdateTermType.Text}" & vbCrLf &
+                 $"Duration: {dtpUpdateTermStartDate.Value:MMM dd, yyyy} - {dtpUpdateTermEndDate.Value:MMM dd, yyyy}",
+                        "Success", MessageBoxButtons.OK, MessageBoxIcon.Information)
 
-LoadTermsData()
- LoadTermUpdateDropdown()
-      ClearUpdateTermForm()
-   End Using
-        Catch ex As Exception
-       MessageBox.Show($"Error updating term: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
-     End Try
+                    LoadTermsData()
+                    LoadTermUpdateDropdown()
+                    ClearUpdateTermForm()
+                End Using
+            Catch ex As Exception
+                MessageBox.Show($"Error updating term: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            End Try
         End If
     End Sub
 
     Private Sub btnDeleteTerm_Click(sender As Object, e As EventArgs)
-If cmbSelectTerm Is Nothing OrElse cmbSelectTerm.SelectedValue Is Nothing Then
+        If cmbSelectTerm Is Nothing OrElse cmbSelectTerm.SelectedValue Is Nothing Then
             MessageBox.Show("Please select a term to delete.", "Selection Required", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-      Return
+            Return
         End If
 
         Dim selectedTermDisplay As String = cmbSelectTerm.Text
@@ -1873,39 +1873,43 @@ If cmbSelectTerm Is Nothing OrElse cmbSelectTerm.SelectedValue Is Nothing Then
       "This action cannot be undone.", "Confirm Deletion", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
 
         If result = DialogResult.Yes Then
- Try
-          Dim selectedTermId As Integer = Convert.ToInt32(cmbSelectTerm.SelectedValue)
+            Try
+                Dim selectedTermId As Integer = Convert.ToInt32(cmbSelectTerm.SelectedValue)
 
-        Using connection As New MySqlConnection(connectionString)
-               connection.Open()
+                Using connection As New MySqlConnection(connectionString)
+                    connection.Open()
 
-        Dim deleteQuery As String = "DELETE FROM Terms WHERE term_id = @term_id"
+                    Dim deleteQuery As String = "DELETE FROM Terms WHERE term_id = @term_id"
 
-       Using deleteCmd As New MySqlCommand(deleteQuery, connection)
- deleteCmd.Parameters.AddWithValue("@term_id", selectedTermId)
+                    Using deleteCmd As New MySqlCommand(deleteQuery, connection)
+                        deleteCmd.Parameters.AddWithValue("@term_id", selectedTermId)
 
-            Dim rowsAffected As Integer = deleteCmd.ExecuteNonQuery()
+                        Dim rowsAffected As Integer = deleteCmd.ExecuteNonQuery()
 
-         If rowsAffected > 0 Then
-   MessageBox.Show($"Term deleted successfully: {selectedTermDisplay}", "Deletion Successful", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                        If rowsAffected > 0 Then
+                            MessageBox.Show($"Term deleted successfully: {selectedTermDisplay}", "Deletion Successful", MessageBoxButtons.OK, MessageBoxIcon.Information)
 
-       LoadTermsData()
-         LoadTermUpdateDropdown()
-            ClearUpdateTermForm()
-         Else
-               MessageBox.Show("Failed to delete term. Please try again.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
-            End If
-            End Using
-    End Using
-     Catch ex As Exception
-           MessageBox.Show($"Error deleting term: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
-      End Try
-   End If
+                            LoadTermsData()
+                            LoadTermUpdateDropdown()
+                            ClearUpdateTermForm()
+                        Else
+                            MessageBox.Show("Failed to delete term. Please try again.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                        End If
+                    End Using
+                End Using
+            Catch ex As Exception
+                MessageBox.Show($"Error deleting term: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            End Try
+        End If
     End Sub
 
     Private Sub ClearUpdateTermForm()
         If grpTermInfo IsNot Nothing Then
-          grpTermInfo.Visible = False
+            grpTermInfo.Visible = False
         End If
+    End Sub
+
+    Private Sub pnlCreateSemester_Paint(sender As Object, e As PaintEventArgs) Handles pnlCreateSemester.Paint
+
     End Sub
 End Class

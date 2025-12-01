@@ -4,7 +4,7 @@ Imports System.Text
 
 Public Class login
     ' Connection string - update with your MySQL server details
-    Private connectionString As String = "Server=localhost;Database=db_alejado;Uid=root;Password=Sheamar@442211;"
+    Private connectionString As String = "Server=localhost;Database=db_alejado;Uid=root;Password=;"
 
     ' Public properties to store user data after successful login
     Public Shared CurrentUserId As Integer
@@ -230,6 +230,14 @@ Public Class login
     End Sub
 
     Private Sub Label3_Click(sender As Object, e As EventArgs) Handles Label3.Click
+
+    End Sub
+
+    Private Sub Panel1_Paint(sender As Object, e As PaintEventArgs) Handles Panel1.Paint
+
+    End Sub
+
+    Private Sub Label4_Click(sender As Object, e As EventArgs) Handles Label4.Click
 
     End Sub
 End Class

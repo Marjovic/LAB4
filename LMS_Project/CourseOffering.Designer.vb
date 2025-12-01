@@ -51,8 +51,8 @@ Partial Class CourseOffering
         cmbOfferingStatus = New ComboBox()
         btnSubmitOffering = New Button()
         pnlViewOfferings = New Panel()
-        lblViewOfferingsTitle = New Label()
         dgvOfferings = New DataGridView()
+        lblViewOfferingsTitle = New Label()
         btnRefreshOfferings = New Button()
         pnlUpdateDeleteOffering = New Panel()
         lblUpdateDeleteTitle = New Label()
@@ -109,9 +109,9 @@ Partial Class CourseOffering
         btnCreateOffering.Dock = DockStyle.Top
         btnCreateOffering.FlatAppearance.BorderSize = 0
         btnCreateOffering.FlatStyle = FlatStyle.Flat
-        btnCreateOffering.Font = New Font("Times New Roman", 11.0F)
+        btnCreateOffering.Font = New Font("Times New Roman", 11F)
         btnCreateOffering.ForeColor = Color.White
-        btnCreateOffering.Location = New Point(0, 80)
+        btnCreateOffering.Location = New Point(0, 180)
         btnCreateOffering.Name = "btnCreateOffering"
         btnCreateOffering.Size = New Size(220, 50)
         btnCreateOffering.TabIndex = 1
@@ -124,7 +124,7 @@ Partial Class CourseOffering
         btnUpdateDeleteOffering.Dock = DockStyle.Top
         btnUpdateDeleteOffering.FlatAppearance.BorderSize = 0
         btnUpdateDeleteOffering.FlatStyle = FlatStyle.Flat
-        btnUpdateDeleteOffering.Font = New Font("Times New Roman", 11.0F)
+        btnUpdateDeleteOffering.Font = New Font("Times New Roman", 11F)
         btnUpdateDeleteOffering.ForeColor = Color.White
         btnUpdateDeleteOffering.Location = New Point(0, 130)
         btnUpdateDeleteOffering.Name = "btnUpdateDeleteOffering"
@@ -139,9 +139,9 @@ Partial Class CourseOffering
         btnViewOfferings.Dock = DockStyle.Top
         btnViewOfferings.FlatAppearance.BorderSize = 0
         btnViewOfferings.FlatStyle = FlatStyle.Flat
-        btnViewOfferings.Font = New Font("Times New Roman", 11.0F)
+        btnViewOfferings.Font = New Font("Times New Roman", 11F)
         btnViewOfferings.ForeColor = Color.White
-        btnViewOfferings.Location = New Point(0, 180)
+        btnViewOfferings.Location = New Point(0, 80)
         btnViewOfferings.Name = "btnViewOfferings"
         btnViewOfferings.Size = New Size(220, 50)
         btnViewOfferings.TabIndex = 3
@@ -152,7 +152,7 @@ Partial Class CourseOffering
         ' 
         lblOfferingTitle.BackColor = Color.Navy
         lblOfferingTitle.Dock = DockStyle.Top
-        lblOfferingTitle.Font = New Font("Times New Roman", 13.0F, FontStyle.Bold)
+        lblOfferingTitle.Font = New Font("Times New Roman", 13F, FontStyle.Bold)
         lblOfferingTitle.ForeColor = Color.White
         lblOfferingTitle.Location = New Point(0, 0)
         lblOfferingTitle.Name = "lblOfferingTitle"
@@ -167,7 +167,7 @@ Partial Class CourseOffering
         btnClose.Dock = DockStyle.Bottom
         btnClose.FlatAppearance.BorderSize = 0
         btnClose.FlatStyle = FlatStyle.Flat
-        btnClose.Font = New Font("Times New Roman", 12.0F, FontStyle.Bold)
+        btnClose.Font = New Font("Times New Roman", 12F, FontStyle.Bold)
         btnClose.ForeColor = Color.White
         btnClose.Location = New Point(0, 750)
         btnClose.Name = "btnClose"
@@ -223,18 +223,18 @@ Partial Class CourseOffering
         ' lblCreateOfferingTitle
         ' 
         lblCreateOfferingTitle.AutoSize = True
-        lblCreateOfferingTitle.Font = New Font("Times New Roman", 20.0F, FontStyle.Bold)
+        lblCreateOfferingTitle.Font = New Font("Times New Roman", 20F, FontStyle.Bold)
         lblCreateOfferingTitle.ForeColor = Color.FromArgb(CByte(0), CByte(122), CByte(204))
         lblCreateOfferingTitle.Location = New Point(30, 20)
         lblCreateOfferingTitle.Name = "lblCreateOfferingTitle"
-        lblCreateOfferingTitle.Size = New Size(323, 31)
+        lblCreateOfferingTitle.Size = New Size(348, 31)
         lblCreateOfferingTitle.TabIndex = 0
         lblCreateOfferingTitle.Text = "Create New Course Offering"
         ' 
         ' lblCourse
         ' 
         lblCourse.AutoSize = True
-        lblCourse.Font = New Font("Times New Roman", 12.0F, FontStyle.Bold)
+        lblCourse.Font = New Font("Times New Roman", 12F, FontStyle.Bold)
         lblCourse.ForeColor = Color.FromArgb(CByte(192), CByte(0), CByte(0))
         lblCourse.Location = New Point(50, 75)
         lblCourse.Name = "lblCourse"
@@ -245,7 +245,7 @@ Partial Class CourseOffering
         ' cmbCourse
         ' 
         cmbCourse.DropDownStyle = ComboBoxStyle.DropDownList
-        cmbCourse.Font = New Font("Times New Roman", 12.0F)
+        cmbCourse.Font = New Font("Times New Roman", 12F)
         cmbCourse.FormattingEnabled = True
         cmbCourse.Location = New Point(50, 97)
         cmbCourse.Name = "cmbCourse"
@@ -255,18 +255,18 @@ Partial Class CourseOffering
         ' lblSemester
         ' 
         lblSemester.AutoSize = True
-        lblSemester.Font = New Font("Times New Roman", 12.0F, FontStyle.Bold)
+        lblSemester.Font = New Font("Times New Roman", 12F, FontStyle.Bold)
         lblSemester.ForeColor = Color.FromArgb(CByte(192), CByte(0), CByte(0))
         lblSemester.Location = New Point(500, 75)
         lblSemester.Name = "lblSemester"
-        lblSemester.Size = New Size(82, 19)
+        lblSemester.Size = New Size(84, 19)
         lblSemester.TabIndex = 3
         lblSemester.Text = "Semester *"
         ' 
         ' cmbSemester
         ' 
         cmbSemester.DropDownStyle = ComboBoxStyle.DropDownList
-        cmbSemester.Font = New Font("Times New Roman", 12.0F)
+        cmbSemester.Font = New Font("Times New Roman", 12F)
         cmbSemester.FormattingEnabled = True
         cmbSemester.Location = New Point(500, 97)
         cmbSemester.Name = "cmbSemester"
@@ -276,18 +276,18 @@ Partial Class CourseOffering
         ' lblTerm
         ' 
         lblTerm.AutoSize = True
-        lblTerm.Font = New Font("Times New Roman", 12.0F, FontStyle.Bold)
+        lblTerm.Font = New Font("Times New Roman", 12F, FontStyle.Bold)
         lblTerm.ForeColor = Color.FromArgb(CByte(192), CByte(0), CByte(0))
         lblTerm.Location = New Point(50, 145)
         lblTerm.Name = "lblTerm"
-        lblTerm.Size = New Size(54, 19)
+        lblTerm.Size = New Size(56, 19)
         lblTerm.TabIndex = 5
         lblTerm.Text = "Term *"
         ' 
         ' cmbTerm
         ' 
         cmbTerm.DropDownStyle = ComboBoxStyle.DropDownList
-        cmbTerm.Font = New Font("Times New Roman", 12.0F)
+        cmbTerm.Font = New Font("Times New Roman", 12F)
         cmbTerm.FormattingEnabled = True
         cmbTerm.Location = New Point(50, 167)
         cmbTerm.Name = "cmbTerm"
@@ -297,17 +297,17 @@ Partial Class CourseOffering
         ' lblInstructor
         ' 
         lblInstructor.AutoSize = True
-        lblInstructor.Font = New Font("Times New Roman", 12.0F)
+        lblInstructor.Font = New Font("Times New Roman", 12F)
         lblInstructor.Location = New Point(500, 145)
         lblInstructor.Name = "lblInstructor"
-        lblInstructor.Size = New Size(146, 19)
+        lblInstructor.Size = New Size(133, 19)
         lblInstructor.TabIndex = 7
         lblInstructor.Text = "Instructor (Optional)"
         ' 
         ' cmbInstructor
         ' 
         cmbInstructor.DropDownStyle = ComboBoxStyle.DropDownList
-        cmbInstructor.Font = New Font("Times New Roman", 12.0F)
+        cmbInstructor.Font = New Font("Times New Roman", 12F)
         cmbInstructor.FormattingEnabled = True
         cmbInstructor.Location = New Point(500, 167)
         cmbInstructor.Name = "cmbInstructor"
@@ -317,16 +317,16 @@ Partial Class CourseOffering
         ' lblSection
         ' 
         lblSection.AutoSize = True
-        lblSection.Font = New Font("Times New Roman", 12.0F)
+        lblSection.Font = New Font("Times New Roman", 12F)
         lblSection.Location = New Point(50, 215)
         lblSection.Name = "lblSection"
-        lblSection.Size = New Size(58, 19)
+        lblSection.Size = New Size(54, 19)
         lblSection.TabIndex = 9
         lblSection.Text = "Section"
         ' 
         ' txtSection
         ' 
-        txtSection.Font = New Font("Times New Roman", 12.0F)
+        txtSection.Font = New Font("Times New Roman", 12F)
         txtSection.Location = New Point(50, 237)
         txtSection.MaxLength = 10
         txtSection.Name = "txtSection"
@@ -337,16 +337,16 @@ Partial Class CourseOffering
         ' lblMaxStudents
         ' 
         lblMaxStudents.AutoSize = True
-        lblMaxStudents.Font = New Font("Times New Roman", 12.0F)
+        lblMaxStudents.Font = New Font("Times New Roman", 12F)
         lblMaxStudents.Location = New Point(300, 215)
         lblMaxStudents.Name = "lblMaxStudents"
-        lblMaxStudents.Size = New Size(98, 19)
+        lblMaxStudents.Size = New Size(93, 19)
         lblMaxStudents.TabIndex = 11
         lblMaxStudents.Text = "Max Students"
         ' 
         ' txtMaxStudents
         ' 
-        txtMaxStudents.Font = New Font("Times New Roman", 12.0F)
+        txtMaxStudents.Font = New Font("Times New Roman", 12F)
         txtMaxStudents.Location = New Point(300, 237)
         txtMaxStudents.MaxLength = 3
         txtMaxStudents.Name = "txtMaxStudents"
@@ -357,16 +357,16 @@ Partial Class CourseOffering
         ' lblSchedule
         ' 
         lblSchedule.AutoSize = True
-        lblSchedule.Font = New Font("Times New Roman", 12.0F)
+        lblSchedule.Font = New Font("Times New Roman", 12F)
         lblSchedule.Location = New Point(50, 285)
         lblSchedule.Name = "lblSchedule"
-        lblSchedule.Size = New Size(68, 19)
+        lblSchedule.Size = New Size(64, 19)
         lblSchedule.TabIndex = 13
         lblSchedule.Text = "Schedule"
         ' 
         ' txtSchedule
         ' 
-        txtSchedule.Font = New Font("Times New Roman", 12.0F)
+        txtSchedule.Font = New Font("Times New Roman", 12F)
         txtSchedule.Location = New Point(50, 307)
         txtSchedule.MaxLength = 255
         txtSchedule.Multiline = True
@@ -379,7 +379,7 @@ Partial Class CourseOffering
         ' lblRoom
         ' 
         lblRoom.AutoSize = True
-        lblRoom.Font = New Font("Times New Roman", 12.0F)
+        lblRoom.Font = New Font("Times New Roman", 12F)
         lblRoom.Location = New Point(50, 385)
         lblRoom.Name = "lblRoom"
         lblRoom.Size = New Size(46, 19)
@@ -388,7 +388,7 @@ Partial Class CourseOffering
         ' 
         ' txtRoom
         ' 
-        txtRoom.Font = New Font("Times New Roman", 12.0F)
+        txtRoom.Font = New Font("Times New Roman", 12F)
         txtRoom.Location = New Point(50, 407)
         txtRoom.MaxLength = 50
         txtRoom.Name = "txtRoom"
@@ -398,18 +398,18 @@ Partial Class CourseOffering
         ' lblOfferingStatus
         ' 
         lblOfferingStatus.AutoSize = True
-        lblOfferingStatus.Font = New Font("Times New Roman", 12.0F, FontStyle.Bold)
+        lblOfferingStatus.Font = New Font("Times New Roman", 12F, FontStyle.Bold)
         lblOfferingStatus.ForeColor = Color.FromArgb(CByte(192), CByte(0), CByte(0))
         lblOfferingStatus.Location = New Point(400, 385)
         lblOfferingStatus.Name = "lblOfferingStatus"
-        lblOfferingStatus.Size = New Size(60, 19)
+        lblOfferingStatus.Size = New Size(63, 19)
         lblOfferingStatus.TabIndex = 17
         lblOfferingStatus.Text = "Status *"
         ' 
         ' cmbOfferingStatus
         ' 
         cmbOfferingStatus.DropDownStyle = ComboBoxStyle.DropDownList
-        cmbOfferingStatus.Font = New Font("Times New Roman", 12.0F)
+        cmbOfferingStatus.Font = New Font("Times New Roman", 12F)
         cmbOfferingStatus.FormattingEnabled = True
         cmbOfferingStatus.Items.AddRange(New Object() {"Open", "Closed", "Cancelled", "Full"})
         cmbOfferingStatus.Location = New Point(400, 407)
@@ -421,7 +421,7 @@ Partial Class CourseOffering
         ' 
         btnSubmitOffering.BackColor = Color.FromArgb(CByte(0), CByte(122), CByte(204))
         btnSubmitOffering.FlatStyle = FlatStyle.Flat
-        btnSubmitOffering.Font = New Font("Times New Roman", 12.0F, FontStyle.Bold)
+        btnSubmitOffering.Font = New Font("Times New Roman", 12F, FontStyle.Bold)
         btnSubmitOffering.ForeColor = Color.White
         btnSubmitOffering.Location = New Point(50, 465)
         btnSubmitOffering.Name = "btnSubmitOffering"
@@ -444,18 +444,6 @@ Partial Class CourseOffering
         pnlViewOfferings.TabIndex = 1
         pnlViewOfferings.Visible = False
         ' 
-        ' lblViewOfferingsTitle
-        ' 
-        lblViewOfferingsTitle.Anchor = AnchorStyles.Top Or AnchorStyles.Left
-        lblViewOfferingsTitle.AutoSize = True
-        lblViewOfferingsTitle.Font = New Font("Times New Roman", 24.0F, FontStyle.Bold)
-        lblViewOfferingsTitle.ForeColor = Color.FromArgb(CByte(0), CByte(122), CByte(204))
-        lblViewOfferingsTitle.Location = New Point(23, 20)
-        lblViewOfferingsTitle.Name = "lblViewOfferingsTitle"
-        lblViewOfferingsTitle.Size = New Size(313, 36)
-        lblViewOfferingsTitle.TabIndex = 0
-        lblViewOfferingsTitle.Text = "All Course Offerings"
-        ' 
         ' dgvOfferings
         ' 
         dgvOfferings.AllowUserToAddRows = False
@@ -470,12 +458,23 @@ Partial Class CourseOffering
         dgvOfferings.Size = New Size(934, 690)
         dgvOfferings.TabIndex = 1
         ' 
+        ' lblViewOfferingsTitle
+        ' 
+        lblViewOfferingsTitle.AutoSize = True
+        lblViewOfferingsTitle.Font = New Font("Times New Roman", 24F, FontStyle.Bold)
+        lblViewOfferingsTitle.ForeColor = Color.FromArgb(CByte(0), CByte(122), CByte(204))
+        lblViewOfferingsTitle.Location = New Point(23, 20)
+        lblViewOfferingsTitle.Name = "lblViewOfferingsTitle"
+        lblViewOfferingsTitle.Size = New Size(301, 36)
+        lblViewOfferingsTitle.TabIndex = 0
+        lblViewOfferingsTitle.Text = "All Course Offerings"
+        ' 
         ' btnRefreshOfferings
         ' 
         btnRefreshOfferings.Anchor = AnchorStyles.Top Or AnchorStyles.Right
         btnRefreshOfferings.BackColor = Color.FromArgb(CByte(0), CByte(122), CByte(204))
         btnRefreshOfferings.FlatStyle = FlatStyle.Flat
-        btnRefreshOfferings.Font = New Font("Times New Roman", 12.0F, FontStyle.Bold)
+        btnRefreshOfferings.Font = New Font("Times New Roman", 12F, FontStyle.Bold)
         btnRefreshOfferings.ForeColor = Color.White
         btnRefreshOfferings.Location = New Point(797, 20)
         btnRefreshOfferings.Name = "btnRefreshOfferings"
@@ -504,28 +503,28 @@ Partial Class CourseOffering
         ' lblUpdateDeleteTitle
         ' 
         lblUpdateDeleteTitle.AutoSize = True
-        lblUpdateDeleteTitle.Font = New Font("Times New Roman", 24.0F, FontStyle.Bold)
+        lblUpdateDeleteTitle.Font = New Font("Times New Roman", 24F, FontStyle.Bold)
         lblUpdateDeleteTitle.ForeColor = Color.FromArgb(CByte(0), CByte(122), CByte(204))
         lblUpdateDeleteTitle.Location = New Point(20, 20)
         lblUpdateDeleteTitle.Name = "lblUpdateDeleteTitle"
-        lblUpdateDeleteTitle.Size = New Size(490, 36)
+        lblUpdateDeleteTitle.Size = New Size(507, 36)
         lblUpdateDeleteTitle.TabIndex = 0
         lblUpdateDeleteTitle.Text = "Update/Delete Course Offering Info"
         ' 
         ' lblSelectOffering
         ' 
         lblSelectOffering.AutoSize = True
-        lblSelectOffering.Font = New Font("Times New Roman", 14.0F)
+        lblSelectOffering.Font = New Font("Times New Roman", 14F)
         lblSelectOffering.Location = New Point(40, 80)
         lblSelectOffering.Name = "lblSelectOffering"
-        lblSelectOffering.Size = New Size(180, 21)
+        lblSelectOffering.Size = New Size(181, 21)
         lblSelectOffering.TabIndex = 1
         lblSelectOffering.Text = "Select Course Offering"
         ' 
         ' cmbSelectOffering
         ' 
         cmbSelectOffering.DropDownStyle = ComboBoxStyle.DropDownList
-        cmbSelectOffering.Font = New Font("Times New Roman", 12.0F)
+        cmbSelectOffering.Font = New Font("Times New Roman", 12F)
         cmbSelectOffering.FormattingEnabled = True
         cmbSelectOffering.Location = New Point(40, 105)
         cmbSelectOffering.Name = "cmbSelectOffering"
@@ -536,7 +535,7 @@ Partial Class CourseOffering
         ' 
         btnLoadOfferingData.BackColor = Color.FromArgb(CByte(0), CByte(122), CByte(204))
         btnLoadOfferingData.FlatStyle = FlatStyle.Flat
-        btnLoadOfferingData.Font = New Font("Times New Roman", 12.0F, FontStyle.Bold)
+        btnLoadOfferingData.Font = New Font("Times New Roman", 12F, FontStyle.Bold)
         btnLoadOfferingData.ForeColor = Color.White
         btnLoadOfferingData.Location = New Point(660, 105)
         btnLoadOfferingData.Name = "btnLoadOfferingData"
@@ -578,7 +577,7 @@ Partial Class CourseOffering
         ' lblUpdateCourse
         ' 
         lblUpdateCourse.AutoSize = True
-        lblUpdateCourse.Font = New Font("Times New Roman", 12.0F, FontStyle.Bold)
+        lblUpdateCourse.Font = New Font("Times New Roman", 12F, FontStyle.Bold)
         lblUpdateCourse.ForeColor = Color.FromArgb(CByte(192), CByte(0), CByte(0))
         lblUpdateCourse.Location = New Point(30, 40)
         lblUpdateCourse.Name = "lblUpdateCourse"
@@ -589,7 +588,7 @@ Partial Class CourseOffering
         ' cmbUpdateCourse
         ' 
         cmbUpdateCourse.DropDownStyle = ComboBoxStyle.DropDownList
-        cmbUpdateCourse.Font = New Font("Times New Roman", 12.0F)
+        cmbUpdateCourse.Font = New Font("Times New Roman", 12F)
         cmbUpdateCourse.FormattingEnabled = True
         cmbUpdateCourse.Location = New Point(30, 62)
         cmbUpdateCourse.Name = "cmbUpdateCourse"
@@ -599,18 +598,18 @@ Partial Class CourseOffering
         ' lblUpdateSemester
         ' 
         lblUpdateSemester.AutoSize = True
-        lblUpdateSemester.Font = New Font("Times New Roman", 12.0F, FontStyle.Bold)
+        lblUpdateSemester.Font = New Font("Times New Roman", 12F, FontStyle.Bold)
         lblUpdateSemester.ForeColor = Color.FromArgb(CByte(192), CByte(0), CByte(0))
         lblUpdateSemester.Location = New Point(470, 40)
         lblUpdateSemester.Name = "lblUpdateSemester"
-        lblUpdateSemester.Size = New Size(82, 19)
+        lblUpdateSemester.Size = New Size(84, 19)
         lblUpdateSemester.TabIndex = 2
         lblUpdateSemester.Text = "Semester *"
         ' 
         ' cmbUpdateSemester
         ' 
         cmbUpdateSemester.DropDownStyle = ComboBoxStyle.DropDownList
-        cmbUpdateSemester.Font = New Font("Times New Roman", 12.0F)
+        cmbUpdateSemester.Font = New Font("Times New Roman", 12F)
         cmbUpdateSemester.FormattingEnabled = True
         cmbUpdateSemester.Location = New Point(470, 62)
         cmbUpdateSemester.Name = "cmbUpdateSemester"
@@ -620,18 +619,18 @@ Partial Class CourseOffering
         ' lblUpdateTerm
         ' 
         lblUpdateTerm.AutoSize = True
-        lblUpdateTerm.Font = New Font("Times New Roman", 12.0F, FontStyle.Bold)
+        lblUpdateTerm.Font = New Font("Times New Roman", 12F, FontStyle.Bold)
         lblUpdateTerm.ForeColor = Color.FromArgb(CByte(192), CByte(0), CByte(0))
         lblUpdateTerm.Location = New Point(30, 110)
         lblUpdateTerm.Name = "lblUpdateTerm"
-        lblUpdateTerm.Size = New Size(54, 19)
+        lblUpdateTerm.Size = New Size(56, 19)
         lblUpdateTerm.TabIndex = 4
         lblUpdateTerm.Text = "Term *"
         ' 
         ' cmbUpdateTerm
         ' 
         cmbUpdateTerm.DropDownStyle = ComboBoxStyle.DropDownList
-        cmbUpdateTerm.Font = New Font("Times New Roman", 12.0F)
+        cmbUpdateTerm.Font = New Font("Times New Roman", 12F)
         cmbUpdateTerm.FormattingEnabled = True
         cmbUpdateTerm.Location = New Point(30, 132)
         cmbUpdateTerm.Name = "cmbUpdateTerm"
@@ -641,17 +640,17 @@ Partial Class CourseOffering
         ' lblUpdateInstructor
         ' 
         lblUpdateInstructor.AutoSize = True
-        lblUpdateInstructor.Font = New Font("Times New Roman", 12.0F)
+        lblUpdateInstructor.Font = New Font("Times New Roman", 12F)
         lblUpdateInstructor.Location = New Point(470, 110)
         lblUpdateInstructor.Name = "lblUpdateInstructor"
-        lblUpdateInstructor.Size = New Size(146, 19)
+        lblUpdateInstructor.Size = New Size(133, 19)
         lblUpdateInstructor.TabIndex = 6
         lblUpdateInstructor.Text = "Instructor (Optional)"
         ' 
         ' cmbUpdateInstructor
         ' 
         cmbUpdateInstructor.DropDownStyle = ComboBoxStyle.DropDownList
-        cmbUpdateInstructor.Font = New Font("Times New Roman", 12.0F)
+        cmbUpdateInstructor.Font = New Font("Times New Roman", 12F)
         cmbUpdateInstructor.FormattingEnabled = True
         cmbUpdateInstructor.Location = New Point(470, 132)
         cmbUpdateInstructor.Name = "cmbUpdateInstructor"
@@ -661,16 +660,16 @@ Partial Class CourseOffering
         ' lblUpdateSection
         ' 
         lblUpdateSection.AutoSize = True
-        lblUpdateSection.Font = New Font("Times New Roman", 12.0F)
+        lblUpdateSection.Font = New Font("Times New Roman", 12F)
         lblUpdateSection.Location = New Point(30, 180)
         lblUpdateSection.Name = "lblUpdateSection"
-        lblUpdateSection.Size = New Size(58, 19)
+        lblUpdateSection.Size = New Size(54, 19)
         lblUpdateSection.TabIndex = 8
         lblUpdateSection.Text = "Section"
         ' 
         ' txtUpdateSection
         ' 
-        txtUpdateSection.Font = New Font("Times New Roman", 12.0F)
+        txtUpdateSection.Font = New Font("Times New Roman", 12F)
         txtUpdateSection.Location = New Point(30, 202)
         txtUpdateSection.MaxLength = 10
         txtUpdateSection.Name = "txtUpdateSection"
@@ -680,16 +679,16 @@ Partial Class CourseOffering
         ' lblUpdateMaxStudents
         ' 
         lblUpdateMaxStudents.AutoSize = True
-        lblUpdateMaxStudents.Font = New Font("Times New Roman", 12.0F)
+        lblUpdateMaxStudents.Font = New Font("Times New Roman", 12F)
         lblUpdateMaxStudents.Location = New Point(280, 180)
         lblUpdateMaxStudents.Name = "lblUpdateMaxStudents"
-        lblUpdateMaxStudents.Size = New Size(98, 19)
+        lblUpdateMaxStudents.Size = New Size(93, 19)
         lblUpdateMaxStudents.TabIndex = 10
         lblUpdateMaxStudents.Text = "Max Students"
         ' 
         ' txtUpdateMaxStudents
         ' 
-        txtUpdateMaxStudents.Font = New Font("Times New Roman", 12.0F)
+        txtUpdateMaxStudents.Font = New Font("Times New Roman", 12F)
         txtUpdateMaxStudents.Location = New Point(280, 202)
         txtUpdateMaxStudents.MaxLength = 3
         txtUpdateMaxStudents.Name = "txtUpdateMaxStudents"
@@ -699,16 +698,16 @@ Partial Class CourseOffering
         ' lblUpdateSchedule
         ' 
         lblUpdateSchedule.AutoSize = True
-        lblUpdateSchedule.Font = New Font("Times New Roman", 12.0F)
+        lblUpdateSchedule.Font = New Font("Times New Roman", 12F)
         lblUpdateSchedule.Location = New Point(30, 250)
         lblUpdateSchedule.Name = "lblUpdateSchedule"
-        lblUpdateSchedule.Size = New Size(68, 19)
+        lblUpdateSchedule.Size = New Size(64, 19)
         lblUpdateSchedule.TabIndex = 12
         lblUpdateSchedule.Text = "Schedule"
         ' 
         ' txtUpdateSchedule
         ' 
-        txtUpdateSchedule.Font = New Font("Times New Roman", 12.0F)
+        txtUpdateSchedule.Font = New Font("Times New Roman", 12F)
         txtUpdateSchedule.Location = New Point(30, 272)
         txtUpdateSchedule.MaxLength = 255
         txtUpdateSchedule.Multiline = True
@@ -720,7 +719,7 @@ Partial Class CourseOffering
         ' lblUpdateRoom
         ' 
         lblUpdateRoom.AutoSize = True
-        lblUpdateRoom.Font = New Font("Times New Roman", 12.0F)
+        lblUpdateRoom.Font = New Font("Times New Roman", 12F)
         lblUpdateRoom.Location = New Point(30, 350)
         lblUpdateRoom.Name = "lblUpdateRoom"
         lblUpdateRoom.Size = New Size(46, 19)
@@ -729,7 +728,7 @@ Partial Class CourseOffering
         ' 
         ' txtUpdateRoom
         ' 
-        txtUpdateRoom.Font = New Font("Times New Roman", 12.0F)
+        txtUpdateRoom.Font = New Font("Times New Roman", 12F)
         txtUpdateRoom.Location = New Point(30, 372)
         txtUpdateRoom.MaxLength = 50
         txtUpdateRoom.Name = "txtUpdateRoom"
@@ -739,18 +738,18 @@ Partial Class CourseOffering
         ' lblUpdateOfferingStatus
         ' 
         lblUpdateOfferingStatus.AutoSize = True
-        lblUpdateOfferingStatus.Font = New Font("Times New Roman", 12.0F, FontStyle.Bold)
+        lblUpdateOfferingStatus.Font = New Font("Times New Roman", 12F, FontStyle.Bold)
         lblUpdateOfferingStatus.ForeColor = Color.FromArgb(CByte(192), CByte(0), CByte(0))
         lblUpdateOfferingStatus.Location = New Point(380, 350)
         lblUpdateOfferingStatus.Name = "lblUpdateOfferingStatus"
-        lblUpdateOfferingStatus.Size = New Size(60, 19)
+        lblUpdateOfferingStatus.Size = New Size(63, 19)
         lblUpdateOfferingStatus.TabIndex = 16
         lblUpdateOfferingStatus.Text = "Status *"
         ' 
         ' cmbUpdateOfferingStatus
         ' 
         cmbUpdateOfferingStatus.DropDownStyle = ComboBoxStyle.DropDownList
-        cmbUpdateOfferingStatus.Font = New Font("Times New Roman", 12.0F)
+        cmbUpdateOfferingStatus.Font = New Font("Times New Roman", 12F)
         cmbUpdateOfferingStatus.FormattingEnabled = True
         cmbUpdateOfferingStatus.Items.AddRange(New Object() {"Open", "Closed", "Cancelled", "Full"})
         cmbUpdateOfferingStatus.Location = New Point(380, 372)
@@ -762,7 +761,7 @@ Partial Class CourseOffering
         ' 
         btnUpdateOffering.BackColor = Color.FromArgb(CByte(0), CByte(122), CByte(204))
         btnUpdateOffering.FlatStyle = FlatStyle.Flat
-        btnUpdateOffering.Font = New Font("Times New Roman", 12.0F, FontStyle.Bold)
+        btnUpdateOffering.Font = New Font("Times New Roman", 12F, FontStyle.Bold)
         btnUpdateOffering.ForeColor = Color.White
         btnUpdateOffering.Location = New Point(30, 430)
         btnUpdateOffering.Name = "btnUpdateOffering"
@@ -776,7 +775,7 @@ Partial Class CourseOffering
         ' 
         btnDeleteOffering.BackColor = Color.FromArgb(CByte(255), CByte(71), CByte(71))
         btnDeleteOffering.FlatStyle = FlatStyle.Flat
-        btnDeleteOffering.Font = New Font("Times New Roman", 12.0F, FontStyle.Bold)
+        btnDeleteOffering.Font = New Font("Times New Roman", 12F, FontStyle.Bold)
         btnDeleteOffering.ForeColor = Color.White
         btnDeleteOffering.Location = New Point(270, 430)
         btnDeleteOffering.Name = "btnDeleteOffering"
@@ -788,17 +787,15 @@ Partial Class CourseOffering
         ' 
         ' CourseOffering
         ' 
-        AutoScaleDimensions = New SizeF(7.0F, 15.0F)
+        AutoScaleDimensions = New SizeF(7F, 15F)
         AutoScaleMode = AutoScaleMode.Font
         ClientSize = New Size(1200, 800)
         Controls.Add(pnlMainContent)
         Controls.Add(pnlSidebar)
-        FormBorderStyle = FormBorderStyle.Sizable
-        MaximizeBox = True
-        WindowState = FormWindowState.Maximized
         Name = "CourseOffering"
         StartPosition = FormStartPosition.CenterScreen
         Text = "Course Offerings Management - MGOD LMS"
+        WindowState = FormWindowState.Maximized
         pnlSidebar.ResumeLayout(False)
         pnlMainContent.ResumeLayout(False)
         pnlCreateOffering.ResumeLayout(False)

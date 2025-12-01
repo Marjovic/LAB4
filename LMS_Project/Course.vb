@@ -3,7 +3,7 @@ Imports System.Text.RegularExpressions
 
 Public Class Course
     ' Connection string
-    Private connectionString As String = "Server=localhost;Database=db_alejado;Uid=root;Password=Sheamar@442211;"
+    Private connectionString As String = "Server=localhost;Database=db_alejado;Uid=root;Password=;"
 
     ' Store current course ID for prerequisites
     Private currentPrereqCourseId As Integer = 0
@@ -863,5 +863,9 @@ Public Class Course
         chkIsCorequisite.Checked = False
         grpPrerequisiteInfo.Visible = False
         dgvPrerequisites.DataSource = Nothing
+    End Sub
+
+    Private Sub pnlAddCourse_Paint(sender As Object, e As PaintEventArgs) Handles pnlAddCourse.Paint
+
     End Sub
 End Class

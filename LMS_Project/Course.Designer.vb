@@ -49,8 +49,8 @@ Partial Class Course
         cmbYearLevel = New ComboBox()
         btnSubmitCourse = New Button()
         pnlViewCourses = New Panel()
-        lblViewCoursesTitle = New Label()
         dgvCourses = New DataGridView()
+        lblViewCoursesTitle = New Label()
         btnRefreshCourses = New Button()
         pnlUpdateDeleteCourse = New Panel()
         lblUpdateDeleteTitle = New Label()
@@ -121,7 +121,7 @@ Partial Class Course
         btnCourseOffer.Dock = DockStyle.Top
         btnCourseOffer.FlatAppearance.BorderSize = 0
         btnCourseOffer.FlatStyle = FlatStyle.Flat
-        btnCourseOffer.Font = New Font("Times New Roman", 11.0F)
+        btnCourseOffer.Font = New Font("Times New Roman", 11F)
         btnCourseOffer.ForeColor = Color.White
         btnCourseOffer.Location = New Point(0, 280)
         btnCourseOffer.Name = "btnCourseOffer"
@@ -136,7 +136,7 @@ Partial Class Course
         btnManagePrerequisites.Dock = DockStyle.Top
         btnManagePrerequisites.FlatAppearance.BorderSize = 0
         btnManagePrerequisites.FlatStyle = FlatStyle.Flat
-        btnManagePrerequisites.Font = New Font("Times New Roman", 11.0F)
+        btnManagePrerequisites.Font = New Font("Times New Roman", 11F)
         btnManagePrerequisites.ForeColor = Color.White
         btnManagePrerequisites.Location = New Point(0, 230)
         btnManagePrerequisites.Name = "btnManagePrerequisites"
@@ -151,7 +151,7 @@ Partial Class Course
         btnUpdateDeleteCourse.Dock = DockStyle.Top
         btnUpdateDeleteCourse.FlatAppearance.BorderSize = 0
         btnUpdateDeleteCourse.FlatStyle = FlatStyle.Flat
-        btnUpdateDeleteCourse.Font = New Font("Times New Roman", 11.0F)
+        btnUpdateDeleteCourse.Font = New Font("Times New Roman", 11F)
         btnUpdateDeleteCourse.ForeColor = Color.White
         btnUpdateDeleteCourse.Location = New Point(0, 180)
         btnUpdateDeleteCourse.Name = "btnUpdateDeleteCourse"
@@ -166,7 +166,7 @@ Partial Class Course
         btnViewCourses.Dock = DockStyle.Top
         btnViewCourses.FlatAppearance.BorderSize = 0
         btnViewCourses.FlatStyle = FlatStyle.Flat
-        btnViewCourses.Font = New Font("Times New Roman", 11.0F)
+        btnViewCourses.Font = New Font("Times New Roman", 11F)
         btnViewCourses.ForeColor = Color.White
         btnViewCourses.Location = New Point(0, 130)
         btnViewCourses.Name = "btnViewCourses"
@@ -181,7 +181,7 @@ Partial Class Course
         btnAddCourse.Dock = DockStyle.Top
         btnAddCourse.FlatAppearance.BorderSize = 0
         btnAddCourse.FlatStyle = FlatStyle.Flat
-        btnAddCourse.Font = New Font("Times New Roman", 11.0F)
+        btnAddCourse.Font = New Font("Times New Roman", 11F)
         btnAddCourse.ForeColor = Color.White
         btnAddCourse.Location = New Point(0, 80)
         btnAddCourse.Name = "btnAddCourse"
@@ -194,7 +194,7 @@ Partial Class Course
         ' 
         lblCourseTitle.BackColor = Color.Navy
         lblCourseTitle.Dock = DockStyle.Top
-        lblCourseTitle.Font = New Font("Times New Roman", 14.0F, FontStyle.Bold)
+        lblCourseTitle.Font = New Font("Times New Roman", 14F, FontStyle.Bold)
         lblCourseTitle.ForeColor = Color.White
         lblCourseTitle.Location = New Point(0, 0)
         lblCourseTitle.Name = "lblCourseTitle"
@@ -209,7 +209,7 @@ Partial Class Course
         btnClose.Dock = DockStyle.Bottom
         btnClose.FlatAppearance.BorderSize = 0
         btnClose.FlatStyle = FlatStyle.Flat
-        btnClose.Font = New Font("Times New Roman", 12.0F, FontStyle.Bold)
+        btnClose.Font = New Font("Times New Roman", 12F, FontStyle.Bold)
         btnClose.ForeColor = Color.White
         btnClose.Location = New Point(0, 750)
         btnClose.Name = "btnClose"
@@ -262,7 +262,7 @@ Partial Class Course
         ' lblAddCourseTitle
         ' 
         lblAddCourseTitle.AutoSize = True
-        lblAddCourseTitle.Font = New Font("Times New Roman", 20.0F, FontStyle.Bold)
+        lblAddCourseTitle.Font = New Font("Times New Roman", 20F, FontStyle.Bold)
         lblAddCourseTitle.ForeColor = Color.FromArgb(CByte(0), CByte(122), CByte(204))
         lblAddCourseTitle.Location = New Point(30, 20)
         lblAddCourseTitle.Name = "lblAddCourseTitle"
@@ -273,7 +273,7 @@ Partial Class Course
         ' lblCourseCode
         ' 
         lblCourseCode.AutoSize = True
-        lblCourseCode.Font = New Font("Times New Roman", 12.0F)
+        lblCourseCode.Font = New Font("Times New Roman", 12F)
         lblCourseCode.Location = New Point(50, 75)
         lblCourseCode.Name = "lblCourseCode"
         lblCourseCode.Size = New Size(103, 19)
@@ -282,7 +282,7 @@ Partial Class Course
         ' 
         ' txtCourseCode
         ' 
-        txtCourseCode.Font = New Font("Times New Roman", 12.0F)
+        txtCourseCode.Font = New Font("Times New Roman", 12F)
         txtCourseCode.Location = New Point(50, 97)
         txtCourseCode.MaxLength = 50
         txtCourseCode.Name = "txtCourseCode"
@@ -292,7 +292,7 @@ Partial Class Course
         ' lblCourseName
         ' 
         lblCourseName.AutoSize = True
-        lblCourseName.Font = New Font("Times New Roman", 12.0F)
+        lblCourseName.Font = New Font("Times New Roman", 12F)
         lblCourseName.Location = New Point(400, 75)
         lblCourseName.Name = "lblCourseName"
         lblCourseName.Size = New Size(106, 19)
@@ -301,7 +301,7 @@ Partial Class Course
         ' 
         ' txtCourseName
         ' 
-        txtCourseName.Font = New Font("Times New Roman", 12.0F)
+        txtCourseName.Font = New Font("Times New Roman", 12F)
         txtCourseName.Location = New Point(400, 97)
         txtCourseName.MaxLength = 255
         txtCourseName.Name = "txtCourseName"
@@ -311,7 +311,7 @@ Partial Class Course
         ' lblCourseDescription
         ' 
         lblCourseDescription.AutoSize = True
-        lblCourseDescription.Font = New Font("Times New Roman", 12.0F)
+        lblCourseDescription.Font = New Font("Times New Roman", 12F)
         lblCourseDescription.Location = New Point(50, 145)
         lblCourseDescription.Name = "lblCourseDescription"
         lblCourseDescription.Size = New Size(192, 19)
@@ -320,7 +320,7 @@ Partial Class Course
         ' 
         ' txtCourseDescription
         ' 
-        txtCourseDescription.Font = New Font("Times New Roman", 12.0F)
+        txtCourseDescription.Font = New Font("Times New Roman", 12F)
         txtCourseDescription.Location = New Point(50, 167)
         txtCourseDescription.Multiline = True
         txtCourseDescription.Name = "txtCourseDescription"
@@ -331,7 +331,7 @@ Partial Class Course
         ' lblLabUnits
         ' 
         lblLabUnits.AutoSize = True
-        lblLabUnits.Font = New Font("Times New Roman", 12.0F)
+        lblLabUnits.Font = New Font("Times New Roman", 12F)
         lblLabUnits.Location = New Point(50, 270)
         lblLabUnits.Name = "lblLabUnits"
         lblLabUnits.Size = New Size(68, 19)
@@ -340,7 +340,7 @@ Partial Class Course
         ' 
         ' txtLabUnits
         ' 
-        txtLabUnits.Font = New Font("Times New Roman", 12.0F)
+        txtLabUnits.Font = New Font("Times New Roman", 12F)
         txtLabUnits.Location = New Point(50, 292)
         txtLabUnits.MaxLength = 2
         txtLabUnits.Name = "txtLabUnits"
@@ -351,7 +351,7 @@ Partial Class Course
         ' lblLectureUnits
         ' 
         lblLectureUnits.AutoSize = True
-        lblLectureUnits.Font = New Font("Times New Roman", 12.0F)
+        lblLectureUnits.Font = New Font("Times New Roman", 12F)
         lblLectureUnits.Location = New Point(250, 270)
         lblLectureUnits.Name = "lblLectureUnits"
         lblLectureUnits.Size = New Size(102, 19)
@@ -360,7 +360,7 @@ Partial Class Course
         ' 
         ' txtLectureUnits
         ' 
-        txtLectureUnits.Font = New Font("Times New Roman", 12.0F)
+        txtLectureUnits.Font = New Font("Times New Roman", 12F)
         txtLectureUnits.Location = New Point(250, 292)
         txtLectureUnits.MaxLength = 2
         txtLectureUnits.Name = "txtLectureUnits"
@@ -371,7 +371,7 @@ Partial Class Course
         ' lblDepartment
         ' 
         lblDepartment.AutoSize = True
-        lblDepartment.Font = New Font("Times New Roman", 12.0F, FontStyle.Bold)
+        lblDepartment.Font = New Font("Times New Roman", 12F, FontStyle.Bold)
         lblDepartment.ForeColor = Color.FromArgb(CByte(192), CByte(0), CByte(0))
         lblDepartment.Location = New Point(50, 340)
         lblDepartment.Name = "lblDepartment"
@@ -382,7 +382,7 @@ Partial Class Course
         ' cmbDepartment
         ' 
         cmbDepartment.DropDownStyle = ComboBoxStyle.DropDownList
-        cmbDepartment.Font = New Font("Times New Roman", 12.0F)
+        cmbDepartment.Font = New Font("Times New Roman", 12F)
         cmbDepartment.FormattingEnabled = True
         cmbDepartment.Location = New Point(50, 362)
         cmbDepartment.Name = "cmbDepartment"
@@ -392,7 +392,7 @@ Partial Class Course
         ' lblYearLevel
         ' 
         lblYearLevel.AutoSize = True
-        lblYearLevel.Font = New Font("Times New Roman", 12.0F, FontStyle.Bold)
+        lblYearLevel.Font = New Font("Times New Roman", 12F, FontStyle.Bold)
         lblYearLevel.ForeColor = Color.FromArgb(CByte(192), CByte(0), CByte(0))
         lblYearLevel.Location = New Point(500, 340)
         lblYearLevel.Name = "lblYearLevel"
@@ -403,7 +403,7 @@ Partial Class Course
         ' cmbYearLevel
         ' 
         cmbYearLevel.DropDownStyle = ComboBoxStyle.DropDownList
-        cmbYearLevel.Font = New Font("Times New Roman", 12.0F)
+        cmbYearLevel.Font = New Font("Times New Roman", 12F)
         cmbYearLevel.FormattingEnabled = True
         cmbYearLevel.Location = New Point(500, 362)
         cmbYearLevel.Name = "cmbYearLevel"
@@ -414,7 +414,7 @@ Partial Class Course
         ' 
         btnSubmitCourse.BackColor = Color.FromArgb(CByte(0), CByte(122), CByte(204))
         btnSubmitCourse.FlatStyle = FlatStyle.Flat
-        btnSubmitCourse.Font = New Font("Times New Roman", 12.0F, FontStyle.Bold)
+        btnSubmitCourse.Font = New Font("Times New Roman", 12F, FontStyle.Bold)
         btnSubmitCourse.ForeColor = Color.White
         btnSubmitCourse.Location = New Point(50, 420)
         btnSubmitCourse.Name = "btnSubmitCourse"
@@ -437,18 +437,6 @@ Partial Class Course
         pnlViewCourses.TabIndex = 1
         pnlViewCourses.Visible = False
         ' 
-        ' lblViewCoursesTitle
-        ' 
-        lblViewCoursesTitle.Anchor = AnchorStyles.Top Or AnchorStyles.Left
-        lblViewCoursesTitle.AutoSize = True
-        lblViewCoursesTitle.Font = New Font("Times New Roman", 24.0F, FontStyle.Bold)
-        lblViewCoursesTitle.ForeColor = Color.FromArgb(CByte(0), CByte(122), CByte(204))
-        lblViewCoursesTitle.Location = New Point(23, 20)
-        lblViewCoursesTitle.Name = "lblViewCoursesTitle"
-        lblViewCoursesTitle.Size = New Size(173, 36)
-        lblViewCoursesTitle.TabIndex = 0
-        lblViewCoursesTitle.Text = "All Courses"
-        ' 
         ' dgvCourses
         ' 
         dgvCourses.AllowUserToAddRows = False
@@ -462,14 +450,24 @@ Partial Class Course
         dgvCourses.ReadOnly = True
         dgvCourses.Size = New Size(954, 690)
         dgvCourses.TabIndex = 1
-
+        ' 
+        ' lblViewCoursesTitle
+        ' 
+        lblViewCoursesTitle.AutoSize = True
+        lblViewCoursesTitle.Font = New Font("Times New Roman", 24F, FontStyle.Bold)
+        lblViewCoursesTitle.ForeColor = Color.FromArgb(CByte(0), CByte(122), CByte(204))
+        lblViewCoursesTitle.Location = New Point(23, 20)
+        lblViewCoursesTitle.Name = "lblViewCoursesTitle"
+        lblViewCoursesTitle.Size = New Size(173, 36)
+        lblViewCoursesTitle.TabIndex = 0
+        lblViewCoursesTitle.Text = "All Courses"
         ' 
         ' btnRefreshCourses
         ' 
         btnRefreshCourses.Anchor = AnchorStyles.Top Or AnchorStyles.Right
         btnRefreshCourses.BackColor = Color.FromArgb(CByte(0), CByte(122), CByte(204))
         btnRefreshCourses.FlatStyle = FlatStyle.Flat
-        btnRefreshCourses.Font = New Font("Times New Roman", 12.0F, FontStyle.Bold)
+        btnRefreshCourses.Font = New Font("Times New Roman", 12F, FontStyle.Bold)
         btnRefreshCourses.ForeColor = Color.White
         btnRefreshCourses.Location = New Point(750, 20)
         btnRefreshCourses.Name = "btnRefreshCourses"
@@ -498,7 +496,7 @@ Partial Class Course
         ' lblUpdateDeleteTitle
         ' 
         lblUpdateDeleteTitle.AutoSize = True
-        lblUpdateDeleteTitle.Font = New Font("Times New Roman", 24.0F, FontStyle.Bold)
+        lblUpdateDeleteTitle.Font = New Font("Times New Roman", 24F, FontStyle.Bold)
         lblUpdateDeleteTitle.ForeColor = Color.FromArgb(CByte(0), CByte(122), CByte(204))
         lblUpdateDeleteTitle.Location = New Point(20, 20)
         lblUpdateDeleteTitle.Name = "lblUpdateDeleteTitle"
@@ -509,7 +507,7 @@ Partial Class Course
         ' lblSelectCourseUpdate
         ' 
         lblSelectCourseUpdate.AutoSize = True
-        lblSelectCourseUpdate.Font = New Font("Times New Roman", 14.0F)
+        lblSelectCourseUpdate.Font = New Font("Times New Roman", 14F)
         lblSelectCourseUpdate.Location = New Point(40, 80)
         lblSelectCourseUpdate.Name = "lblSelectCourseUpdate"
         lblSelectCourseUpdate.Size = New Size(114, 21)
@@ -519,7 +517,7 @@ Partial Class Course
         ' cmbSelectCourseUpdate
         ' 
         cmbSelectCourseUpdate.DropDownStyle = ComboBoxStyle.DropDownList
-        cmbSelectCourseUpdate.Font = New Font("Times New Roman", 12.0F)
+        cmbSelectCourseUpdate.Font = New Font("Times New Roman", 12F)
         cmbSelectCourseUpdate.FormattingEnabled = True
         cmbSelectCourseUpdate.Location = New Point(40, 105)
         cmbSelectCourseUpdate.Name = "cmbSelectCourseUpdate"
@@ -530,7 +528,7 @@ Partial Class Course
         ' 
         btnLoadCourseData.BackColor = Color.FromArgb(CByte(0), CByte(122), CByte(204))
         btnLoadCourseData.FlatStyle = FlatStyle.Flat
-        btnLoadCourseData.Font = New Font("Times New Roman", 12.0F, FontStyle.Bold)
+        btnLoadCourseData.Font = New Font("Times New Roman", 12F, FontStyle.Bold)
         btnLoadCourseData.ForeColor = Color.White
         btnLoadCourseData.Location = New Point(560, 105)
         btnLoadCourseData.Name = "btnLoadCourseData"
@@ -568,7 +566,7 @@ Partial Class Course
         ' lblUpdateCourseCode
         ' 
         lblUpdateCourseCode.AutoSize = True
-        lblUpdateCourseCode.Font = New Font("Times New Roman", 12.0F)
+        lblUpdateCourseCode.Font = New Font("Times New Roman", 12F)
         lblUpdateCourseCode.Location = New Point(30, 40)
         lblUpdateCourseCode.Name = "lblUpdateCourseCode"
         lblUpdateCourseCode.Size = New Size(103, 19)
@@ -577,7 +575,7 @@ Partial Class Course
         ' 
         ' txtUpdateCourseCode
         ' 
-        txtUpdateCourseCode.Font = New Font("Times New Roman", 12.0F)
+        txtUpdateCourseCode.Font = New Font("Times New Roman", 12F)
         txtUpdateCourseCode.Location = New Point(30, 62)
         txtUpdateCourseCode.MaxLength = 50
         txtUpdateCourseCode.Name = "txtUpdateCourseCode"
@@ -587,7 +585,7 @@ Partial Class Course
         ' lblUpdateCourseName
         ' 
         lblUpdateCourseName.AutoSize = True
-        lblUpdateCourseName.Font = New Font("Times New Roman", 12.0F)
+        lblUpdateCourseName.Font = New Font("Times New Roman", 12F)
         lblUpdateCourseName.Location = New Point(380, 40)
         lblUpdateCourseName.Name = "lblUpdateCourseName"
         lblUpdateCourseName.Size = New Size(106, 19)
@@ -596,7 +594,7 @@ Partial Class Course
         ' 
         ' txtUpdateCourseName
         ' 
-        txtUpdateCourseName.Font = New Font("Times New Roman", 12.0F)
+        txtUpdateCourseName.Font = New Font("Times New Roman", 12F)
         txtUpdateCourseName.Location = New Point(380, 62)
         txtUpdateCourseName.MaxLength = 255
         txtUpdateCourseName.Name = "txtUpdateCourseName"
@@ -606,7 +604,7 @@ Partial Class Course
         ' lblUpdateCourseDescription
         ' 
         lblUpdateCourseDescription.AutoSize = True
-        lblUpdateCourseDescription.Font = New Font("Times New Roman", 12.0F)
+        lblUpdateCourseDescription.Font = New Font("Times New Roman", 12F)
         lblUpdateCourseDescription.Location = New Point(30, 110)
         lblUpdateCourseDescription.Name = "lblUpdateCourseDescription"
         lblUpdateCourseDescription.Size = New Size(192, 19)
@@ -615,7 +613,7 @@ Partial Class Course
         ' 
         ' txtUpdateCourseDescription
         ' 
-        txtUpdateCourseDescription.Font = New Font("Times New Roman", 12.0F)
+        txtUpdateCourseDescription.Font = New Font("Times New Roman", 12F)
         txtUpdateCourseDescription.Location = New Point(30, 132)
         txtUpdateCourseDescription.Multiline = True
         txtUpdateCourseDescription.Name = "txtUpdateCourseDescription"
@@ -626,7 +624,7 @@ Partial Class Course
         ' lblUpdateLabUnits
         ' 
         lblUpdateLabUnits.AutoSize = True
-        lblUpdateLabUnits.Font = New Font("Times New Roman", 12.0F)
+        lblUpdateLabUnits.Font = New Font("Times New Roman", 12F)
         lblUpdateLabUnits.Location = New Point(30, 235)
         lblUpdateLabUnits.Name = "lblUpdateLabUnits"
         lblUpdateLabUnits.Size = New Size(68, 19)
@@ -635,7 +633,7 @@ Partial Class Course
         ' 
         ' txtUpdateLabUnits
         ' 
-        txtUpdateLabUnits.Font = New Font("Times New Roman", 12.0F)
+        txtUpdateLabUnits.Font = New Font("Times New Roman", 12F)
         txtUpdateLabUnits.Location = New Point(30, 257)
         txtUpdateLabUnits.MaxLength = 2
         txtUpdateLabUnits.Name = "txtUpdateLabUnits"
@@ -645,7 +643,7 @@ Partial Class Course
         ' lblUpdateLectureUnits
         ' 
         lblUpdateLectureUnits.AutoSize = True
-        lblUpdateLectureUnits.Font = New Font("Times New Roman", 12.0F)
+        lblUpdateLectureUnits.Font = New Font("Times New Roman", 12F)
         lblUpdateLectureUnits.Location = New Point(230, 235)
         lblUpdateLectureUnits.Name = "lblUpdateLectureUnits"
         lblUpdateLectureUnits.Size = New Size(102, 19)
@@ -654,7 +652,7 @@ Partial Class Course
         ' 
         ' txtUpdateLectureUnits
         ' 
-        txtUpdateLectureUnits.Font = New Font("Times New Roman", 12.0F)
+        txtUpdateLectureUnits.Font = New Font("Times New Roman", 12F)
         txtUpdateLectureUnits.Location = New Point(230, 257)
         txtUpdateLectureUnits.MaxLength = 2
         txtUpdateLectureUnits.Name = "txtUpdateLectureUnits"
@@ -664,7 +662,7 @@ Partial Class Course
         ' lblUpdateDepartment
         ' 
         lblUpdateDepartment.AutoSize = True
-        lblUpdateDepartment.Font = New Font("Times New Roman", 12.0F, FontStyle.Bold)
+        lblUpdateDepartment.Font = New Font("Times New Roman", 12F, FontStyle.Bold)
         lblUpdateDepartment.ForeColor = Color.FromArgb(CByte(192), CByte(0), CByte(0))
         lblUpdateDepartment.Location = New Point(30, 305)
         lblUpdateDepartment.Name = "lblUpdateDepartment"
@@ -675,7 +673,7 @@ Partial Class Course
         ' cmbUpdateDepartment
         ' 
         cmbUpdateDepartment.DropDownStyle = ComboBoxStyle.DropDownList
-        cmbUpdateDepartment.Font = New Font("Times New Roman", 12.0F)
+        cmbUpdateDepartment.Font = New Font("Times New Roman", 12F)
         cmbUpdateDepartment.FormattingEnabled = True
         cmbUpdateDepartment.Location = New Point(30, 327)
         cmbUpdateDepartment.Name = "cmbUpdateDepartment"
@@ -685,7 +683,7 @@ Partial Class Course
         ' lblUpdateYearLevel
         ' 
         lblUpdateYearLevel.AutoSize = True
-        lblUpdateYearLevel.Font = New Font("Times New Roman", 12.0F, FontStyle.Bold)
+        lblUpdateYearLevel.Font = New Font("Times New Roman", 12F, FontStyle.Bold)
         lblUpdateYearLevel.ForeColor = Color.FromArgb(CByte(192), CByte(0), CByte(0))
         lblUpdateYearLevel.Location = New Point(480, 305)
         lblUpdateYearLevel.Name = "lblUpdateYearLevel"
@@ -696,7 +694,7 @@ Partial Class Course
         ' cmbUpdateYearLevel
         ' 
         cmbUpdateYearLevel.DropDownStyle = ComboBoxStyle.DropDownList
-        cmbUpdateYearLevel.Font = New Font("Times New Roman", 12.0F)
+        cmbUpdateYearLevel.Font = New Font("Times New Roman", 12F)
         cmbUpdateYearLevel.FormattingEnabled = True
         cmbUpdateYearLevel.Location = New Point(480, 327)
         cmbUpdateYearLevel.Name = "cmbUpdateYearLevel"
@@ -707,7 +705,7 @@ Partial Class Course
         ' 
         btnUpdateCourse.BackColor = Color.FromArgb(CByte(0), CByte(122), CByte(204))
         btnUpdateCourse.FlatStyle = FlatStyle.Flat
-        btnUpdateCourse.Font = New Font("Times New Roman", 12.0F, FontStyle.Bold)
+        btnUpdateCourse.Font = New Font("Times New Roman", 12F, FontStyle.Bold)
         btnUpdateCourse.ForeColor = Color.White
         btnUpdateCourse.Location = New Point(30, 385)
         btnUpdateCourse.Name = "btnUpdateCourse"
@@ -721,7 +719,7 @@ Partial Class Course
         ' 
         btnDeleteCourse.BackColor = Color.FromArgb(CByte(255), CByte(71), CByte(71))
         btnDeleteCourse.FlatStyle = FlatStyle.Flat
-        btnDeleteCourse.Font = New Font("Times New Roman", 12.0F, FontStyle.Bold)
+        btnDeleteCourse.Font = New Font("Times New Roman", 12F, FontStyle.Bold)
         btnDeleteCourse.ForeColor = Color.White
         btnDeleteCourse.Location = New Point(250, 385)
         btnDeleteCourse.Name = "btnDeleteCourse"
@@ -751,7 +749,7 @@ Partial Class Course
         ' lblPrerequisitesTitle
         ' 
         lblPrerequisitesTitle.AutoSize = True
-        lblPrerequisitesTitle.Font = New Font("Times New Roman", 24.0F, FontStyle.Bold)
+        lblPrerequisitesTitle.Font = New Font("Times New Roman", 24F, FontStyle.Bold)
         lblPrerequisitesTitle.ForeColor = Color.FromArgb(CByte(0), CByte(122), CByte(204))
         lblPrerequisitesTitle.Location = New Point(20, 20)
         lblPrerequisitesTitle.Name = "lblPrerequisitesTitle"
@@ -762,7 +760,7 @@ Partial Class Course
         ' lblSelectCourseForPrereq
         ' 
         lblSelectCourseForPrereq.AutoSize = True
-        lblSelectCourseForPrereq.Font = New Font("Times New Roman", 14.0F)
+        lblSelectCourseForPrereq.Font = New Font("Times New Roman", 14F)
         lblSelectCourseForPrereq.Location = New Point(40, 80)
         lblSelectCourseForPrereq.Name = "lblSelectCourseForPrereq"
         lblSelectCourseForPrereq.Size = New Size(114, 21)
@@ -772,7 +770,7 @@ Partial Class Course
         ' cmbSelectCourseForPrereq
         ' 
         cmbSelectCourseForPrereq.DropDownStyle = ComboBoxStyle.DropDownList
-        cmbSelectCourseForPrereq.Font = New Font("Times New Roman", 12.0F)
+        cmbSelectCourseForPrereq.Font = New Font("Times New Roman", 12F)
         cmbSelectCourseForPrereq.FormattingEnabled = True
         cmbSelectCourseForPrereq.Location = New Point(40, 105)
         cmbSelectCourseForPrereq.Name = "cmbSelectCourseForPrereq"
@@ -783,7 +781,7 @@ Partial Class Course
         ' 
         btnLoadPrerequisites.BackColor = Color.FromArgb(CByte(0), CByte(122), CByte(204))
         btnLoadPrerequisites.FlatStyle = FlatStyle.Flat
-        btnLoadPrerequisites.Font = New Font("Times New Roman", 12.0F, FontStyle.Bold)
+        btnLoadPrerequisites.Font = New Font("Times New Roman", 12F, FontStyle.Bold)
         btnLoadPrerequisites.ForeColor = Color.White
         btnLoadPrerequisites.Location = New Point(660, 105)
         btnLoadPrerequisites.Name = "btnLoadPrerequisites"
@@ -812,7 +810,7 @@ Partial Class Course
         ' lblCurrentPrerequisites
         ' 
         lblCurrentPrerequisites.AutoSize = True
-        lblCurrentPrerequisites.Font = New Font("Times New Roman", 14.0F, FontStyle.Bold)
+        lblCurrentPrerequisites.Font = New Font("Times New Roman", 14F, FontStyle.Bold)
         lblCurrentPrerequisites.Location = New Point(30, 40)
         lblCurrentPrerequisites.Name = "lblCurrentPrerequisites"
         lblCurrentPrerequisites.Size = New Size(192, 22)
@@ -837,7 +835,7 @@ Partial Class Course
         ' lblAddPrerequisite
         ' 
         lblAddPrerequisite.AutoSize = True
-        lblAddPrerequisite.Font = New Font("Times New Roman", 14.0F, FontStyle.Bold)
+        lblAddPrerequisite.Font = New Font("Times New Roman", 14F, FontStyle.Bold)
         lblAddPrerequisite.Location = New Point(30, 350)
         lblAddPrerequisite.Name = "lblAddPrerequisite"
         lblAddPrerequisite.Size = New Size(152, 22)
@@ -847,7 +845,7 @@ Partial Class Course
         ' cmbPrerequisiteCourse
         ' 
         cmbPrerequisiteCourse.DropDownStyle = ComboBoxStyle.DropDownList
-        cmbPrerequisiteCourse.Font = New Font("Times New Roman", 12.0F)
+        cmbPrerequisiteCourse.Font = New Font("Times New Roman", 12F)
         cmbPrerequisiteCourse.FormattingEnabled = True
         cmbPrerequisiteCourse.Location = New Point(30, 380)
         cmbPrerequisiteCourse.Name = "cmbPrerequisiteCourse"
@@ -857,7 +855,7 @@ Partial Class Course
         ' chkIsCorequisite
         ' 
         chkIsCorequisite.AutoSize = True
-        chkIsCorequisite.Font = New Font("Times New Roman", 12.0F)
+        chkIsCorequisite.Font = New Font("Times New Roman", 12F)
         chkIsCorequisite.Location = New Point(30, 425)
         chkIsCorequisite.Name = "chkIsCorequisite"
         chkIsCorequisite.Size = New Size(304, 23)
@@ -869,7 +867,7 @@ Partial Class Course
         ' 
         btnAddPrerequisite.BackColor = Color.FromArgb(CByte(0), CByte(122), CByte(204))
         btnAddPrerequisite.FlatStyle = FlatStyle.Flat
-        btnAddPrerequisite.Font = New Font("Times New Roman", 12.0F, FontStyle.Bold)
+        btnAddPrerequisite.Font = New Font("Times New Roman", 12F, FontStyle.Bold)
         btnAddPrerequisite.ForeColor = Color.White
         btnAddPrerequisite.Location = New Point(30, 470)
         btnAddPrerequisite.Name = "btnAddPrerequisite"
@@ -882,7 +880,7 @@ Partial Class Course
         ' 
         btnRemovePrerequisite.BackColor = Color.FromArgb(CByte(255), CByte(71), CByte(71))
         btnRemovePrerequisite.FlatStyle = FlatStyle.Flat
-        btnRemovePrerequisite.Font = New Font("Times New Roman", 12.0F, FontStyle.Bold)
+        btnRemovePrerequisite.Font = New Font("Times New Roman", 12F, FontStyle.Bold)
         btnRemovePrerequisite.ForeColor = Color.White
         btnRemovePrerequisite.Location = New Point(250, 470)
         btnRemovePrerequisite.Name = "btnRemovePrerequisite"
@@ -893,17 +891,15 @@ Partial Class Course
         ' 
         ' Course
         ' 
-        AutoScaleDimensions = New SizeF(7.0F, 15.0F)
+        AutoScaleDimensions = New SizeF(7F, 15F)
         AutoScaleMode = AutoScaleMode.Font
         ClientSize = New Size(1200, 800)
         Controls.Add(pnlMainContent)
         Controls.Add(pnlSidebar)
-        FormBorderStyle = FormBorderStyle.Sizable
-        MaximizeBox = True
-        WindowState = FormWindowState.Maximized  ' Start maximized
         Name = "Course"
         StartPosition = FormStartPosition.CenterScreen
         Text = "Course Management - MGOD LMS"
+        WindowState = FormWindowState.Maximized
         pnlSidebar.ResumeLayout(False)
         pnlMainContent.ResumeLayout(False)
         pnlAddCourse.ResumeLayout(False)
