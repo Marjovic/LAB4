@@ -5,7 +5,7 @@ Imports System.Text.RegularExpressions
 
 Public Class Admin
     ' Connection string - same as login form
-    Private connectionString As String = "Server=localhost;Database=db_alejado;Uid=root;Password=;"
+    Private connectionString As String = "Server=localhost;Database=db_alejado;Uid=root;Password=Sheamar@442211;"
 
     Private Sub Admin_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         ' Set the form title with current user info
@@ -34,13 +34,14 @@ Public Class Admin
 
         ' Add event handler for role selection change
         AddHandler cmbRole.SelectedIndexChanged, AddressOf cmbRole_SelectedIndexChanged
-
-        ' Initialize gender combo box
-        cmbGender.SelectedIndex = 3 ' Default to "Prefer not to say"
         dtpHireDate.Value = DateTime.Now
 
         ' Add event handler for update role selection change
         AddHandler cmbUpdateRole.SelectedIndexChanged, AddressOf cmbUpdateRole_SelectedIndexChanged
+
+        ' Add event handlers for program selection to auto-select department
+        AddHandler cmbProgram.SelectedIndexChanged, AddressOf cmbProgram_SelectedIndexChanged
+        AddHandler cmbUpdateProgram.SelectedIndexChanged, AddressOf cmbUpdateProgram_SelectedIndexChanged
 
         ' Initialize enrollment status dropdown
         InitializeEnrollmentStatusDropdown()
@@ -48,6 +49,9 @@ Public Class Admin
         ' Initialize year level and department dropdowns
         InitializeYearLevelDropdown()
         InitializeDepartmentDropdown()
+
+        ' Initialize program dropdown
+        InitializeProgramDropdown()
 
         ' Load user data and populate dropdowns
         LoadUserData()
@@ -60,6 +64,76 @@ Public Class Admin
         InitializeHeadInstructorDropdown()
         LoadDepartmentsData()
         LoadDepartmentUpdateDropdown()
+    End Sub
+
+    ' Add this new event handler for program selection (Create Student)
+    Private Sub cmbProgram_SelectedIndexChanged(sender As Object, e As EventArgs)
+        ' Only proceed if a valid program is selected
+        If cmbProgram.SelectedValue Is Nothing OrElse IsDBNull(cmbProgram.SelectedValue) Then
+            Return
+        End If
+
+        Try
+            Dim selectedProgramId As Integer = Convert.ToInt32(cmbProgram.SelectedValue)
+
+            ' Get the department_id for this program
+            Using connection As New MySqlConnection(connectionString)
+                connection.Open()
+                Dim query As String = "SELECT department_id FROM Programs WHERE program_id = @program_id"
+
+                Using cmd As New MySqlCommand(query, connection)
+                    cmd.Parameters.AddWithValue("@program_id", selectedProgramId)
+                    Dim result = cmd.ExecuteScalar()
+
+                    If result IsNot Nothing AndAlso Not IsDBNull(result) Then
+                        Dim departmentId As Integer = Convert.ToInt32(result)
+
+                        ' Set the department combo box to match this department
+                        If cmbDepartment.DataSource IsNot Nothing Then
+                            cmbDepartment.SelectedValue = departmentId
+                        End If
+                    End If
+                End Using
+            End Using
+        Catch ex As Exception
+            ' Silently handle errors during initialization or invalid selections
+            Debug.WriteLine($"Error auto-selecting department for program: {ex.Message}")
+        End Try
+    End Sub
+
+    ' Add this new event handler for program selection (Update Student)
+    Private Sub cmbUpdateProgram_SelectedIndexChanged(sender As Object, e As EventArgs)
+        ' Only proceed if a valid program is selected
+        If cmbUpdateProgram.SelectedValue Is Nothing OrElse IsDBNull(cmbUpdateProgram.SelectedValue) Then
+            Return
+        End If
+
+        Try
+            Dim selectedProgramId As Integer = Convert.ToInt32(cmbUpdateProgram.SelectedValue)
+
+            ' Get the department_id for this program
+            Using connection As New MySqlConnection(connectionString)
+                connection.Open()
+                Dim query As String = "SELECT department_id FROM Programs WHERE program_id = @program_id"
+
+                Using cmd As New MySqlCommand(query, connection)
+                    cmd.Parameters.AddWithValue("@program_id", selectedProgramId)
+                    Dim result = cmd.ExecuteScalar()
+
+                    If result IsNot Nothing AndAlso Not IsDBNull(result) Then
+                        Dim departmentId As Integer = Convert.ToInt32(result)
+
+                        ' Set the department combo box to match this department
+                        If cmbUpdateDepartment.DataSource IsNot Nothing Then
+                            cmbUpdateDepartment.SelectedValue = departmentId
+                        End If
+                    End If
+                End Using
+            End Using
+        Catch ex As Exception
+            ' Silently handle errors during initialization or invalid selections
+            Debug.WriteLine($"Error auto-selecting department for program: {ex.Message}")
+        End Try
     End Sub
 
     ' ============= NAVIGATION METHODS =============
@@ -167,6 +241,7 @@ Public Class Admin
         btnDepartmentManagement.BackColor = Color.FromArgb(45, 45, 48)
         btnCourseManagement.BackColor = Color.FromArgb(45, 45, 48)
         btnEnrollmentManagement.BackColor = Color.FromArgb(45, 45, 48)
+        btnProgramManagement.BackColor = Color.FromArgb(45, 45, 48)
         btnAddUser.BackColor = Color.FromArgb(35, 35, 38)
         btnUserDetails.BackColor = Color.FromArgb(35, 35, 38)
         btnUpdateDeleteUser.BackColor = Color.FromArgb(35, 35, 38)
@@ -417,6 +492,69 @@ Public Class Admin
         End If
     End Sub
 
+    Private Function ValidateProgramDepartmentRelationship(programId As Integer, departmentId As Integer) As Boolean
+        Try
+            Using connection As New MySqlConnection(connectionString)
+                connection.Open()
+
+                ' Get the department_id associated with the selected program
+                Dim query As String = "SELECT department_id FROM Programs WHERE program_id = @program_id"
+
+                Using cmd As New MySqlCommand(query, connection)
+                    cmd.Parameters.AddWithValue("@program_id", programId)
+                    Dim result = cmd.ExecuteScalar()
+
+                    If result IsNot Nothing AndAlso Not IsDBNull(result) Then
+                        Dim programDepartmentId As Integer = Convert.ToInt32(result)
+
+                        ' Check if the selected department matches the program's department
+                        If programDepartmentId <> departmentId Then
+                            ' Get program and department names for error message
+                            Dim programName As String = ""
+                            Dim departmentName As String = ""
+                            Dim expectedDepartmentName As String = ""
+
+                            Dim nameQuery As String = "SELECT " &
+                            "(SELECT program_name FROM Programs WHERE program_id = @program_id) as program_name, " &
+                            "(SELECT department_name FROM Departments WHERE department_id = @selected_dept_id) as selected_dept_name, " &
+                            "(SELECT department_name FROM Departments WHERE department_id = @program_dept_id) as program_dept_name"
+
+                            Using nameCmd As New MySqlCommand(nameQuery, connection)
+                                nameCmd.Parameters.AddWithValue("@program_id", programId)
+                                nameCmd.Parameters.AddWithValue("@selected_dept_id", departmentId)
+                                nameCmd.Parameters.AddWithValue("@program_dept_id", programDepartmentId)
+
+                                Using reader As MySqlDataReader = nameCmd.ExecuteReader()
+                                    If reader.Read() Then
+                                        programName = reader("program_name").ToString()
+                                        departmentName = reader("selected_dept_name").ToString()
+                                        expectedDepartmentName = reader("program_dept_name").ToString()
+                                    End If
+                                End Using
+                            End Using
+
+                            MessageBox.Show($"⚠️ Program-Department Mismatch!" & vbCrLf & vbCrLf &
+                                      $"The selected program '{programName}' belongs to the '{expectedDepartmentName}' department." & vbCrLf & vbCrLf &
+                                      $"You selected: {departmentName}" & vbCrLf &
+                                      $"Expected: {expectedDepartmentName}" & vbCrLf & vbCrLf &
+                                      "Please select the correct department or choose a different program.",
+                                      "Invalid Program-Department Combination",
+                                      MessageBoxButtons.OK,
+                                      MessageBoxIcon.Warning)
+                            Return False
+                        End If
+                    End If
+                End Using
+            End Using
+
+            Return True
+        Catch ex As Exception
+            MessageBox.Show($"Error validating program-department relationship: {ex.Message}",
+                      "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Return False
+        End Try
+    End Function
+
     Private Sub ValidateUsernameInput(sender As Object, e As KeyPressEventArgs)
         Dim textBox As TextBox = DirectCast(sender, TextBox)
 
@@ -596,13 +734,14 @@ Public Class Admin
         Return uniqueNumber
     End Function
 
+    ' Update the btnSubmitUser_Click method to include the validation
     Private Sub btnSubmitUser_Click(sender As Object, e As EventArgs) Handles btnSubmitUser.Click
         ' Validate required input
         If String.IsNullOrWhiteSpace(txtFirstName.Text) OrElse
-   String.IsNullOrWhiteSpace(txtLastName.Text) OrElse
-         String.IsNullOrWhiteSpace(txtUsername.Text) OrElse
-  String.IsNullOrWhiteSpace(txtPassword.Text) OrElse
-   cmbRole.SelectedValue Is Nothing Then
+       String.IsNullOrWhiteSpace(txtLastName.Text) OrElse
+       String.IsNullOrWhiteSpace(txtUsername.Text) OrElse
+       String.IsNullOrWhiteSpace(txtPassword.Text) OrElse
+       cmbRole.SelectedValue Is Nothing Then
             MessageBox.Show("Please fill in all required fields (First Name, Last Name, Username, Password, Role).", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
             Return
         End If
@@ -614,6 +753,32 @@ Public Class Admin
 
         Dim selectedRoleId As Integer = Convert.ToInt32(cmbRole.SelectedValue)
         Dim selectedRoleName As String = cmbRole.Text
+        Dim successMessage As String = ""
+
+        ' ✅ ADD PROGRAM-DEPARTMENT VALIDATION FOR STUDENTS (BEFORE DATABASE INSERT)
+        If selectedRoleId = 3 Then ' Student
+            ' Validate program and department are selected
+            If cmbProgram.SelectedValue Is Nothing Then
+                MessageBox.Show("Please select a Program for the student.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                cmbProgram.Focus()
+                Return
+            End If
+
+            If cmbDepartment.SelectedValue Is Nothing Then
+                MessageBox.Show("Please select a Department for the student.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                cmbDepartment.Focus()
+                Return
+            End If
+
+            ' Validate program-department relationship
+            Dim programId As Integer = Convert.ToInt32(cmbProgram.SelectedValue)
+            Dim departmentId As Integer = Convert.ToInt32(cmbDepartment.SelectedValue)
+
+            If Not ValidateProgramDepartmentRelationship(programId, departmentId) Then
+                cmbDepartment.Focus()
+                Return ' Stop submission if validation fails
+            End If
+        End If
 
         Try
             Using connection As New MySqlConnection(connectionString)
@@ -649,7 +814,7 @@ Public Class Admin
 
                             ' Updated query to match Instructors table schema with optional fields
                             Dim instructorQuery As String = "INSERT INTO Instructors (user_id, first_name, last_name, middle_name, department_id, email, hire_date, employment_status, specialization, created_at, updated_at) " &
-    "VALUES (@user_id, @first_name, @last_name, @middle_name, @department_id, @email, @hire_date, 'Active', @specialization, NOW(), NOW())"
+                                                       "VALUES (@user_id, @first_name, @last_name, @middle_name, @department_id, @email, @hire_date, 'Active', @specialization, NOW(), NOW())"
 
                             Using instructorCommand As New MySqlCommand(instructorQuery, connection, transaction)
                                 instructorCommand.Parameters.AddWithValue("@user_id", userId)
@@ -686,6 +851,8 @@ Public Class Admin
                                 instructorCommand.ExecuteNonQuery()
                             End Using
 
+                            successMessage = $"Instructor '{txtFirstName.Text.Trim()} {txtLastName.Text.Trim()}' has been added successfully with username '{txtUsername.Text.Trim()}'."
+
                         ElseIf selectedRoleId = 3 Then ' Student
                             ' Generate unique student number
                             Dim studentNumber As String = GenerateStudentNumber()
@@ -714,8 +881,15 @@ Public Class Admin
                             End If
                             Dim departmentId As Integer = Convert.ToInt32(cmbDepartment.SelectedValue)
 
+                            ' Get program (required)
+                            If cmbProgram.SelectedValue Is Nothing Then
+                                MessageBox.Show("Please select a Program for the student.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                                transaction.Rollback()
+                                Return
+                            End If
+                            Dim programId As Integer = Convert.ToInt32(cmbProgram.SelectedValue)
+
                             ' Determine enrollment_year based on status
-                            ' Only set enrollment_year if a valid status is selected and it's 'Enrolled' (status_id = 1)
                             Dim enrollmentYear As Object = DBNull.Value
                             If Not IsDBNull(enrollmentStatusId) Then
                                 Dim statusId As Integer = Convert.ToInt32(enrollmentStatusId)
@@ -724,9 +898,9 @@ Public Class Admin
                                 End If
                             End If
 
-                            ' Updated query to match Students table schema - using current_status_id
-                            Dim studentQuery As String = "INSERT INTO Students (user_id, student_number, first_name, last_name, middle_name, date_of_birth, gender, year_level_id, department_id, email, enrollment_year, current_status_id, created_at, updated_at) " &
-      "VALUES (@user_id, @student_number, @first_name, @last_name, @middle_name, @date_of_birth, @gender, @year_level_id, @department_id, @email, @enrollment_year, @current_status_id, NOW(), NOW())"
+                            ' Updated query - REPLACED gender with program_id
+                            Dim studentQuery As String = "INSERT INTO Students (user_id, student_number, first_name, last_name, middle_name, date_of_birth, program_id, year_level_id, department_id, email, enrollment_year, current_status_id, created_at, updated_at) " &
+                                                     "VALUES (@user_id, @student_number, @first_name, @last_name, @middle_name, @date_of_birth, @program_id, @year_level_id, @department_id, @email, @enrollment_year, @current_status_id, NOW(), NOW())"
 
                             Using studentCommand As New MySqlCommand(studentQuery, connection, transaction)
                                 studentCommand.Parameters.AddWithValue("@user_id", userId)
@@ -744,9 +918,7 @@ Public Class Admin
                                 ' Date of Birth (use selected date)
                                 studentCommand.Parameters.AddWithValue("@date_of_birth", dtpDateOfBirth.Value.Date)
 
-                                ' Gender (use selected or default)
-                                Dim selectedGender As String = If(cmbGender.SelectedItem IsNot Nothing, cmbGender.SelectedItem.ToString(), "Prefer not to say")
-                                studentCommand.Parameters.AddWithValue("@gender", selectedGender)
+                                studentCommand.Parameters.AddWithValue("@program_id", programId)
 
                                 ' Year Level and Department (required)
                                 studentCommand.Parameters.AddWithValue("@year_level_id", yearLevelId)
@@ -765,30 +937,13 @@ Public Class Admin
 
                                 studentCommand.ExecuteNonQuery()
                             End Using
+
+                            successMessage = $"Student '{txtFirstName.Text.Trim()} {txtLastName.Text.Trim()}' has been added successfully with Student Number '{studentNumber}'."
+                        Else
+                            successMessage = $"User '{txtUsername.Text.Trim()}' with role '{selectedRoleName}' has been added successfully."
                         End If
 
-                        ' Commit transaction
                         transaction.Commit()
-
-                        Dim successMessage As String = $"{selectedRoleName} added successfully!" & vbCrLf &
-        $"Username: {txtUsername.Text}" & vbCrLf &
-        $"Password: [Securely hashed with SHA2-256]" & vbCrLf &
-   $"User ID: {userId}"
-
-                        ' Add student number to message if it's a student
-                        If selectedRoleId = 3 Then
-                            Using conn As New MySqlConnection(connectionString)
-                                conn.Open()
-                                Dim getStudentNumQuery As String = "SELECT student_number FROM Students WHERE user_id = @user_id"
-                                Using cmd As New MySqlCommand(getStudentNumQuery, conn)
-                                    cmd.Parameters.AddWithValue("@user_id", userId)
-                                    Dim studNum As String = cmd.ExecuteScalar()?.ToString()
-                                    If Not String.IsNullOrEmpty(studNum) Then
-                                        successMessage &= vbCrLf & $"Student Number: {studNum}"
-                                    End If
-                                End Using
-                            End Using
-                        End If
 
                         MessageBox.Show(successMessage, "Success", MessageBoxButtons.OK, MessageBoxIcon.Information)
 
@@ -855,24 +1010,25 @@ Public Class Admin
 
                 ' Load Students with complete information
                 Dim studentsQuery As String = "SELECT s.student_id as 'Student ID', " &
-                "s.student_number as 'Student Number', " &
-          "u.username as 'Username', " &
-              "s.first_name as 'First Name', " &
-   "s.last_name as 'Last Name', " &
-                "IFNULL(s.middle_name, 'N/A') as 'Middle Name', " &
-     "IFNULL(DATE_FORMAT(s.date_of_birth, '%Y-%m-%d'), 'N/A') as 'Date of Birth', " &
-        "IFNULL(s.gender, 'N/A') as 'Gender', " &
-       "IFNULL(yl.year_level_name, 'N/A') as 'Year Level', " &
-     "IFNULL(d.department_name, 'N/A') as 'Department', " &
-             "IFNULL(s.email, 'N/A') as 'Email', " &
-          "IFNULL(s.enrollment_year, 'N/A') as 'Enrollment Year', " &
-     "IFNULL(est.status_name, 'N/A') as 'Enrollment Status' " &
-       "FROM Students s " &
-     "INNER JOIN Users u ON s.user_id = u.user_id " &
-             "LEFT JOIN Year_Levels yl ON s.year_level_id = yl.year_level_id " &
-      "LEFT JOIN Departments d ON s.department_id = d.department_id " &
-  "LEFT JOIN Enrollment_Status_Types est ON s.current_status_id = est.status_id " &
-       "ORDER BY s.student_id"
+                    "s.student_number as 'Student Number', " &
+                    "u.username as 'Username', " &
+                    "s.first_name as 'First Name', " &
+                    "s.last_name as 'Last Name', " &
+                    "IFNULL(s.middle_name, 'N/A') as 'Middle Name', " &
+                    "IFNULL(DATE_FORMAT(s.date_of_birth, '%Y-%m-%d'), 'N/A') as 'Date of Birth', " &
+                    "IFNULL(p.program_name, 'N/A') as 'Program', " &
+                    "IFNULL(yl.year_level_name, 'N/A') as 'Year Level', " &
+                    "IFNULL(d.department_name, 'N/A') as 'Department', " &
+                    "IFNULL(s.email, 'N/A') as 'Email', " &
+                    "IFNULL(s.enrollment_year, 'N/A') as 'Enrollment Year', " &
+                    "IFNULL(est.status_name, 'N/A') as 'Enrollment Status' " &
+                    "FROM Students s " &
+                    "INNER JOIN Users u ON s.user_id = u.user_id " &
+                    "LEFT JOIN Year_Levels yl ON s.year_level_id = yl.year_level_id " &
+                    "LEFT JOIN Departments d ON s.department_id = d.department_id " &
+                    "LEFT JOIN Programs p ON s.program_id = p.program_id " &
+                    "LEFT JOIN Enrollment_Status_Types est ON s.current_status_id = est.status_id " &
+                    "ORDER BY s.student_id"
                 Using studentsAdapter As New MySqlDataAdapter(studentsQuery, connection)
                     Dim studentsTable As New DataTable()
                     studentsAdapter.Fill(studentsTable)
@@ -894,8 +1050,8 @@ Public Class Admin
 
         ' Clear student fields
         dtpDateOfBirth.Value = DateTime.Now.AddYears(-18)
-        If cmbGender.Items.Count > 0 Then
-            cmbGender.SelectedIndex = 3 ' "Prefer not to say"
+        If cmbProgram.Items.Count > 0 Then
+            cmbProgram.SelectedIndex = 0 ' 
         End If
         txtStudentEmail.Clear()
         If cmbEnrollmentStatus.Items.Count > 0 Then
@@ -1152,6 +1308,24 @@ Public Class Admin
                 Catch ex As Exception
                     MessageBox.Show($"Error loading employment statuses: {ex.Message}", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning)
                 End Try
+
+                ' Programs for students
+                Try
+                    Dim programQuery As String = "SELECT program_id, CONCAT(program_code, ' - ', program_name) as display_name FROM Programs WHERE is_active = TRUE ORDER BY program_name"
+                    Using adapter As New MySqlDataAdapter(programQuery, connection)
+                        Dim programTable As New DataTable()
+                        adapter.Fill(programTable)
+
+                        If programTable.Rows.Count > 0 Then
+                            cmbUpdateProgram.DataSource = programTable
+                            cmbUpdateProgram.DisplayMember = "display_name"
+                            cmbUpdateProgram.ValueMember = "program_id"
+                        End If
+                    End Using
+                Catch ex As Exception
+                    MessageBox.Show($"Error loading programs: {ex.Message}", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                End Try
+
             End Using
         Catch ex As Exception
             MessageBox.Show($"Error initializing update dropdowns: {ex.Message}" & vbCrLf & vbCrLf &
@@ -1417,11 +1591,12 @@ Public Class Admin
     End Sub
 
     Private Sub LoadStudentData(userId As Integer, connection As MySqlConnection)
+        ' REPLACED gender with program_id
         Dim query As String = "SELECT s.first_name, s.last_name, s.middle_name, s.email, s.date_of_birth, " &
-"s.gender, s.year_level_id, s.department_id, s.current_status_id, u.username, u.role_id " &
-          "FROM Students s " &
+        "s.program_id, s.year_level_id, s.department_id, s.current_status_id, u.username, u.role_id " &
+        "FROM Students s " &
         "INNER JOIN Users u ON s.user_id = u.user_id " &
-    "WHERE s.user_id = @user_id"
+        "WHERE s.user_id = @user_id"
 
         Using cmd As New MySqlCommand(query, connection)
             cmd.Parameters.AddWithValue("@user_id", userId)
@@ -1437,11 +1612,13 @@ Public Class Admin
                         dtpUpdateDateOfBirth.Value = Convert.ToDateTime(reader("date_of_birth"))
                     End If
 
-                    If Not IsDBNull(reader("gender")) Then
+                    ' REMOVED: Gender dropdown setting
+                    ' ADDED: Program dropdown setting
+                    If Not IsDBNull(reader("program_id")) Then
                         Try
-                            cmbUpdateGender.Text = reader("gender").ToString()
+                            cmbUpdateProgram.SelectedValue = Convert.ToInt32(reader("program_id"))
                         Catch ex As Exception
-                            Debug.WriteLine($"Could not set gender: {ex.Message}")
+                            Debug.WriteLine($"Could not set program: {ex.Message}")
                         End Try
                     End If
 
@@ -1812,10 +1989,9 @@ Public Class Admin
     End Sub
 
     ' Helper method to create a new student record when converting from another role
+    ' Update CreateStudentRecord to include validation
     Private Sub CreateStudentRecord(userId As Integer, connection As MySqlConnection, transaction As MySqlTransaction)
-        ' ============================================================
-        ' CHECK if student record already exists for this user_id
-        ' ============================================================
+        ' Check if student record already exists for this user_id
         Dim checkQuery As String = "SELECT COUNT(*) FROM Students WHERE user_id = @user_id"
         Dim recordExists As Boolean = False
 
@@ -1832,7 +2008,6 @@ Public Class Admin
             UpdateStudentData(userId, connection, transaction)
             Return
         End If
-        ' ============================================================
 
         ' Validate required fields
         If String.IsNullOrWhiteSpace(txtUpdateFirstName.Text) Then
@@ -1846,6 +2021,17 @@ Public Class Admin
         End If
         If cmbUpdateDepartment.SelectedValue Is Nothing Then
             Throw New Exception("Please select a Department for the student.")
+        End If
+        If cmbUpdateProgram.SelectedValue Is Nothing Then
+            Throw New Exception("Please select a Program for the student.")
+        End If
+
+        ' ✅ ADD PROGRAM-DEPARTMENT VALIDATION FOR CREATE
+        Dim programId As Integer = Convert.ToInt32(cmbUpdateProgram.SelectedValue)
+        Dim departmentId As Integer = Convert.ToInt32(cmbUpdateDepartment.SelectedValue)
+
+        If Not ValidateProgramDepartmentRelationship(programId, departmentId) Then
+            Throw New Exception("Program and Department mismatch. Please select the correct department for the chosen program.")
         End If
 
         ' Generate unique student number (only for NEW students)
@@ -1868,8 +2054,8 @@ Public Class Admin
             End If
         End If
 
-        Dim query As String = "INSERT INTO Students (user_id, student_number, first_name, last_name, middle_name, date_of_birth, gender, year_level_id, department_id, email, enrollment_year, current_status_id, created_at, updated_at) " &
-                         "VALUES (@user_id, @student_number, @first_name, @last_name, @middle_name, @date_of_birth, @gender, @year_level_id, @department_id, @email, @enrollment_year, @current_status_id, NOW(), NOW())"
+        Dim query As String = "INSERT INTO Students (user_id, student_number, first_name, last_name, middle_name, date_of_birth, program_id, year_level_id, department_id, email, enrollment_year, current_status_id, created_at, updated_at) " &
+                         "VALUES (@user_id, @student_number, @first_name, @last_name, @middle_name, @date_of_birth, @program_id, @year_level_id, @department_id, @email, @enrollment_year, @current_status_id, NOW(), NOW())"
 
         Using cmd As New MySqlCommand(query, connection, transaction)
             cmd.Parameters.AddWithValue("@user_id", userId)
@@ -1878,9 +2064,9 @@ Public Class Admin
             cmd.Parameters.AddWithValue("@last_name", txtUpdateLastName.Text.Trim())
             cmd.Parameters.AddWithValue("@middle_name", If(String.IsNullOrWhiteSpace(txtUpdateMiddleName.Text), DBNull.Value, txtUpdateMiddleName.Text.Trim()))
             cmd.Parameters.AddWithValue("@date_of_birth", dtpUpdateDateOfBirth.Value.Date)
-            cmd.Parameters.AddWithValue("@gender", If(cmbUpdateGender.SelectedItem Is Nothing, DBNull.Value, cmbUpdateGender.SelectedItem.ToString()))
+            cmd.Parameters.AddWithValue("@program_id", programId)
             cmd.Parameters.AddWithValue("@year_level_id", Convert.ToInt32(cmbUpdateYearLevel.SelectedValue))
-            cmd.Parameters.AddWithValue("@department_id", Convert.ToInt32(cmbUpdateDepartment.SelectedValue))
+            cmd.Parameters.AddWithValue("@department_id", departmentId)
             cmd.Parameters.AddWithValue("@email", If(String.IsNullOrWhiteSpace(txtUpdateStudentEmail.Text), DBNull.Value, txtUpdateStudentEmail.Text.Trim()))
             cmd.Parameters.AddWithValue("@enrollment_year", enrollmentYear)
             cmd.Parameters.AddWithValue("@current_status_id", enrollmentStatusId)
@@ -1916,7 +2102,7 @@ Public Class Admin
         End Using
     End Sub
 
-    ' Helper method to update existing student record
+    ' Update the UpdateStudentData method to include validation
     Private Sub UpdateStudentData(userId As Integer, connection As MySqlConnection, transaction As MySqlTransaction)
         ' Get enrollment status
         Dim enrollmentStatusId As Object = DBNull.Value
@@ -1935,6 +2121,19 @@ Public Class Admin
             Throw New Exception("Please select a Department for the student.")
         End If
 
+        ' Validate program
+        If cmbUpdateProgram.SelectedValue Is Nothing Then
+            Throw New Exception("Please select a Program for the student.")
+        End If
+
+        ' ✅ ADD PROGRAM-DEPARTMENT VALIDATION FOR UPDATE
+        Dim programId As Integer = Convert.ToInt32(cmbUpdateProgram.SelectedValue)
+        Dim departmentId As Integer = Convert.ToInt32(cmbUpdateDepartment.SelectedValue)
+
+        If Not ValidateProgramDepartmentRelationship(programId, departmentId) Then
+            Throw New Exception("Program and Department mismatch. Please select the correct department for the chosen program.")
+        End If
+
         ' Determine enrollment_year based on status
         Dim enrollmentYear As Object = DBNull.Value
         If Not IsDBNull(enrollmentStatusId) Then
@@ -1944,19 +2143,20 @@ Public Class Admin
             End If
         End If
 
+        ' UPDATED QUERY - replaced gender with program_id
         Dim query As String = "UPDATE Students SET " &
-"first_name = @first_name, " &
-       "last_name = @last_name, " &
-   "middle_name = @middle_name, " &
-       "email = @email, " &
-     "date_of_birth = @date_of_birth, " &
- "gender = @gender, " &
-     "year_level_id = @year_level_id, " &
-"department_id = @department_id, " &
-     "current_status_id = @current_status_id, " &
-      "enrollment_year = @enrollment_year, " &
- "updated_at = NOW() " &
-   "WHERE user_id = @user_id"
+                         "first_name = @first_name, " &
+                         "last_name = @last_name, " &
+                         "middle_name = @middle_name, " &
+                         "email = @email, " &
+                         "date_of_birth = @date_of_birth, " &
+                         "program_id = @program_id, " &
+                         "year_level_id = @year_level_id, " &
+                         "department_id = @department_id, " &
+                         "current_status_id = @current_status_id, " &
+                         "enrollment_year = @enrollment_year, " &
+                         "updated_at = NOW() " &
+                         "WHERE user_id = @user_id"
 
         Using cmd As New MySqlCommand(query, connection, transaction)
             cmd.Parameters.AddWithValue("@first_name", txtUpdateFirstName.Text.Trim())
@@ -1964,9 +2164,9 @@ Public Class Admin
             cmd.Parameters.AddWithValue("@middle_name", If(String.IsNullOrWhiteSpace(txtUpdateMiddleName.Text), DBNull.Value, txtUpdateMiddleName.Text.Trim()))
             cmd.Parameters.AddWithValue("@email", If(String.IsNullOrWhiteSpace(txtUpdateStudentEmail.Text), DBNull.Value, txtUpdateStudentEmail.Text.Trim()))
             cmd.Parameters.AddWithValue("@date_of_birth", dtpUpdateDateOfBirth.Value.Date)
-            cmd.Parameters.AddWithValue("@gender", If(cmbUpdateGender.SelectedItem Is Nothing, DBNull.Value, cmbUpdateGender.SelectedItem.ToString()))
+            cmd.Parameters.AddWithValue("@program_id", programId)
             cmd.Parameters.AddWithValue("@year_level_id", Convert.ToInt32(cmbUpdateYearLevel.SelectedValue))
-            cmd.Parameters.AddWithValue("@department_id", Convert.ToInt32(cmbUpdateDepartment.SelectedValue))
+            cmd.Parameters.AddWithValue("@department_id", departmentId)
             cmd.Parameters.AddWithValue("@current_status_id", enrollmentStatusId)
             cmd.Parameters.AddWithValue("@enrollment_year", enrollmentYear)
             cmd.Parameters.AddWithValue("@user_id", userId)
@@ -2073,6 +2273,42 @@ Public Class Admin
             End Using
         Catch ex As Exception
             MessageBox.Show($"Error loading head instructors: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
+    End Sub
+
+    Private Sub InitializeProgramDropdown()
+        Try
+            Using connection As New MySqlConnection(connectionString)
+                connection.Open()
+                Dim query As String = "SELECT program_id, CONCAT(program_code, ' - ', program_name) as display_name FROM Programs WHERE is_active = TRUE ORDER BY program_name"
+                Using adapter As New MySqlDataAdapter(query, connection)
+                    Dim programTable As New DataTable()
+                    adapter.Fill(programTable)
+
+                    ' Bind to student program dropdown
+                    cmbProgram.DataSource = programTable
+                    cmbProgram.DisplayMember = "display_name"
+                    cmbProgram.ValueMember = "program_id"
+
+                    ' Set to first item if available
+                    If cmbProgram.Items.Count > 0 Then
+                        cmbProgram.SelectedIndex = 0
+                    End If
+
+                    ' Bind to update student program dropdown (create a copy of the DataTable)
+                    Dim updateProgramTable As DataTable = programTable.Copy()
+                    cmbUpdateProgram.DataSource = updateProgramTable
+                    cmbUpdateProgram.DisplayMember = "display_name"
+                    cmbUpdateProgram.ValueMember = "program_id"
+
+                    ' Set to first item if available
+                    If cmbUpdateProgram.Items.Count > 0 Then
+                        cmbUpdateProgram.SelectedIndex = 0
+                    End If
+                End Using
+            End Using
+        Catch ex As Exception
+            MessageBox.Show($"Error loading programs: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
     End Sub
 
@@ -2656,6 +2892,15 @@ Public Class Admin
         ShowPanel(pnlDepartmentManagement)
         SetActiveButton(btnDepartmentDetails, True)
         SetActiveButton(btnDepartmentManagement)
+    End Sub
+
+    Private Sub btnProgramManagement_Click(sender As Object, e As EventArgs) Handles btnProgramManagement.Click
+        ' Open Program Management form as a dialog
+        Dim programForm As New ProgramManagement()
+        programForm.ShowDialog()
+
+        ' Set active button
+        SetActiveButton(btnProgramManagement)
     End Sub
 
 

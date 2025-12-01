@@ -1,7 +1,7 @@
 ﻿Imports MySql.Data.MySqlClient
 Public Class CourseOffering
     ' Connection string - same as other forms
-    Private connectionString As String = "Server=localhost;Database=db_alejado;Uid=root;Password=;"
+    Private connectionString As String = "Server=localhost;Database=db_alejado;Uid=root;Password=Sheamar@442211;"
 
     ' Store current offering ID for update/delete
     Private currentOfferingId As Integer = 0

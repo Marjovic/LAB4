@@ -3,7 +3,7 @@ Imports System.Text.RegularExpressions
 
 Public Class Enrollment
     ' Connection string
-    Private connectionString As String = "Server=localhost;Database=db_alejado;Uid=root;Password=;"
+    Private connectionString As String = "Server=localhost;Database=db_alejado;Uid=root;Password=Sheamar@442211;"
 
     Private Sub Enrollment_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         ' Set form title

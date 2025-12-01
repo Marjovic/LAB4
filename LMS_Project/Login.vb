@@ -4,7 +4,7 @@ Imports System.Text
 
 Public Class login
     ' Connection string - update with your MySQL server details
-    Private connectionString As String = "Server=localhost;Database=db_alejado;Uid=root;Password=;"
+    Private connectionString As String = "Server=localhost;Database=db_alejado;Uid=root;Password=Sheamar@442211;"
 
     ' Public properties to store user data after successful login
     Public Shared CurrentUserId As Integer

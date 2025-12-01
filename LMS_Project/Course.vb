@@ -3,7 +3,7 @@ Imports System.Text.RegularExpressions
 
 Public Class Course
     ' Connection string
-    Private connectionString As String = "Server=localhost;Database=db_alejado;Uid=root;Password=;"
+    Private connectionString As String = "Server=localhost;Database=db_alejado;Uid=root;Password=Sheamar@442211;"
 
     ' Store current course ID for prerequisites
     Private currentPrereqCourseId As Integer = 0
