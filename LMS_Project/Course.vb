@@ -14,7 +14,6 @@ Public Class Course
 
         ' Initialize dropdowns
         InitializeDepartmentDropdown()
-        InitializeYearLevelDropdown()
 
         ' Add input validation event handlers
         AddHandler txtCourseCode.KeyPress, AddressOf ValidateCourseCodeInput
@@ -142,39 +141,6 @@ Public Class Course
         End Try
     End Sub
 
-    Private Sub InitializeYearLevelDropdown()
-        Try
-            Using connection As New MySqlConnection(connectionString)
-                connection.Open()
-                Dim query As String = "SELECT year_level_id, year_level_name FROM Year_Levels ORDER BY year_number"
-                Using adapter As New MySqlDataAdapter(query, connection)
-                    Dim yearLevelTable As New DataTable()
-                    adapter.Fill(yearLevelTable)
-
-                    ' Bind to Add Course dropdown
-                    cmbYearLevel.DataSource = yearLevelTable.Copy()
-                    cmbYearLevel.DisplayMember = "year_level_name"
-                    cmbYearLevel.ValueMember = "year_level_id"
-
-                    ' Bind to Update Course dropdown
-                    cmbUpdateYearLevel.DataSource = yearLevelTable.Copy()
-                    cmbUpdateYearLevel.DisplayMember = "year_level_name"
-                    cmbUpdateYearLevel.ValueMember = "year_level_id"
-
-                    ' Set to first item if available
-                    If cmbYearLevel.Items.Count > 0 Then
-                        cmbYearLevel.SelectedIndex = 0
-                    End If
-                    If cmbUpdateYearLevel.Items.Count > 0 Then
-                        cmbUpdateYearLevel.SelectedIndex = 0
-                    End If
-                End Using
-            End Using
-        Catch ex As Exception
-            MessageBox.Show($"Error loading year levels: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
-        End Try
-    End Sub
-
     ' ============= INPUT VALIDATION METHODS =============
 
     Private Sub ValidateCourseCodeInput(sender As Object, e As KeyPressEventArgs)
@@ -256,13 +222,6 @@ Public Class Course
             Return False
         End If
 
-        ' Validate year level selection
-        If cmbYearLevel.SelectedValue Is Nothing Then
-            MessageBox.Show("Please select a year level.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-            cmbYearLevel.Focus()
-            Return False
-        End If
-
         Return True
     End Function
 
@@ -292,8 +251,8 @@ Public Class Course
                 End Using
 
                 ' Insert new course
-                Dim insertQuery As String = "INSERT INTO Courses (course_code, course_name, course_description, lab_units, lecture_units, department_id, year_level_id, is_active, created_at, updated_at) " &
-                                           "VALUES (@course_code, @course_name, @course_description, @lab_units, @lecture_units, @department_id, @year_level_id, TRUE, NOW(), NOW())"
+                Dim insertQuery As String = "INSERT INTO Courses (course_code, course_name, course_description, lab_units, lecture_units, department_id, is_active, created_at, updated_at) " &
+                                           "VALUES (@course_code, @course_name, @course_description, @lab_units, @lecture_units, @department_id, TRUE, NOW(), NOW())"
 
                 Using insertCmd As New MySqlCommand(insertQuery, connection)
                     insertCmd.Parameters.AddWithValue("@course_code", txtCourseCode.Text.Trim().ToUpper())
@@ -302,7 +261,6 @@ Public Class Course
                     insertCmd.Parameters.AddWithValue("@lab_units", Convert.ToInt32(txtLabUnits.Text.Trim()))
                     insertCmd.Parameters.AddWithValue("@lecture_units", Convert.ToInt32(txtLectureUnits.Text.Trim()))
                     insertCmd.Parameters.AddWithValue("@department_id", Convert.ToInt32(cmbDepartment.SelectedValue))
-                    insertCmd.Parameters.AddWithValue("@year_level_id", Convert.ToInt32(cmbYearLevel.SelectedValue))
 
                     insertCmd.ExecuteNonQuery()
                 End Using
@@ -344,10 +302,6 @@ Public Class Course
         If cmbDepartment.Items.Count > 0 Then
             cmbDepartment.SelectedIndex = 0
         End If
-
-        If cmbYearLevel.Items.Count > 0 Then
-            cmbYearLevel.SelectedIndex = 0
-        End If
     End Sub
 
     ' ============= VIEW COURSES METHODS =============
@@ -365,12 +319,10 @@ Public Class Course
                                     "c.lecture_units as 'Lecture Units', " &
                                     "c.credits as 'Total Credits', " &
                                     "IFNULL(d.department_name, 'N/A') as 'Department', " &
-                                    "IFNULL(yl.year_level_name, 'N/A') as 'Year Level', " &
                                     "IF(c.is_active, 'Active', 'Inactive') as 'Status', " &
                                     "DATE_FORMAT(c.created_at, '%Y-%m-%d') as 'Created' " &
                                     "FROM Courses c " &
                                     "LEFT JOIN Departments d ON c.department_id = d.department_id " &
-                                    "LEFT JOIN Year_Levels yl ON c.year_level_id = yl.year_level_id " &
                                     "WHERE c.is_active = TRUE " &
                                     "ORDER BY c.course_code"
 
@@ -432,7 +384,7 @@ Public Class Course
             Using connection As New MySqlConnection(connectionString)
                 connection.Open()
 
-                Dim query As String = "SELECT course_code, course_name, course_description, lab_units, lecture_units, department_id, year_level_id " &
+                Dim query As String = "SELECT course_code, course_name, course_description, lab_units, lecture_units, department_id " &
                                     "FROM Courses WHERE course_id = @course_id"
 
                 Using cmd As New MySqlCommand(query, connection)
@@ -448,10 +400,6 @@ Public Class Course
 
                             If Not IsDBNull(reader("department_id")) Then
                                 cmbUpdateDepartment.SelectedValue = Convert.ToInt32(reader("department_id"))
-                            End If
-
-                            If Not IsDBNull(reader("year_level_id")) Then
-                                cmbUpdateYearLevel.SelectedValue = Convert.ToInt32(reader("year_level_id"))
                             End If
 
                             ' Show group box and buttons
@@ -535,7 +483,6 @@ Public Class Course
                                                "lab_units = @lab_units, " &
                                                "lecture_units = @lecture_units, " &
                                                "department_id = @department_id, " &
-                                               "year_level_id = @year_level_id, " &
                                                "updated_at = NOW() " &
                                                "WHERE course_id = @course_id"
 
@@ -546,7 +493,6 @@ Public Class Course
                         updateCmd.Parameters.AddWithValue("@lab_units", Convert.ToInt32(txtUpdateLabUnits.Text.Trim()))
                         updateCmd.Parameters.AddWithValue("@lecture_units", Convert.ToInt32(txtUpdateLectureUnits.Text.Trim()))
                         updateCmd.Parameters.AddWithValue("@department_id", Convert.ToInt32(cmbUpdateDepartment.SelectedValue))
-                        updateCmd.Parameters.AddWithValue("@year_level_id", Convert.ToInt32(cmbUpdateYearLevel.SelectedValue))
                         updateCmd.Parameters.AddWithValue("@course_id", selectedCourseId)
 
                         updateCmd.ExecuteNonQuery()

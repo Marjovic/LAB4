@@ -31,6 +31,7 @@ Partial Class Admin
         btnDepartmentDetails = New Button()
         btnUpdateDeleteDepartment = New Button()
         btnAddDepartment = New Button()
+        btnGradingManagement = New Button()
         btnDepartmentManagement = New Button()
         pnlUserManagementSubmenu = New Panel()
         btnResetPassword = New Button()
@@ -207,6 +208,7 @@ Partial Class Admin
         ' pnlSidebar
         ' 
         pnlSidebar.BackColor = Color.Navy
+        pnlSidebar.Controls.Add(btnGradingManagement)
         pnlSidebar.Controls.Add(btnEnrollmentManagement)
         pnlSidebar.Controls.Add(btnCourseManagement)
         pnlSidebar.Controls.Add(btnProgramManagement)
@@ -222,6 +224,23 @@ Partial Class Admin
         pnlSidebar.Name = "pnlSidebar"
         pnlSidebar.Size = New Size(227, 800)
         pnlSidebar.TabIndex = 0
+        ' 
+        ' btnGradingManagement
+        ' 
+        btnGradingManagement.BackColor = SystemColors.MenuHighlight
+        btnGradingManagement.Dock = DockStyle.Top
+        btnGradingManagement.FlatAppearance.BorderSize = 0
+        btnGradingManagement.FlatStyle = FlatStyle.Flat
+        btnGradingManagement.Font = New Font("Times New Roman", 12.0F)
+        btnGradingManagement.ForeColor = Color.White
+        btnGradingManagement.Location = New Point(0, 696)
+        btnGradingManagement.Name = "btnGradingManagement"
+        btnGradingManagement.Padding = New Padding(10, 0, 0, 0)
+        btnGradingManagement.Size = New Size(227, 50)
+        btnGradingManagement.TabIndex = 9
+        btnGradingManagement.Text = "📊Grading Management"
+        btnGradingManagement.TextAlign = ContentAlignment.MiddleLeft
+        btnGradingManagement.UseVisualStyleBackColor = False
         ' 
         ' btnEnrollmentManagement
         ' 
@@ -2252,6 +2271,7 @@ Partial Class Admin
     Friend WithEvents dgvInstructors As DataGridView
     Friend WithEvents lblStudents As Label
     Friend WithEvents dgvStudents As DataGridView
+    Friend WithEvents btnGradingManagement As Button
 
     ' Reset Password Panel
     Friend WithEvents pnlResetPassword As Panel

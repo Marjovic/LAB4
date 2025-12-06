@@ -238,17 +238,18 @@ Public Class Admin
         ' Reset all button colors to default
         btnDashboard.BackColor = Color.FromArgb(45, 45, 48)
         btnUserManagement.BackColor = Color.FromArgb(45, 45, 48)
-        btnDepartmentManagement.BackColor = Color.FromArgb(45, 45, 48)
-        btnCourseManagement.BackColor = Color.FromArgb(45, 45, 48)
-        btnEnrollmentManagement.BackColor = Color.FromArgb(45, 45, 48)
-        btnProgramManagement.BackColor = Color.FromArgb(45, 45, 48)
         btnAddUser.BackColor = Color.FromArgb(35, 35, 38)
-        btnUserDetails.BackColor = Color.FromArgb(35, 35, 38)
         btnUpdateDeleteUser.BackColor = Color.FromArgb(35, 35, 38)
+        btnUserDetails.BackColor = Color.FromArgb(35, 35, 38)
         btnResetPassword.BackColor = Color.FromArgb(35, 35, 38)
+        btnDepartmentManagement.BackColor = Color.FromArgb(45, 45, 48)
         btnAddDepartment.BackColor = Color.FromArgb(35, 35, 38)
         btnUpdateDeleteDepartment.BackColor = Color.FromArgb(35, 35, 38)
         btnDepartmentDetails.BackColor = Color.FromArgb(35, 35, 38)
+        btnProgramManagement.BackColor = Color.FromArgb(45, 45, 48)
+        btnCourseManagement.BackColor = Color.FromArgb(45, 45, 48)
+        btnEnrollmentManagement.BackColor = Color.FromArgb(45, 45, 48)
+        btnGradingManagement.BackColor = Color.FromArgb(45, 45, 48)
     End Sub
 
     Private Sub SetActiveButton(btn As Button, Optional isSubmenu As Boolean = False)
@@ -1591,7 +1592,6 @@ Public Class Admin
     End Sub
 
     Private Sub LoadStudentData(userId As Integer, connection As MySqlConnection)
-        ' REPLACED gender with program_id
         Dim query As String = "SELECT s.first_name, s.last_name, s.middle_name, s.email, s.date_of_birth, " &
         "s.program_id, s.year_level_id, s.department_id, s.current_status_id, u.username, u.role_id " &
         "FROM Students s " &
@@ -1612,8 +1612,6 @@ Public Class Admin
                         dtpUpdateDateOfBirth.Value = Convert.ToDateTime(reader("date_of_birth"))
                     End If
 
-                    ' REMOVED: Gender dropdown setting
-                    ' ADDED: Program dropdown setting
                     If Not IsDBNull(reader("program_id")) Then
                         Try
                             cmbUpdateProgram.SelectedValue = Convert.ToInt32(reader("program_id"))
@@ -2901,6 +2899,15 @@ Public Class Admin
 
         ' Set active button
         SetActiveButton(btnProgramManagement)
+    End Sub
+
+    Private Sub btnGradingManagement_Click(sender As Object, e As EventArgs) Handles btnGradingManagement.Click
+        ' Open Grading Management form as a dialog
+        Dim gradingForm As New GradingManagement()
+        gradingForm.ShowDialog()
+
+        ' Set active button
+        SetActiveButton(btnGradingManagement)
     End Sub
 
 

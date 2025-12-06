@@ -46,6 +46,7 @@ Public Class CourseOffering
         btnCreateOffering.BackColor = Color.FromArgb(35, 35, 38)
         btnViewOfferings.BackColor = Color.FromArgb(35, 35, 38)
         btnUpdateDeleteOffering.BackColor = Color.FromArgb(35, 35, 38)
+        btnCourseScheduling.BackColor = Color.FromArgb(35, 35, 38)
     End Sub
 
     Private Sub SetActiveButton(btn As Button)
@@ -73,6 +74,14 @@ Public Class CourseOffering
 
     Private Sub btnClose_Click(sender As Object, e As EventArgs) Handles btnClose.Click
         Me.Close()
+    End Sub
+
+    Private Sub btnCourseScheduling_Click(sender As Object, e As EventArgs) Handles btnCourseScheduling.Click
+        ' Open the Course Scheduling form
+        Dim scheduleForm As New CourseSchedule()
+        scheduleForm.Show()
+        ' Optionally close the current form
+        ' Me.Close()
     End Sub
 
     ' ============= INITIALIZATION METHODS =============
@@ -276,8 +285,8 @@ Public Class CourseOffering
 
                 ' Insert new offering
                 Dim insertQuery As String = "INSERT INTO Course_Offerings " &
-                                           "(course_id, semester_id, term_id, instructor_id, section, max_students, schedule, room, offering_status, created_at, updated_at) " &
-                                           "VALUES (@course_id, @semester_id, @term_id, @instructor_id, @section, @max_students, @schedule, @room, @offering_status, NOW(), NOW())"
+                                           "(course_id, semester_id, term_id, instructor_id, section, max_students, offering_status, created_at, updated_at) " &
+                                           "VALUES (@course_id, @semester_id, @term_id, @instructor_id, @section, @max_students, @offering_status, NOW(), NOW())"
 
                 Using insertCmd As New MySqlCommand(insertQuery, connection)
                     insertCmd.Parameters.AddWithValue("@course_id", Convert.ToInt32(cmbCourse.SelectedValue))
@@ -286,8 +295,6 @@ Public Class CourseOffering
                     insertCmd.Parameters.AddWithValue("@instructor_id", instructorId)
                     insertCmd.Parameters.AddWithValue("@section", txtSection.Text.Trim().ToUpper())
                     insertCmd.Parameters.AddWithValue("@max_students", maxStudents)
-                    insertCmd.Parameters.AddWithValue("@schedule", If(String.IsNullOrWhiteSpace(txtSchedule.Text), DBNull.Value, CType(txtSchedule.Text.Trim(), Object)))
-                    insertCmd.Parameters.AddWithValue("@room", If(String.IsNullOrWhiteSpace(txtRoom.Text), DBNull.Value, CType(txtRoom.Text.Trim(), Object)))
                     insertCmd.Parameters.AddWithValue("@offering_status", cmbOfferingStatus.SelectedItem.ToString())
 
                     insertCmd.ExecuteNonQuery()
@@ -324,8 +331,6 @@ Public Class CourseOffering
         If cmbInstructor.Items.Count > 0 Then cmbInstructor.SelectedIndex = 0
         txtSection.Text = "A"
         txtMaxStudents.Text = "40"
-        txtSchedule.Text = "MWF 10:00-11:00 AM"
-        txtRoom.Clear()
         cmbOfferingStatus.SelectedIndex = 0
     End Sub
 
@@ -344,8 +349,6 @@ Public Class CourseOffering
                                     "co.section as 'Section', " &
                                     "IFNULL(CONCAT(i.first_name, ' ', i.last_name), 'TBA') as 'Instructor', " &
                                     "co.max_students as 'Max Students', " &
-                                    "IFNULL(co.schedule, 'TBA') as 'Schedule', " &
-                                    "IFNULL(co.room, 'TBA') as 'Room', " &
                                     "co.offering_status as 'Status', " &
                                     "DATE_FORMAT(co.created_at, '%Y-%m-%d') as 'Created' " &
                                     "FROM Course_Offerings co " &
@@ -424,7 +427,7 @@ Public Class CourseOffering
             Using connection As New MySqlConnection(connectionString)
                 connection.Open()
 
-                Dim query As String = "SELECT course_id, semester_id, term_id, instructor_id, section, max_students, schedule, room, offering_status " &
+                Dim query As String = "SELECT course_id, semester_id, term_id, instructor_id, section, max_students, offering_status " &
                                     "FROM Course_Offerings WHERE offering_id = @offering_id"
 
                 Using cmd As New MySqlCommand(query, connection)
@@ -444,8 +447,6 @@ Public Class CourseOffering
 
                             txtUpdateSection.Text = reader("section").ToString()
                             txtUpdateMaxStudents.Text = reader("max_students").ToString()
-                            txtUpdateSchedule.Text = If(IsDBNull(reader("schedule")), "", reader("schedule").ToString())
-                            txtUpdateRoom.Text = If(IsDBNull(reader("room")), "", reader("room").ToString())
                             cmbUpdateOfferingStatus.SelectedItem = reader("offering_status").ToString()
 
                             grpOfferingInfo.Visible = True
@@ -498,8 +499,6 @@ Public Class CourseOffering
                                                "instructor_id = @instructor_id, " &
                                                "section = @section, " &
                                                "max_students = @max_students, " &
-                                               "schedule = @schedule, " &
-                                               "room = @room, " &
                                                "offering_status = @offering_status, " &
                                                "updated_at = NOW() " &
                                                "WHERE offering_id = @offering_id"
@@ -511,8 +510,7 @@ Public Class CourseOffering
                         updateCmd.Parameters.AddWithValue("@instructor_id", instructorId)
                         updateCmd.Parameters.AddWithValue("@section", txtUpdateSection.Text.Trim().ToUpper())
                         updateCmd.Parameters.AddWithValue("@max_students", maxStudents)
-                        updateCmd.Parameters.AddWithValue("@schedule", If(String.IsNullOrWhiteSpace(txtUpdateSchedule.Text), DBNull.Value, CType(txtUpdateSchedule.Text.Trim(), Object)))
-                        updateCmd.Parameters.AddWithValue("@room", If(String.IsNullOrWhiteSpace(txtUpdateRoom.Text), DBNull.Value, CType(txtUpdateRoom.Text.Trim(), Object)))
+
                         updateCmd.Parameters.AddWithValue("@offering_status", cmbUpdateOfferingStatus.SelectedItem.ToString())
                         updateCmd.Parameters.AddWithValue("@offering_id", currentOfferingId)
 
@@ -578,8 +576,6 @@ Public Class CourseOffering
         currentOfferingId = 0
         txtUpdateSection.Clear()
         txtUpdateMaxStudents.Text = "40"
-        txtUpdateSchedule.Clear()
-        txtUpdateRoom.Clear()
         grpOfferingInfo.Visible = False
         btnUpdateOffering.Visible = False
         btnDeleteOffering.Visible = False

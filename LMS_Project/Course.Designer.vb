@@ -45,8 +45,6 @@ Partial Class Course
         txtLectureUnits = New TextBox()
         lblDepartment = New Label()
         cmbDepartment = New ComboBox()
-        lblYearLevel = New Label()
-        cmbYearLevel = New ComboBox()
         btnSubmitCourse = New Button()
         pnlViewCourses = New Panel()
         dgvCourses = New DataGridView()
@@ -70,8 +68,6 @@ Partial Class Course
         txtUpdateLectureUnits = New TextBox()
         lblUpdateDepartment = New Label()
         cmbUpdateDepartment = New ComboBox()
-        lblUpdateYearLevel = New Label()
-        cmbUpdateYearLevel = New ComboBox()
         btnUpdateCourse = New Button()
         btnDeleteCourse = New Button()
         pnlManagePrerequisites = New Panel()
@@ -248,8 +244,6 @@ Partial Class Course
         pnlAddCourse.Controls.Add(txtLectureUnits)
         pnlAddCourse.Controls.Add(lblDepartment)
         pnlAddCourse.Controls.Add(cmbDepartment)
-        pnlAddCourse.Controls.Add(lblYearLevel)
-        pnlAddCourse.Controls.Add(cmbYearLevel)
         pnlAddCourse.Controls.Add(btnSubmitCourse)
         pnlAddCourse.Dock = DockStyle.Fill
         pnlAddCourse.Location = New Point(0, 0)
@@ -388,27 +382,7 @@ Partial Class Course
         cmbDepartment.Name = "cmbDepartment"
         cmbDepartment.Size = New Size(400, 27)
         cmbDepartment.TabIndex = 12
-        ' 
-        ' lblYearLevel
-        ' 
-        lblYearLevel.AutoSize = True
-        lblYearLevel.Font = New Font("Times New Roman", 12F, FontStyle.Bold)
-        lblYearLevel.ForeColor = Color.FromArgb(CByte(192), CByte(0), CByte(0))
-        lblYearLevel.Location = New Point(500, 340)
-        lblYearLevel.Name = "lblYearLevel"
-        lblYearLevel.Size = New Size(93, 19)
-        lblYearLevel.TabIndex = 13
-        lblYearLevel.Text = "Year Level *"
-        ' 
-        ' cmbYearLevel
-        ' 
-        cmbYearLevel.DropDownStyle = ComboBoxStyle.DropDownList
-        cmbYearLevel.Font = New Font("Times New Roman", 12F)
-        cmbYearLevel.FormattingEnabled = True
-        cmbYearLevel.Location = New Point(500, 362)
-        cmbYearLevel.Name = "cmbYearLevel"
-        cmbYearLevel.Size = New Size(400, 27)
-        cmbYearLevel.TabIndex = 14
+
         ' 
         ' btnSubmitCourse
         ' 
@@ -551,8 +525,6 @@ Partial Class Course
         grpCourseInfo.Controls.Add(txtUpdateLectureUnits)
         grpCourseInfo.Controls.Add(lblUpdateDepartment)
         grpCourseInfo.Controls.Add(cmbUpdateDepartment)
-        grpCourseInfo.Controls.Add(lblUpdateYearLevel)
-        grpCourseInfo.Controls.Add(cmbUpdateYearLevel)
         grpCourseInfo.Controls.Add(btnUpdateCourse)
         grpCourseInfo.Controls.Add(btnDeleteCourse)
         grpCourseInfo.Location = New Point(40, 150)
@@ -679,27 +651,7 @@ Partial Class Course
         cmbUpdateDepartment.Name = "cmbUpdateDepartment"
         cmbUpdateDepartment.Size = New Size(400, 27)
         cmbUpdateDepartment.TabIndex = 11
-        ' 
-        ' lblUpdateYearLevel
-        ' 
-        lblUpdateYearLevel.AutoSize = True
-        lblUpdateYearLevel.Font = New Font("Times New Roman", 12F, FontStyle.Bold)
-        lblUpdateYearLevel.ForeColor = Color.FromArgb(CByte(192), CByte(0), CByte(0))
-        lblUpdateYearLevel.Location = New Point(480, 305)
-        lblUpdateYearLevel.Name = "lblUpdateYearLevel"
-        lblUpdateYearLevel.Size = New Size(93, 19)
-        lblUpdateYearLevel.TabIndex = 12
-        lblUpdateYearLevel.Text = "Year Level *"
-        ' 
-        ' cmbUpdateYearLevel
-        ' 
-        cmbUpdateYearLevel.DropDownStyle = ComboBoxStyle.DropDownList
-        cmbUpdateYearLevel.Font = New Font("Times New Roman", 12F)
-        cmbUpdateYearLevel.FormattingEnabled = True
-        cmbUpdateYearLevel.Location = New Point(480, 327)
-        cmbUpdateYearLevel.Name = "cmbUpdateYearLevel"
-        cmbUpdateYearLevel.Size = New Size(400, 27)
-        cmbUpdateYearLevel.TabIndex = 13
+
         ' 
         ' btnUpdateCourse
         ' 
@@ -947,8 +899,6 @@ Partial Class Course
     Friend WithEvents txtLectureUnits As TextBox
     Friend WithEvents lblDepartment As Label
     Friend WithEvents cmbDepartment As ComboBox
-    Friend WithEvents lblYearLevel As Label
-    Friend WithEvents cmbYearLevel As ComboBox
     Friend WithEvents btnSubmitCourse As Button
 
     ' View Courses Panel
@@ -976,8 +926,6 @@ Partial Class Course
     Friend WithEvents txtUpdateLectureUnits As TextBox
     Friend WithEvents lblUpdateDepartment As Label
     Friend WithEvents cmbUpdateDepartment As ComboBox
-    Friend WithEvents lblUpdateYearLevel As Label
-    Friend WithEvents cmbUpdateYearLevel As ComboBox
     Friend WithEvents btnUpdateCourse As Button
     Friend WithEvents btnDeleteCourse As Button
 
