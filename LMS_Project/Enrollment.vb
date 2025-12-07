@@ -7,7 +7,7 @@ Public Class Enrollment
 
     Private Sub Enrollment_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         ' Set form title
-        Me.Text = "Enrollment Management - MGOD LMS"
+        Me.Text = "Semester/Term Management - MGOD LMS"
 
         ' Only load data for View panels (these use designer controls that already exist)
         LoadSemestersData()

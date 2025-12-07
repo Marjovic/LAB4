@@ -151,6 +151,8 @@ Partial Class ReportsForm
 
         ' Initialize Student Transcript controls after form is created
         InitializeStudentTranscriptPanel()
+        ' Initialize Course Analytics controls
+        InitializeCourseAnalyticsPanel()
     End Sub
 
     ' Sidebar Controls
@@ -175,7 +177,22 @@ Partial Class ReportsForm
     Friend WithEvents grpTranscriptSummary As GroupBox
     Friend WithEvents lblTranscriptSummary As Label
     Friend WithEvents btnExportTranscript As Button
-    Friend WithEvents btnPrintTranscript As Button
+
+    ' Course Analytics Controls
+    Friend WithEvents lblAnalyticsTitle As Label
+    Friend WithEvents grpAnalyticsFilters As GroupBox
+    Friend WithEvents cmbAcademicYear As ComboBox
+    Friend WithEvents cmbSemester As ComboBox
+    Friend WithEvents cmbTerm As ComboBox
+    Friend WithEvents cmbDepartment As ComboBox
+    Friend WithEvents cmbCourse As ComboBox
+    Friend WithEvents cmbInstructor As ComboBox
+    Friend WithEvents btnApplyFilters As Button
+    Friend WithEvents btnClearFilters As Button
+    Friend WithEvents dgvAnalytics As DataGridView
+    Friend WithEvents grpAnalyticsSummary As GroupBox
+    Friend WithEvents lblAnalyticsSummary As Label
+    Friend WithEvents btnExportAnalytics As Button
 
     Private Sub InitializeStudentTranscriptPanel()
         pnlStudentTranscript.SuspendLayout()
@@ -330,19 +347,240 @@ Partial Class ReportsForm
         }
         pnlStudentTranscript.Controls.Add(btnExportTranscript)
 
-        ' Print Button
-        btnPrintTranscript = New Button With {
-       .Name = "btnPrintTranscript",
-         .Text = "🖨️ Print Transcript",
-.Font = New Font("Times New Roman", 11, FontStyle.Bold),
-     .Location = New Point(940, 620),
-       .Size = New Size(240, 45),
-            .BackColor = Color.FromArgb(0, 122, 204),
-            .ForeColor = Color.White,
-       .FlatStyle = FlatStyle.Flat
-        }
-        pnlStudentTranscript.Controls.Add(btnPrintTranscript)
 
         pnlStudentTranscript.ResumeLayout(False)
+    End Sub
+
+    Private Sub InitializeCourseAnalyticsPanel()
+        pnlCourseAnalytics.SuspendLayout()
+
+        ' Enable auto-scroll
+        pnlCourseAnalytics.AutoScroll = True
+
+        ' Title Label
+        lblAnalyticsTitle = New Label With {
+            .Text = "Course Performance Analytics",
+            .Font = New Font("Times New Roman", 20, FontStyle.Bold),
+            .ForeColor = Color.FromArgb(0, 122, 204),
+          .Location = New Point(30, 20),
+    .Size = New Size(600, 40),
+         .AutoSize = False
+        }
+        pnlCourseAnalytics.Controls.Add(lblAnalyticsTitle)
+
+        ' Filters GroupBox
+        grpAnalyticsFilters = New GroupBox With {
+  .Name = "grpAnalyticsFilters",
+          .Text = "🔍 Filters",
+            .Font = New Font("Times New Roman", 11, FontStyle.Bold),
+        .Location = New Point(30, 70),
+   .Size = New Size(1150, 180)
+        }
+        pnlCourseAnalytics.Controls.Add(grpAnalyticsFilters)
+
+        ' Academic Year Filter
+        Dim lblAcademicYear As New Label With {
+    .Text = "Academic Year:",
+            .Font = New Font("Times New Roman", 10),
+     .Location = New Point(20, 30),
+            .Size = New Size(120, 20)
+   }
+        grpAnalyticsFilters.Controls.Add(lblAcademicYear)
+
+        cmbAcademicYear = New ComboBox With {
+          .Name = "cmbAcademicYear",
+            .Font = New Font("Times New Roman", 10),
+      .Location = New Point(20, 55),
+    .Size = New Size(160, 25),
+            .DropDownStyle = ComboBoxStyle.DropDownList
+        }
+        grpAnalyticsFilters.Controls.Add(cmbAcademicYear)
+
+        ' Semester Filter
+        Dim lblSemester As New Label With {
+            .Text = "Semester:",
+            .Font = New Font("Times New Roman", 10),
+  .Location = New Point(200, 30),
+        .Size = New Size(120, 20)
+      }
+        grpAnalyticsFilters.Controls.Add(lblSemester)
+
+        cmbSemester = New ComboBox With {
+          .Name = "cmbSemester",
+      .Font = New Font("Times New Roman", 10),
+       .Location = New Point(200, 55),
+            .Size = New Size(160, 25),
+   .DropDownStyle = ComboBoxStyle.DropDownList
+        }
+        grpAnalyticsFilters.Controls.Add(cmbSemester)
+
+        ' Term Filter
+        Dim lblTerm As New Label With {
+      .Text = "Term:",
+   .Font = New Font("Times New Roman", 10),
+      .Location = New Point(380, 30),
+            .Size = New Size(120, 20)
+     }
+        grpAnalyticsFilters.Controls.Add(lblTerm)
+
+        cmbTerm = New ComboBox With {
+            .Name = "cmbTerm",
+         .Font = New Font("Times New Roman", 10),
+            .Location = New Point(380, 55),
+            .Size = New Size(160, 25),
+ .DropDownStyle = ComboBoxStyle.DropDownList
+        }
+        grpAnalyticsFilters.Controls.Add(cmbTerm)
+
+        ' Department Filter
+        Dim lblDepartment As New Label With {
+            .Text = "Department:",
+.Font = New Font("Times New Roman", 10),
+         .Location = New Point(560, 30),
+    .Size = New Size(120, 20)
+        }
+        grpAnalyticsFilters.Controls.Add(lblDepartment)
+
+        cmbDepartment = New ComboBox With {
+.Name = "cmbDepartment",
+          .Font = New Font("Times New Roman", 10),
+            .Location = New Point(560, 55),
+            .Size = New Size(200, 25),
+         .DropDownStyle = ComboBoxStyle.DropDownList
+ }
+        grpAnalyticsFilters.Controls.Add(cmbDepartment)
+
+        ' Course Filter
+        Dim lblCourse As New Label With {
+         .Text = "Course:",
+        .Font = New Font("Times New Roman", 10),
+     .Location = New Point(20, 90),
+    .Size = New Size(120, 20)
+        }
+        grpAnalyticsFilters.Controls.Add(lblCourse)
+
+        cmbCourse = New ComboBox With {
+     .Name = "cmbCourse",
+ .Font = New Font("Times New Roman", 10),
+            .Location = New Point(20, 115),
+         .Size = New Size(340, 25),
+.DropDownStyle = ComboBoxStyle.DropDownList
+        }
+        grpAnalyticsFilters.Controls.Add(cmbCourse)
+
+        ' Instructor Filter
+        Dim lblInstructor As New Label With {
+            .Text = "Instructor:",
+            .Font = New Font("Times New Roman", 10),
+      .Location = New Point(380, 90),
+  .Size = New Size(120, 20)
+     }
+        grpAnalyticsFilters.Controls.Add(lblInstructor)
+
+        cmbInstructor = New ComboBox With {
+            .Name = "cmbInstructor",
+.Font = New Font("Times New Roman", 10),
+  .Location = New Point(380, 115),
+  .Size = New Size(380, 25),
+            .DropDownStyle = ComboBoxStyle.DropDownList
+        }
+        grpAnalyticsFilters.Controls.Add(cmbInstructor)
+
+        ' Apply Filters Button
+        btnApplyFilters = New Button With {
+            .Name = "btnApplyFilters",
+         .Text = "📊 Apply Filters",
+            .Font = New Font("Times New Roman", 11, FontStyle.Bold),
+    .Location = New Point(780, 55),
+         .Size = New Size(160, 35),
+            .BackColor = Color.FromArgb(0, 122, 204),
+            .ForeColor = Color.White,
+          .FlatStyle = FlatStyle.Flat
+        }
+        grpAnalyticsFilters.Controls.Add(btnApplyFilters)
+
+        ' Clear Filters Button
+        btnClearFilters = New Button With {
+       .Name = "btnClearFilters",
+   .Text = "🔄 Clear Filters",
+     .Font = New Font("Times New Roman", 11, FontStyle.Bold),
+            .Location = New Point(780, 105),
+    .Size = New Size(160, 35),
+       .BackColor = Color.FromArgb(108, 117, 125),
+ .ForeColor = Color.White,
+     .FlatStyle = FlatStyle.Flat
+        }
+        grpAnalyticsFilters.Controls.Add(btnClearFilters)
+
+        ' Analytics DataGridView
+        dgvAnalytics = New DataGridView With {
+     .Name = "dgvAnalytics",
+       .Location = New Point(30, 260),
+          .Size = New Size(1150, 320),
+    .AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells,
+          .AllowUserToAddRows = False,
+     .AllowUserToDeleteRows = False,
+      .ReadOnly = True,
+.SelectionMode = DataGridViewSelectionMode.FullRowSelect,
+  .MultiSelect = False,
+     .BackgroundColor = Color.White,
+      .BorderStyle = BorderStyle.Fixed3D,
+            .ScrollBars = ScrollBars.Both,
+         .ColumnHeadersDefaultCellStyle = New DataGridViewCellStyle With {
+            .Font = New Font("Times New Roman", 10, FontStyle.Bold),
+     .BackColor = Color.FromArgb(0, 122, 204),
+      .ForeColor = Color.White,
+           .Alignment = DataGridViewContentAlignment.MiddleCenter,
+       .WrapMode = DataGridViewTriState.True
+            },
+            .DefaultCellStyle = New DataGridViewCellStyle With {
+                .Font = New Font("Times New Roman", 10),
+      .SelectionBackColor = Color.FromArgb(173, 216, 230),
+      .SelectionForeColor = Color.Black,
+  .WrapMode = DataGridViewTriState.False
+   },
+      .RowTemplate = New DataGridViewRow With {
+            .Height = 28
+    },
+            .ColumnHeadersHeight = 35
+        }
+        pnlCourseAnalytics.Controls.Add(dgvAnalytics)
+
+        ' Summary GroupBox
+        grpAnalyticsSummary = New GroupBox With {
+  .Name = "grpAnalyticsSummary",
+    .Text = "📈 ANALYTICS SUMMARY",
+         .Font = New Font("Times New Roman", 11, FontStyle.Bold),
+  .Location = New Point(30, 590),
+      .Size = New Size(850, 100),
+            .Visible = False
+        }
+        pnlCourseAnalytics.Controls.Add(grpAnalyticsSummary)
+
+        ' Summary Label
+        lblAnalyticsSummary = New Label With {
+            .Name = "lblAnalyticsSummary",
+        .Text = "",
+            .Font = New Font("Times New Roman", 10),
+         .Location = New Point(10, 25),
+  .Size = New Size(830, 65),
+    .AutoSize = False
+        }
+        grpAnalyticsSummary.Controls.Add(lblAnalyticsSummary)
+
+        ' Export Button
+        btnExportAnalytics = New Button With {
+            .Name = "btnExportAnalytics",
+            .Text = "📤 Export Analytics",
+       .Font = New Font("Times New Roman", 11, FontStyle.Bold),
+       .Location = New Point(900, 610),
+.Size = New Size(280, 45),
+         .BackColor = Color.FromArgb(0, 122, 204),
+  .ForeColor = Color.White,
+     .FlatStyle = FlatStyle.Flat
+}
+        pnlCourseAnalytics.Controls.Add(btnExportAnalytics)
+
+        pnlCourseAnalytics.ResumeLayout(False)
     End Sub
 End Class
