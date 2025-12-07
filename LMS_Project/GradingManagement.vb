@@ -24,6 +24,12 @@
         viewGradesForm.ShowDialog()
     End Sub
 
+    ' Navigate to Enrollment Management
+    Private Sub btnEnrollmentManagement_Click(sender As Object, e As EventArgs) Handles btnEnrollmentManagement.Click
+        Dim enrollmentManagementForm As New EnrollmentManagement()
+        enrollmentManagementForm.ShowDialog()
+    End Sub
+
     ' Navigate to Reports Form
     Private Sub btnReports_Click(sender As Object, e As EventArgs) Handles btnReports.Click
         Dim reportsForm As New ReportsForm()

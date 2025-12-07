@@ -10,11 +10,14 @@ Public Class EnrollStudent
     ' Store current instructor ID (retrieved from logged-in user)
     Private currentInstructorId As Integer = 0
 
+    ' Store current user ID for enrollment tracking
+    Private currentUserId As Integer = 0
+
     Private Sub EnrollStudent_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         ' Set form title
-        Me.Text = "Enrollment Management - MGOD LMS"
+        Me.Text = "Enrollment Management (Instructor) - MGOD LMS"
 
-        ' Get the instructor ID for the logged-in user
+        ' Get the instructor ID and user ID for the logged-in user
         GetCurrentInstructorId()
 
         ' Initialize dropdowns
@@ -48,28 +51,36 @@ Public Class EnrollStudent
             Using connection As New MySqlConnection(connectionString)
                 connection.Open()
 
-                ' Get instructor_id from the logged-in user's username
-                Dim query As String = "SELECT i.instructor_id FROM Instructors i " &
-    "INNER JOIN Users u ON i.user_id = u.user_id " &
-         "WHERE u.username = @username"
+                ' Get user_id and instructor_id from the logged-in user's username
+                Dim query As String = "SELECT u.user_id, i.instructor_id FROM Users u " &
+          "LEFT JOIN Instructors i ON u.user_id = i.user_id " &
+            "WHERE u.username = @username"
 
                 Using cmd As New MySqlCommand(query, connection)
                     cmd.Parameters.AddWithValue("@username", currentUsername)
-                    Dim result = cmd.ExecuteScalar()
+                    Using reader As MySqlDataReader = cmd.ExecuteReader()
+                        If reader.Read() Then
+                            currentUserId = Convert.ToInt32(reader("user_id"))
 
-                    If result IsNot Nothing AndAlso Not IsDBNull(result) Then
-                        currentInstructorId = Convert.ToInt32(result)
-                        Debug.WriteLine($"Instructor ID retrieved: {currentInstructorId}")
-                    Else
-                        ' User is not an instructor (might be admin or student)
-                        currentInstructorId = 0
-                        Debug.WriteLine("Current user is not an instructor")
-                    End If
+                            If Not IsDBNull(reader("instructor_id")) Then
+                                currentInstructorId = Convert.ToInt32(reader("instructor_id"))
+                                Debug.WriteLine($"Instructor ID retrieved: {currentInstructorId}")
+                            Else
+                                ' User is not an instructor (might be admin or student)
+                                currentInstructorId = 0
+                                Debug.WriteLine("Current user is not an instructor")
+                            End If
+                        Else
+                            currentUserId = 1
+                            currentInstructorId = 0
+                        End If
+                    End Using
                 End Using
             End Using
         Catch ex As Exception
             MessageBox.Show($"Error retrieving instructor information: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
             currentInstructorId = 0
+            currentUserId = 1
         End Try
     End Sub
 
@@ -178,7 +189,8 @@ Public Class EnrollStudent
                 Dim query As String = "SELECT co.offering_id, " &
   "CONCAT(c.course_code, ' - ', c.course_name, ' (Section: ', co.section, ') - ', " &
    "ay.academic_year_name, ' ', st.type_name, ' ', tt.type_name, ' - ', " &
-   "IFNULL(CONCAT(i.first_name, ' ', i.last_name), 'TBA')) as display_name " &
+   "IFNULL(CONCAT(i.first_name, ' ', i.last_name), 'TBA'), " &
+   "' [', co.offering_status, ']') as display_name " &
      "FROM Course_Offerings co " &
        "INNER JOIN Courses c ON co.course_id = c.course_id " &
  "INNER JOIN Semesters s ON co.semester_id = s.semester_id " &
@@ -256,7 +268,7 @@ Public Class EnrollStudent
         End Try
     End Sub
 
-    ' ============= CREATE ENROLLMENT METHODS =============
+    ' ============= CREATE ENROLLMENT METHODS (Using Stored Procedure) =============
 
     Private Sub btnSubmitEnrollment_Click(sender As Object, e As EventArgs) Handles btnSubmitEnrollment.Click
         ' Validate required fields
@@ -272,62 +284,71 @@ Public Class EnrollStudent
             Return
         End If
 
-        If cmbEnrollmentStatus.SelectedValue Is Nothing Then
-            MessageBox.Show("Please select an enrollment status.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-            cmbEnrollmentStatus.Focus()
-            Return
-        End If
-
         Try
             Using connection As New MySqlConnection(connectionString)
                 connection.Open()
 
-                ' Check for duplicate enrollment
-                Dim checkQuery As String = "SELECT COUNT(*) FROM Enrollments " &
-                "WHERE student_id = @student_id AND offering_id = @offering_id"
-                Using checkCmd As New MySqlCommand(checkQuery, connection)
-                    checkCmd.Parameters.AddWithValue("@student_id", Convert.ToInt32(cmbStudent.SelectedValue))
-                    checkCmd.Parameters.AddWithValue("@offering_id", Convert.ToInt32(cmbCourseOffering.SelectedValue))
+                ' Call the stored procedure sp_EnrollStudent
+                Using cmd As New MySqlCommand("sp_EnrollStudent", connection)
+                    cmd.CommandType = CommandType.StoredProcedure
 
-                    Dim count As Integer = Convert.ToInt32(checkCmd.ExecuteScalar())
-                    If count > 0 Then
-                        MessageBox.Show("This student is already enrolled in the selected course offering.",
-      "Duplicate Enrollment", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-                        Return
-                    End If
+                    ' Input parameters
+                    cmd.Parameters.AddWithValue("@p_student_id", Convert.ToInt32(cmbStudent.SelectedValue))
+                    cmd.Parameters.AddWithValue("@p_offering_id", Convert.ToInt32(cmbCourseOffering.SelectedValue))
+                    cmd.Parameters.AddWithValue("@p_enrolled_by", currentUserId)
+
+                    ' Output parameters
+                    Dim enrollmentIdParam As New MySqlParameter("@p_enrollment_id", MySqlDbType.Int32)
+                    enrollmentIdParam.Direction = ParameterDirection.Output
+                    cmd.Parameters.Add(enrollmentIdParam)
+
+                    Dim statusParam As New MySqlParameter("@p_status", MySqlDbType.VarChar, 50)
+                    statusParam.Direction = ParameterDirection.Output
+                    cmd.Parameters.Add(statusParam)
+
+                    Dim messageParam As New MySqlParameter("@p_message", MySqlDbType.VarChar, 500)
+                    messageParam.Direction = ParameterDirection.Output
+                    cmd.Parameters.Add(messageParam)
+
+                    ' Execute and read results
+                    Using reader As MySqlDataReader = cmd.ExecuteReader()
+                        If reader.Read() Then
+                            ' Get values from result set
+                            Dim status As String = reader("status").ToString()
+                            Dim message As String = reader("message").ToString()
+
+                            If status = "SUCCESS" OrElse status = "WARNING" Then
+                                Dim icon As MessageBoxIcon = If(status = "WARNING", MessageBoxIcon.Warning, MessageBoxIcon.Information)
+                                MessageBox.Show(message, "Enrollment Result", MessageBoxButtons.OK, icon)
+
+                                ' Clear form and reload data
+                                ClearCreateEnrollmentForm()
+                                LoadEnrollmentsData()
+                                LoadEnrollmentUpdateDropdown()
+                                InitializeCourseOfferingDropdown() ' Refresh in case offering is now full
+                            Else
+                                MessageBox.Show(message, "Enrollment Failed", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                            End If
+                        Else
+                            ' No result set, check output parameters
+                            reader.Close()
+                            Dim status As String = If(statusParam.Value IsNot Nothing, statusParam.Value.ToString(), "ERROR")
+                            Dim message As String = If(messageParam.Value IsNot Nothing, messageParam.Value.ToString(), "Unknown error occurred.")
+
+                            If status = "SUCCESS" OrElse status = "WARNING" Then
+                                MessageBox.Show(message, "Enrollment Result", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                                ClearCreateEnrollmentForm()
+                                LoadEnrollmentsData()
+                                LoadEnrollmentUpdateDropdown()
+                            Else
+                                MessageBox.Show(message, "Enrollment Failed", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                            End If
+                        End If
+                    End Using
                 End Using
-
-                ' Insert new enrollment
-                Dim insertQuery As String = "INSERT INTO Enrollments " &
-       "(student_id, offering_id, enrollment_date, status_id, remarks, created_at, updated_at) " &
-       "VALUES (@student_id, @offering_id, NOW(), @status_id, @remarks, NOW(), NOW())"
-
-                Using insertCmd As New MySqlCommand(insertQuery, connection)
-                    insertCmd.Parameters.AddWithValue("@student_id", Convert.ToInt32(cmbStudent.SelectedValue))
-                    insertCmd.Parameters.AddWithValue("@offering_id", Convert.ToInt32(cmbCourseOffering.SelectedValue))
-                    insertCmd.Parameters.AddWithValue("@status_id", Convert.ToInt32(cmbEnrollmentStatus.SelectedValue))
-                    insertCmd.Parameters.AddWithValue("@remarks", If(String.IsNullOrWhiteSpace(txtRemarks.Text), DBNull.Value, txtRemarks.Text.Trim()))
-
-                    insertCmd.ExecuteNonQuery()
-                End Using
-
-                MessageBox.Show("Enrollment created successfully!" & vbCrLf & vbCrLf &
-    $"Student: {cmbStudent.Text}" & vbCrLf &
-       $"Course Offering: {cmbCourseOffering.Text}" & vbCrLf &
-           $"Status: {cmbEnrollmentStatus.Text}",
-       "Success", MessageBoxButtons.OK, MessageBoxIcon.Information)
-
-                ' Clear form and reload data
-                ClearCreateEnrollmentForm()
-                LoadEnrollmentsData()
-                LoadEnrollmentUpdateDropdown()
             End Using
         Catch ex As MySqlException
-            If ex.Number = 1062 Then
-                MessageBox.Show("This enrollment already exists.", "Duplicate Entry", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-            Else
-                MessageBox.Show($"Database error: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
-            End If
+            MessageBox.Show($"Database error: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
         Catch ex As Exception
             MessageBox.Show($"Error creating enrollment: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
@@ -348,27 +369,27 @@ Public Class EnrollStudent
                 connection.Open()
 
                 Dim query As String = "SELECT e.enrollment_id as 'Enrollment ID', " &
- "s.student_number as 'Student Number', " &
+          "s.student_number as 'Student Number', " &
      "CONCAT(s.first_name, ' ', s.last_name) as 'Student Name', " &
-     "CONCAT(c.course_code, ' - ', c.course_name) as 'Course', " &
-"co.section as 'Section', " &
-   "CONCAT(ay.academic_year_name, ' ', st.type_name, ' ', tt.type_name) as 'Semester/Term', " &
-      "IFNULL(CONCAT(i.first_name, ' ', i.last_name), 'TBA') as 'Instructor', " &
-        "est.status_name as 'Status', " &
-     "DATE_FORMAT(e.enrollment_date, '%Y-%m-%d') as 'Enrollment Date', " &
-        "DATE_FORMAT(e.drop_date, '%Y-%m-%d') as 'Drop Date', " &
- "DATE_FORMAT(e.completion_date, '%Y-%m-%d') as 'Completion Date' " &
-    "FROM Enrollments e " &
-   "INNER JOIN Students s ON e.student_id = s.student_id " &
-      "INNER JOIN Course_Offerings co ON e.offering_id = co.offering_id " &
-            "INNER JOIN Courses c ON co.course_id = c.course_id " &
-          "INNER JOIN Semesters sem ON co.semester_id = sem.semester_id " &
-    "INNER JOIN Academic_Years ay ON sem.academic_year_id = ay.academic_year_id " &
-   "INNER JOIN Semester_Types st ON sem.semester_type_id = st.semester_type_id " &
-       "INNER JOIN Terms t ON co.term_id = t.term_id " &
-    "INNER JOIN Term_Types tt ON t.term_type_id = tt.term_type_id " &
+        "CONCAT(c.course_code, ' - ', c.course_name) as 'Course', " &
+             "co.section as 'Section', " &
+          "CONCAT(ay.academic_year_name, ' ', st.type_name, ' ', tt.type_name) as 'Semester/Term', " &
+            "IFNULL(CONCAT(i.first_name, ' ', i.last_name), 'TBA') as 'Instructor', " &
+    "est.status_name as 'Status', " &
+  "DATE_FORMAT(e.enrollment_date, '%Y-%m-%d') as 'Enrollment Date', " &
+          "DATE_FORMAT(e.drop_date, '%Y-%m-%d') as 'Drop Date', " &
+     "DATE_FORMAT(e.completion_date, '%Y-%m-%d') as 'Completion Date' " &
+  "FROM Enrollments e " &
+         "INNER JOIN Students s ON e.student_id = s.student_id " &
+ "INNER JOIN Course_Offerings co ON e.offering_id = co.offering_id " &
+    "INNER JOIN Courses c ON co.course_id = c.course_id " &
+            "INNER JOIN Semesters sem ON co.semester_id = sem.semester_id " &
+ "INNER JOIN Academic_Years ay ON sem.academic_year_id = ay.academic_year_id " &
+    "INNER JOIN Semester_Types st ON sem.semester_type_id = st.semester_type_id " &
+ "INNER JOIN Terms t ON co.term_id = t.term_id " &
+   "INNER JOIN Term_Types tt ON t.term_type_id = tt.term_type_id " &
      "LEFT JOIN Instructors i ON co.instructor_id = i.instructor_id " &
-      "INNER JOIN Enrollment_Status_Types est ON e.status_id = est.status_id "
+           "INNER JOIN Enrollment_Status_Types est ON e.status_id = est.status_id "
 
                 ' Add WHERE clause if current user is an instructor
                 If currentInstructorId > 0 Then
@@ -411,18 +432,18 @@ Public Class EnrollStudent
             Using connection As New MySqlConnection(connectionString)
                 connection.Open()
                 Dim query As String = "SELECT e.enrollment_id, " &
-               "CONCAT(s.student_number, ' - ', s.first_name, ' ', s.last_name, ' -> ', " &
+    "CONCAT(s.student_number, ' - ', s.first_name, ' ', s.last_name, ' -> ', " &
     "c.course_code, ' - ', c.course_name, ' (', co.section, ') - ', " &
-      "ay.academic_year_name, ' ', st.type_name, ' ', tt.type_name) as display_name " &
- "FROM Enrollments e " &
-        "INNER JOIN Students s ON e.student_id = s.student_id " &
-            "INNER JOIN Course_Offerings co ON e.offering_id = co.offering_id " &
-            "INNER JOIN Courses c ON co.course_id = c.course_id " &
-        "INNER JOIN Semesters sem ON co.semester_id = sem.semester_id " &
-         "INNER JOIN Academic_Years ay ON sem.academic_year_id = ay.academic_year_id " &
-        "INNER JOIN Semester_Types st ON sem.semester_type_id = st.semester_type_id " &
-  "INNER JOIN Terms t ON co.term_id = t.term_id " &
-      "INNER JOIN Term_Types tt ON t.term_type_id = tt.term_type_id "
+        "ay.academic_year_name, ' ', st.type_name, ' ', tt.type_name) as display_name " &
+       "FROM Enrollments e " &
+         "INNER JOIN Students s ON e.student_id = s.student_id " &
+       "INNER JOIN Course_Offerings co ON e.offering_id = co.offering_id " &
+       "INNER JOIN Courses c ON co.course_id = c.course_id " &
+       "INNER JOIN Semesters sem ON co.semester_id = sem.semester_id " &
+   "INNER JOIN Academic_Years ay ON sem.academic_year_id = ay.academic_year_id " &
+      "INNER JOIN Semester_Types st ON sem.semester_type_id = st.semester_type_id " &
+     "INNER JOIN Terms t ON co.term_id = t.term_id " &
+            "INNER JOIN Term_Types tt ON t.term_type_id = tt.term_type_id "
 
                 ' Add instructor filter if applicable
                 If currentInstructorId > 0 Then
@@ -583,7 +604,7 @@ Public Class EnrollStudent
         btnUpdateEnrollment.Visible = False
     End Sub
 
-    ' ============= BULK ENROLLMENT METHODS =============
+    ' ============= BULK ENROLLMENT METHODS (Using Stored Procedure) =============
 
     Private Sub InitializeBulkEnrollmentDropdowns()
         Try
@@ -617,7 +638,7 @@ Public Class EnrollStudent
                     cmbBulkProgram.ValueMember = "program_id"
                 End Using
 
-                ' Load Year Levels - Fixed: removed year_level_order column
+                ' Load Year Levels
                 Dim yearQuery As String = "SELECT year_level_id, year_level_name FROM Year_Levels ORDER BY year_level_id"
                 Using adapter As New MySqlDataAdapter(yearQuery, connection)
                     Dim yearTable As New DataTable()
@@ -638,7 +659,11 @@ Public Class EnrollStudent
                     cmbBulkDepartment.ValueMember = "department_id"
                 End Using
 
-                lblBulkInfo.Text = "Select filters and click 'Preview Data' to see available enrollments based on Course Offerings."
+                Dim infoText As String = "Select filters and click 'Preview Data' to see available enrollments."
+                If currentInstructorId > 0 Then
+                    infoText &= " (Filtered to your courses only)"
+                End If
+                lblBulkInfo.Text = infoText
                 btnExecuteBulkEnrollment.Enabled = False
             End Using
         Catch ex As Exception
@@ -650,136 +675,132 @@ Public Class EnrollStudent
         If cmbBulkSemester.SelectedValue Is Nothing OrElse
            cmbBulkProgram.SelectedValue Is Nothing OrElse
       cmbBulkYearLevel.SelectedValue Is Nothing OrElse
-     cmbBulkDepartment.SelectedValue Is Nothing Then
-            MessageBox.Show("Please select all required filters.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-            Return
+           cmbBulkDepartment.SelectedValue Is Nothing Then
+     MessageBox.Show("Please select all required filters.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+  Return
         End If
 
         Try
-            Using connection As New MySqlConnection(connectionString)
-                connection.Open()
+ Using connection As New MySqlConnection(connectionString)
+          connection.Open()
 
-                Dim semesterId As Integer = Convert.ToInt32(cmbBulkSemester.SelectedValue)
-                Dim programId As Integer = Convert.ToInt32(cmbBulkProgram.SelectedValue)
-                Dim yearLevelId As Integer = Convert.ToInt32(cmbBulkYearLevel.SelectedValue)
-                Dim departmentId As Integer = Convert.ToInt32(cmbBulkDepartment.SelectedValue)
+     Dim semesterId As Integer = Convert.ToInt32(cmbBulkSemester.SelectedValue)
+            Dim programId As Integer = Convert.ToInt32(cmbBulkProgram.SelectedValue)
+       Dim yearLevelId As Integer = Convert.ToInt32(cmbBulkYearLevel.SelectedValue)
+      Dim departmentId As Integer = Convert.ToInt32(cmbBulkDepartment.SelectedValue)
 
-                ' Get semester type from the selected semester
-                Dim semesterTypeId As Integer
-                Dim semesterTypeQuery As String = "SELECT semester_type_id FROM Semesters WHERE semester_id = @semester_id"
-                Using cmd As New MySqlCommand(semesterTypeQuery, connection)
-                    cmd.Parameters.AddWithValue("@semester_id", semesterId)
-                    Dim result = cmd.ExecuteScalar()
-                    If result Is Nothing OrElse IsDBNull(result) Then
-                        MessageBox.Show("Could not determine semester type.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                        Return
-                    End If
-                    semesterTypeId = Convert.ToInt32(result)
-                End Using
+ ' Get semester type from the selected semester
+          Dim semesterTypeId As Integer
+      Dim semesterTypeQuery As String = "SELECT semester_type_id FROM Semesters WHERE semester_id = @semester_id"
+     Using cmd As New MySqlCommand(semesterTypeQuery, connection)
+    cmd.Parameters.AddWithValue("@semester_id", semesterId)
+          Dim result = cmd.ExecuteScalar()
+    If result Is Nothing OrElse IsDBNull(result) Then
+        MessageBox.Show("Could not determine semester type.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+    Return
+    End If
+  semesterTypeId = Convert.ToInt32(result)
+           End Using
 
-                ' Preview query: Get students and their AVAILABLE Course Offerings for the selected semester
-                ' FILTERED by courses taught by the currently logged-in instructor
-                Dim previewQuery As String = "SELECT DISTINCT " &
-  "s.student_id, " &
-   "co.offering_id, " &
-           "s.student_number as 'Student Number', " &
-        "CONCAT(s.first_name, ' ', s.last_name) as 'Student Name', " &
-   "c.course_code as 'Course Code', " &
-    "c.course_name as 'Course Name', " &
-          "co.section as 'Section', " &
-     "IFNULL(CONCAT(i.first_name, ' ', i.last_name), 'TBA') as 'Instructor', " &
-        "CASE " &
-        "  WHEN e.enrollment_id IS NOT NULL THEN 'Already Enrolled' " &
-     "  ELSE 'Ready to Enroll' " &
- "END as 'Status' " &
-  "FROM Students s " &
-     "INNER JOIN Program_Curriculum pc ON s.program_id = pc.program_id " &
-  "    AND s.year_level_id = pc.year_level_id " &
-      "    AND pc.semester_type_id = @semester_type_id " &
- "    AND pc.is_active = TRUE " &
-     "INNER JOIN Course_Offerings co ON pc.course_id = co.course_id " &
-     " AND co.semester_id = @semester_id " &
-"    AND co.offering_status = 'Open' "
+      ' Preview query
+      Dim previewQuery As String = "SELECT DISTINCT " &
+                "s.student_id, " &
+"co.offering_id, " &
+   "s.student_number as 'Student Number', " &
+"CONCAT(s.first_name, ' ', s.last_name) as 'Student Name', " &
+    "c.course_code as 'Course Code', " &
+         "c.course_name as 'Course Name', " &
+      "co.section as 'Section', " &
+        "IFNULL(CONCAT(i.first_name, ' ', i.last_name), 'TBA') as 'Instructor', " &
+   "CASE " &
+   "  WHEN e.enrollment_id IS NOT NULL THEN 'Already Enrolled' " &
+        "  ELSE 'Ready to Enroll' " &
+        "END as 'Status' " &
+   "FROM Students s " &
+         "INNER JOIN Program_Curriculum pc ON s.program_id = pc.program_id " &
+          " AND s.year_level_id = pc.year_level_id " &
+       "    AND pc.semester_type_id = @semester_type_id " &
+      "    AND pc.is_active = TRUE " &
+       "INNER JOIN Course_Offerings co ON pc.course_id = co.course_id " &
+           "    AND co.semester_id = @semester_id " &
+                "    AND co.offering_status = 'Open' "
 
-                ' Add instructor filter if current user is an instructor
-                If currentInstructorId > 0 Then
-                    previewQuery &= "    AND co.instructor_id = @instructor_id " & vbCrLf
-                End If
+    ' Add instructor filter if current user is an instructor
+   If currentInstructorId > 0 Then
+        previewQuery &= "    AND co.instructor_id = @instructor_id "
+     End If
 
-                previewQuery &= "INNER JOIN Courses c ON co.course_id = c.course_id " &
-   "LEFT JOIN Instructors i ON co.instructor_id = i.instructor_id " &
-  "LEFT JOIN Enrollments e ON s.student_id = e.student_id " &
-      " AND co.offering_id = e.offering_id " &
-   "WHERE s.program_id = @program_id " &
-  "    AND s.year_level_id = @year_level_id " &
-      "    AND s.department_id = @department_id " &
+    previewQuery &= "INNER JOIN Courses c ON co.course_id = c.course_id " &
+     "LEFT JOIN Instructors i ON co.instructor_id = i.instructor_id " &
+       "LEFT JOIN Enrollments e ON s.student_id = e.student_id " &
+            "    AND co.offering_id = e.offering_id " &
+     "WHERE s.program_id = @program_id " &
+"    AND s.year_level_id = @year_level_id " &
+          "    AND s.department_id = @department_id " &
         "ORDER BY s.student_number, c.course_code, co.section"
 
-                Using adapter As New MySqlDataAdapter(previewQuery, connection)
-                    adapter.SelectCommand.Parameters.AddWithValue("@semester_id", semesterId)
-                    adapter.SelectCommand.Parameters.AddWithValue("@program_id", programId)
-                    adapter.SelectCommand.Parameters.AddWithValue("@year_level_id", yearLevelId)
-                    adapter.SelectCommand.Parameters.AddWithValue("@department_id", departmentId)
-                    adapter.SelectCommand.Parameters.AddWithValue("@semester_type_id", semesterTypeId)
+    Using adapter As New MySqlDataAdapter(previewQuery, connection)
+    adapter.SelectCommand.Parameters.AddWithValue("@semester_id", semesterId)
+              adapter.SelectCommand.Parameters.AddWithValue("@program_id", programId)
+         adapter.SelectCommand.Parameters.AddWithValue("@year_level_id", yearLevelId)
+   adapter.SelectCommand.Parameters.AddWithValue("@department_id", departmentId)
+              adapter.SelectCommand.Parameters.AddWithValue("@semester_type_id", semesterTypeId)
 
-                    ' Add instructor parameter if filtering
-                    If currentInstructorId > 0 Then
-                        adapter.SelectCommand.Parameters.AddWithValue("@instructor_id", currentInstructorId)
-                    End If
+          If currentInstructorId > 0 Then
+                adapter.SelectCommand.Parameters.AddWithValue("@instructor_id", currentInstructorId)
+          End If
 
-                    Dim previewTable As New DataTable()
-                    adapter.Fill(previewTable)
+         Dim previewTable As New DataTable()
+        adapter.Fill(previewTable)
 
-                    If previewTable.Rows.Count = 0 Then
-                        Dim noDataMessage As String = "No students or course offerings found matching the selected criteria." & vbCrLf & vbCrLf &
-           "Please ensure:" & vbCrLf &
-    "1. Students exist with the selected program, year level, and department" & vbCrLf &
-  "2. Program curriculum is defined for this program/year level/semester type" & vbCrLf &
-       "3. Course offerings (Open status) exist for the selected semester that match the curriculum"
+  If previewTable.Rows.Count = 0 Then
+     Dim noDataMessage As String = "No students or course offerings found matching the selected criteria." & vbCrLf & vbCrLf &
+                "Please ensure:" & vbCrLf &
+  "1. Students exist with the selected program, year level, and department" & vbCrLf &
+ "2. Program curriculum is defined for this program/year level/semester type" & vbCrLf &
+   "3. Course offerings (Open status) exist for the selected semester"
 
-                        ' Add instructor-specific message if applicable
-                        If currentInstructorId > 0 Then
-                            noDataMessage &= vbCrLf & "4. You are assigned as the instructor for relevant course offerings"
-                        End If
+   If currentInstructorId > 0 Then
+         noDataMessage &= vbCrLf & "4. You are assigned as the instructor for relevant course offerings"
+          End If
 
-                        MessageBox.Show(noDataMessage, "No Data Found", MessageBoxButtons.OK, MessageBoxIcon.Information)
-                        dgvBulkEnrollmentPreview.DataSource = Nothing
-                        btnExecuteBulkEnrollment.Enabled = False
-                        lblBulkInfo.Text = "No matching records found."
-                        Return
-                    End If
+             MessageBox.Show(noDataMessage, "No Data Found", MessageBoxButtons.OK, MessageBoxIcon.Information)
+        dgvBulkEnrollmentPreview.DataSource = Nothing
+            btnExecuteBulkEnrollment.Enabled = False
+   lblBulkInfo.Text = "No matching records found."
+  Return
+       End If
 
-                    dgvBulkEnrollmentPreview.DataSource = previewTable
-                    dgvBulkEnrollmentPreview.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells)
+  dgvBulkEnrollmentPreview.DataSource = previewTable
+     dgvBulkEnrollmentPreview.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells)
 
-                    ' Hide student_id and offering_id columns
-                    If dgvBulkEnrollmentPreview.Columns.Contains("student_id") Then
-                        dgvBulkEnrollmentPreview.Columns("student_id").Visible = False
-                    End If
-                    If dgvBulkEnrollmentPreview.Columns.Contains("offering_id") Then
-                        dgvBulkEnrollmentPreview.Columns("offering_id").Visible = False
-                    End If
+         ' Hide ID columns
+     If dgvBulkEnrollmentPreview.Columns.Contains("student_id") Then
+     dgvBulkEnrollmentPreview.Columns("student_id").Visible = False
+              End If
+                  If dgvBulkEnrollmentPreview.Columns.Contains("offering_id") Then
+            dgvBulkEnrollmentPreview.Columns("offering_id").Visible = False
+     End If
 
-                    ' Count new enrollments
-                    Dim readyCount As Integer = 0
-                    Dim alreadyCount As Integer = 0
-                    For Each row As DataRow In previewTable.Rows
-                        If row("Status").ToString() = "Ready to Enroll" Then
-                            readyCount += 1
-                        Else
-                            alreadyCount += 1
-                        End If
-                    Next
+            ' Count enrollments
+           Dim readyCount As Integer = 0
+    Dim alreadyCount As Integer = 0
+   For Each row As DataRow In previewTable.Rows
+  If row("Status").ToString() = "Ready to Enroll" Then
+                  readyCount += 1
+      Else
+    alreadyCount += 1
+      End If
+        Next
 
-                    ' Update info label with instructor-specific message if applicable
-                    Dim infoMessage As String = $"Preview: {readyCount} enrollments ready, {alreadyCount} already enrolled"
-                    If currentInstructorId > 0 Then
-                        infoMessage &= " (filtered to your courses only)"
-                    End If
-                    lblBulkInfo.Text = infoMessage
-                    btnExecuteBulkEnrollment.Enabled = (readyCount > 0)
-                End Using
-            End Using
+    Dim infoMessage As String = $"Preview: {readyCount} enrollments ready, {alreadyCount} already enrolled"
+        If currentInstructorId > 0 Then
+      infoMessage &= " (your courses only)"
+    End If
+  lblBulkInfo.Text = infoMessage
+   btnExecuteBulkEnrollment.Enabled = (readyCount > 0)
+         End Using
+         End Using
         Catch ex As Exception
             MessageBox.Show($"Error previewing bulk enrollment: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
@@ -787,134 +808,91 @@ Public Class EnrollStudent
 
     Private Sub btnExecuteBulkEnrollment_Click(sender As Object, e As EventArgs) Handles btnExecuteBulkEnrollment.Click
         Dim result As DialogResult = MessageBox.Show(
-   "Are you sure you want to enroll all students shown in the preview?" & vbCrLf & vbCrLf &
-      "This will create enrollments for all students marked as 'Ready to Enroll'.",
-  "Confirm Bulk Enrollment", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
+"Are you sure you want to enroll all students shown in the preview?" & vbCrLf & vbCrLf &
+       "This will use the sp_EnrollStudent stored procedure for validation.",
+            "Confirm Bulk Enrollment", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
 
         If result = DialogResult.No Then Return
 
         Try
-            Using connection As New MySqlConnection(connectionString)
-                connection.Open()
+   Using connection As New MySqlConnection(connectionString)
+    connection.Open()
 
-                Dim semesterId As Integer = Convert.ToInt32(cmbBulkSemester.SelectedValue)
-                Dim programId As Integer = Convert.ToInt32(cmbBulkProgram.SelectedValue)
-                Dim yearLevelId As Integer = Convert.ToInt32(cmbBulkYearLevel.SelectedValue)
-                Dim departmentId As Integer = Convert.ToInt32(cmbBulkDepartment.SelectedValue)
+    Dim successCount As Integer = 0
+       Dim failCount As Integer = 0
+        Dim warningCount As Integer = 0
+    Dim errorMessages As New List(Of String)()
 
-                ' Get semester type
-                Dim semesterTypeId As Integer
-                Dim semesterTypeQuery As String = "SELECT semester_type_id FROM Semesters WHERE semester_id = @semester_id"
-                Using cmd As New MySqlCommand(semesterTypeQuery, connection)
-                    cmd.Parameters.AddWithValue("@semester_id", semesterId)
-                    semesterTypeId = Convert.ToInt32(cmd.ExecuteScalar())
-                End Using
+    ' Get data from preview grid
+           Dim previewData As DataTable = CType(dgvBulkEnrollmentPreview.DataSource, DataTable)
 
-                ' Get enrollment status (default to "Enrolled" status)
-                Dim enrollmentStatusId As Integer = 1
-                Dim statusQuery As String = "SELECT status_id FROM Enrollment_Status_Types WHERE status_name = 'Enrolled' LIMIT 1"
-                Using cmd As New MySqlCommand(statusQuery, connection)
-                    Dim statusResult = cmd.ExecuteScalar()
-                    If statusResult IsNot Nothing AndAlso Not IsDBNull(statusResult) Then
-                        enrollmentStatusId = Convert.ToInt32(statusResult)
-                    End If
-                End Using
+ For Each row As DataRow In previewData.Rows
+        If row("Status").ToString() = "Ready to Enroll" Then
+    Dim studentId As Integer = Convert.ToInt32(row("student_id"))
+  Dim offeringId As Integer = Convert.ToInt32(row("offering_id"))
 
-                ' Get students and offerings to enroll based on Course Offerings
-                ' FILTERED by courses taught by the currently logged-in instructor
-                Dim enrollQuery As String = "SELECT DISTINCT s.student_id, co.offering_id " &
-        "FROM Students s " &
-      "INNER JOIN Program_Curriculum pc ON s.program_id = pc.program_id " &
-  "    AND s.year_level_id = pc.year_level_id " &
-     "    AND pc.semester_type_id = @semester_type_id " &
-       "    AND pc.is_active = TRUE " &
-   "INNER JOIN Course_Offerings co ON pc.course_id = co.course_id " &
-    "    AND co.semester_id = @semester_id " &
-       "    AND co.offering_status = 'Open' "
+       Try
+           ' Call stored procedure for each enrollment
+      Using cmd As New MySqlCommand("sp_EnrollStudent", connection)
+   cmd.CommandType = CommandType.StoredProcedure
 
-                ' Add instructor filter if current user is an instructor
-                If currentInstructorId > 0 Then
-                    enrollQuery &= "    AND co.instructor_id = @instructor_id " & vbCrLf
-                End If
+      cmd.Parameters.AddWithValue("@p_student_id", studentId)
+         cmd.Parameters.AddWithValue("@p_offering_id", offeringId)
+    cmd.Parameters.AddWithValue("@p_enrolled_by", currentUserId)
 
-                enrollQuery &= "LEFT JOIN Enrollments e ON s.student_id = e.student_id " &
-"    AND co.offering_id = e.offering_id " &
-  "WHERE s.program_id = @program_id " &
- "    AND s.year_level_id = @year_level_id " &
-   "    AND s.department_id = @department_id " &
-  "    AND e.enrollment_id IS NULL"
+   Dim enrollmentIdParam As New MySqlParameter("@p_enrollment_id", MySqlDbType.Int32)
+             enrollmentIdParam.Direction = ParameterDirection.Output
+           cmd.Parameters.Add(enrollmentIdParam)
 
-                Dim enrollmentsToCreate As New List(Of Tuple(Of Integer, Integer))()
+          Dim statusParam As New MySqlParameter("@p_status", MySqlDbType.VarChar, 50)
+     statusParam.Direction = ParameterDirection.Output
+            cmd.Parameters.Add(statusParam)
 
-                Using cmd As New MySqlCommand(enrollQuery, connection)
-                    cmd.Parameters.AddWithValue("@semester_id", semesterId)
-                    cmd.Parameters.AddWithValue("@program_id", programId)
-                    cmd.Parameters.AddWithValue("@year_level_id", yearLevelId)
-                    cmd.Parameters.AddWithValue("@department_id", departmentId)
-                    cmd.Parameters.AddWithValue("@semester_type_id", semesterTypeId)
+       Dim messageParam As New MySqlParameter("@p_message", MySqlDbType.VarChar, 500)
+        messageParam.Direction = ParameterDirection.Output
+     cmd.Parameters.Add(messageParam)
 
-                    ' Add instructor parameter if filtering
-                    If currentInstructorId > 0 Then
-                        cmd.Parameters.AddWithValue("@instructor_id", currentInstructorId)
-                    End If
+       Using reader As MySqlDataReader = cmd.ExecuteReader()
+             If reader.Read() Then
+Dim status As String = reader("status").ToString()
+    If status = "SUCCESS" Then
+        successCount += 1
+     ElseIf status = "WARNING" Then
+      warningCount += 1
+ Else
+   failCount += 1
+     errorMessages.Add($"Student {row("Student Number")}: {reader("message")}")
+        End If
+        End If
+        End Using
+         End Using
+         Catch ex As Exception
+      failCount += 1
+        errorMessages.Add($"Student {row("Student Number")}: {ex.Message}")
+  End Try
+          End If
+    Next
 
-                    Using reader As MySqlDataReader = cmd.ExecuteReader()
-                        While reader.Read()
-                            enrollmentsToCreate.Add(New Tuple(Of Integer, Integer)(
-     Convert.ToInt32(reader("student_id")),
-         Convert.ToInt32(reader("offering_id"))
-         ))
-                        End While
-                    End Using
-                End Using
+       Dim summary As String = $"Bulk Enrollment Complete!" & vbCrLf & vbCrLf &
+      $"✅ Successful: {successCount}" & vbCrLf &
+   $"⚠️ Warnings: {warningCount}" & vbCrLf &
+  $"❌ Failed: {failCount}"
 
-                If enrollmentsToCreate.Count = 0 Then
-                    MessageBox.Show("No new enrollments to create. All students are already enrolled.",
-      "No Action Needed", MessageBoxButtons.OK, MessageBoxIcon.Information)
-                    Return
-                End If
+    If errorMessages.Count > 0 AndAlso errorMessages.Count <= 5 Then
+        summary &= vbCrLf & vbCrLf & "Errors:" & vbCrLf & String.Join(vbCrLf, errorMessages)
+             ElseIf errorMessages.Count > 5 Then
+       summary &= vbCrLf & vbCrLf & $"(First 5 errors of {errorMessages.Count}):" & vbCrLf & String.Join(vbCrLf, errorMessages.Take(5))
+   End If
 
-                ' Insert enrollments
-                Dim successCount As Integer = 0
-                Dim failCount As Integer = 0
+         MessageBox.Show(summary, "Bulk Enrollment Results", MessageBoxButtons.OK, MessageBoxIcon.Information)
 
-                Dim insertQuery As String = "INSERT INTO Enrollments " &
-       "(student_id, offering_id, enrollment_date, status_id, created_at, updated_at) " &
- "VALUES (@student_id, @offering_id, NOW(), @status_id, NOW(), NOW())"
-
-                For Each enrollment In enrollmentsToCreate
-                    Try
-                        Using insertCmd As New MySqlCommand(insertQuery, connection)
-                            insertCmd.Parameters.AddWithValue("@student_id", enrollment.Item1)
-                            insertCmd.Parameters.AddWithValue("@offering_id", enrollment.Item2)
-                            insertCmd.Parameters.AddWithValue("@status_id", enrollmentStatusId)
-                            insertCmd.ExecuteNonQuery()
-                            successCount += 1
-                        End Using
-                    Catch ex As MySqlException
-                        failCount += 1
-                        Debug.WriteLine($"Failed to enroll student {enrollment.Item1} in offering {enrollment.Item2}: {ex.Message}")
-                    End Try
-                Next
-
-                Dim successMessage As String = $"Bulk enrollment completed!" & vbCrLf & vbCrLf &
-  $"Successful: {successCount}" & vbCrLf &
-  $"Failed: {failCount}" & vbCrLf & vbCrLf &
-                 "Students have been enrolled in the available course offerings."
-
-                ' Add instructor-specific message if applicable
-                If currentInstructorId > 0 Then
-                    successMessage &= vbCrLf & "(Enrollments created only for your courses)"
-                End If
-
-                MessageBox.Show(successMessage, "Bulk Enrollment Complete", MessageBoxButtons.OK, MessageBoxIcon.Information)
-
-                ' Refresh preview and enrollments data
-                btnPreviewBulkEnrollment_Click(Nothing, Nothing)
-                LoadEnrollmentsData()
-            End Using
-        Catch ex As Exception
-            MessageBox.Show($"Error executing bulk enrollment: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+          ' Refresh data
+        btnPreviewBulkEnrollment_Click(Nothing, Nothing)
+     LoadEnrollmentsData()
+            InitializeCourseOfferingDropdown()
+        End Using
+   Catch ex As Exception
+        MessageBox.Show($"Error executing bulk enrollment: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
     End Sub
 
@@ -922,15 +900,15 @@ Public Class EnrollStudent
 
     Private Sub chkSetDropDate_CheckedChanged(sender As Object, e As EventArgs)
         dtpDropDate.Enabled = chkSetDropDate.Checked
-        If chkSetDropDate.Checked Then
-            dtpDropDate.Value = DateTime.Now
+  If chkSetDropDate.Checked Then
+  dtpDropDate.Value = DateTime.Now
         End If
     End Sub
 
     Private Sub chkSetCompletionDate_CheckedChanged(sender As Object, e As EventArgs)
         dtpCompletionDate.Enabled = chkSetCompletionDate.Checked
         If chkSetCompletionDate.Checked Then
-            dtpCompletionDate.Value = DateTime.Now
-        End If
+          dtpCompletionDate.Value = DateTime.Now
+     End If
     End Sub
 End Class

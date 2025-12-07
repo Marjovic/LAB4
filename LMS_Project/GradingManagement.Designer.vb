@@ -24,6 +24,7 @@ Partial Class GradingManagement
     Private Sub InitializeComponent()
         pnlSidebar = New Panel()
         btnReports = New Button()
+        btnEnrollmentManagement = New Button()
         btnAssignmentType = New Button()
         btnOfferingGradeWeight = New Button()
         btnViewStudentGrades = New Button()
@@ -37,6 +38,7 @@ Partial Class GradingManagement
         ' 
         pnlSidebar.BackColor = Color.Navy
         pnlSidebar.Controls.Add(btnReports)
+        pnlSidebar.Controls.Add(btnEnrollmentManagement)
         pnlSidebar.Controls.Add(btnViewStudentGrades)
         pnlSidebar.Controls.Add(btnOfferingGradeWeight)
         pnlSidebar.Controls.Add(btnAssignmentType)
@@ -56,12 +58,27 @@ Partial Class GradingManagement
         btnReports.FlatStyle = FlatStyle.Flat
         btnReports.Font = New Font("Times New Roman", 11.0F)
         btnReports.ForeColor = Color.White
-        btnReports.Location = New Point(0, 230)
+        btnReports.Location = New Point(0, 280)
         btnReports.Name = "btnReports"
         btnReports.Size = New Size(220, 50)
-        btnReports.TabIndex = 4
+        btnReports.TabIndex = 5
         btnReports.Text = "📊 Reports"
         btnReports.UseVisualStyleBackColor = False
+        ' 
+        ' btnEnrollmentManagement
+        ' 
+        btnEnrollmentManagement.BackColor = Color.FromArgb(CByte(35), CByte(35), CByte(38))
+        btnEnrollmentManagement.Dock = DockStyle.Top
+        btnEnrollmentManagement.FlatAppearance.BorderSize = 0
+        btnEnrollmentManagement.FlatStyle = FlatStyle.Flat
+        btnEnrollmentManagement.Font = New Font("Times New Roman", 11.0F)
+        btnEnrollmentManagement.ForeColor = Color.White
+        btnEnrollmentManagement.Location = New Point(0, 230)
+        btnEnrollmentManagement.Name = "btnEnrollmentManagement"
+        btnEnrollmentManagement.Size = New Size(220, 50)
+        btnEnrollmentManagement.TabIndex = 4
+        btnEnrollmentManagement.Text = "📚 Enrollment Management"
+        btnEnrollmentManagement.UseVisualStyleBackColor = False
         ' 
         ' btnAssignmentType
         ' 
@@ -132,7 +149,7 @@ Partial Class GradingManagement
         btnClose.Location = New Point(0, 750)
         btnClose.Name = "btnClose"
         btnClose.Size = New Size(220, 50)
-        btnClose.TabIndex = 5
+        btnClose.TabIndex = 6
         btnClose.Text = "🚪 Close"
         btnClose.UseVisualStyleBackColor = False
         ' 
@@ -166,6 +183,7 @@ Partial Class GradingManagement
     Friend WithEvents btnAssignmentType As Button
     Friend WithEvents btnOfferingGradeWeight As Button
     Friend WithEvents btnViewStudentGrades As Button
+    Friend WithEvents btnEnrollmentManagement As Button
     Friend WithEvents btnReports As Button
     Friend WithEvents btnClose As Button
 
