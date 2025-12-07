@@ -23,6 +23,7 @@ Partial Class StudentDashboard
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         pnlSidebar = New Panel()
+        btnGradeSummary = New Button()
         btnViewGrades = New Button()
         btnMyEnrollments = New Button()
         btnDashboard = New Button()
@@ -37,6 +38,7 @@ Partial Class StudentDashboard
         lblEnrolledCourses = New Label()
         lblCurrentSemester = New Label()
         lblYearLevel = New Label()
+        lblOverallGPA = New Label()
         pnlMyEnrollments = New Panel()
         lblMyEnrollmentsTitle = New Label()
         dgvMyEnrollments = New DataGridView()
@@ -48,6 +50,17 @@ Partial Class StudentDashboard
         btnLoadGrades = New Button()
         dgvMyGrades = New DataGridView()
         btnRefreshGrades = New Button()
+        pnlGradeSummary = New Panel()
+        lblGradeSummaryTitle = New Label()
+        lblFilterSemester = New Label()
+        cmbFilterSemester = New ComboBox()
+        btnLoadGradeSummary = New Button()
+        btnRefreshGradeSummary = New Button()
+        dgvGradeSummary = New DataGridView()
+        pnlCourseAverages = New Panel()
+        lblCourseAveragesTitle = New Label()
+        dgvCourseAverages = New DataGridView()
+        lblOverallAverageDisplay = New Label()
         pnlSidebar.SuspendLayout()
         pnlMainContent.SuspendLayout()
         pnlDashboard.SuspendLayout()
@@ -56,11 +69,16 @@ Partial Class StudentDashboard
         CType(dgvMyEnrollments, ComponentModel.ISupportInitialize).BeginInit()
         pnlViewGrades.SuspendLayout()
         CType(dgvMyGrades, ComponentModel.ISupportInitialize).BeginInit()
+        pnlGradeSummary.SuspendLayout()
+        CType(dgvGradeSummary, ComponentModel.ISupportInitialize).BeginInit()
+        pnlCourseAverages.SuspendLayout()
+        CType(dgvCourseAverages, ComponentModel.ISupportInitialize).BeginInit()
         SuspendLayout()
         ' 
         ' pnlSidebar
         ' 
         pnlSidebar.BackColor = Color.Navy
+        pnlSidebar.Controls.Add(btnGradeSummary)
         pnlSidebar.Controls.Add(btnViewGrades)
         pnlSidebar.Controls.Add(btnMyEnrollments)
         pnlSidebar.Controls.Add(btnDashboard)
@@ -71,6 +89,23 @@ Partial Class StudentDashboard
         pnlSidebar.Name = "pnlSidebar"
         pnlSidebar.Size = New Size(227, 800)
         pnlSidebar.TabIndex = 0
+        ' 
+        ' btnGradeSummary
+        ' 
+        btnGradeSummary.BackColor = SystemColors.MenuHighlight
+        btnGradeSummary.Dock = DockStyle.Top
+        btnGradeSummary.FlatAppearance.BorderSize = 0
+        btnGradeSummary.FlatStyle = FlatStyle.Flat
+        btnGradeSummary.Font = New Font("Times New Roman", 12.0F)
+        btnGradeSummary.ForeColor = Color.White
+        btnGradeSummary.Location = New Point(0, 228)
+        btnGradeSummary.Name = "btnGradeSummary"
+        btnGradeSummary.Padding = New Padding(10, 0, 0, 0)
+        btnGradeSummary.Size = New Size(227, 50)
+        btnGradeSummary.TabIndex = 4
+        btnGradeSummary.Text = "📈 Grade Summary"
+        btnGradeSummary.TextAlign = ContentAlignment.MiddleLeft
+        btnGradeSummary.UseVisualStyleBackColor = False
         ' 
         ' btnViewGrades
         ' 
@@ -148,7 +183,7 @@ Partial Class StudentDashboard
         btnLogout.Name = "btnLogout"
         btnLogout.Padding = New Padding(10, 0, 0, 0)
         btnLogout.Size = New Size(227, 50)
-        btnLogout.TabIndex = 4
+        btnLogout.TabIndex = 5
         btnLogout.Text = "🚪 Logout"
         btnLogout.TextAlign = ContentAlignment.MiddleLeft
         btnLogout.UseVisualStyleBackColor = False
@@ -159,6 +194,7 @@ Partial Class StudentDashboard
         pnlMainContent.Controls.Add(pnlDashboard)
         pnlMainContent.Controls.Add(pnlMyEnrollments)
         pnlMainContent.Controls.Add(pnlViewGrades)
+        pnlMainContent.Controls.Add(pnlGradeSummary)
         pnlMainContent.Dock = DockStyle.Fill
         pnlMainContent.Location = New Point(227, 0)
         pnlMainContent.Name = "pnlMainContent"
@@ -216,6 +252,7 @@ Partial Class StudentDashboard
         pnlStats.Controls.Add(lblEnrolledCourses)
         pnlStats.Controls.Add(lblCurrentSemester)
         pnlStats.Controls.Add(lblYearLevel)
+        pnlStats.Controls.Add(lblOverallGPA)
         pnlStats.Location = New Point(20, 140)
         pnlStats.Name = "pnlStats"
         pnlStats.Size = New Size(900, 150)
@@ -228,7 +265,7 @@ Partial Class StudentDashboard
         lblEnrolledCourses.ForeColor = Color.White
         lblEnrolledCourses.Location = New Point(3, 10)
         lblEnrolledCourses.Name = "lblEnrolledCourses"
-        lblEnrolledCourses.Size = New Size(280, 130)
+        lblEnrolledCourses.Size = New Size(210, 130)
         lblEnrolledCourses.TabIndex = 0
         lblEnrolledCourses.Text = "Enrolled Courses" & vbCrLf & "0"
         lblEnrolledCourses.TextAlign = ContentAlignment.MiddleCenter
@@ -238,9 +275,9 @@ Partial Class StudentDashboard
         lblCurrentSemester.BackColor = Color.RoyalBlue
         lblCurrentSemester.Font = New Font("Times New Roman", 18.0F, FontStyle.Bold)
         lblCurrentSemester.ForeColor = Color.White
-        lblCurrentSemester.Location = New Point(300, 10)
+        lblCurrentSemester.Location = New Point(223, 10)
         lblCurrentSemester.Name = "lblCurrentSemester"
-        lblCurrentSemester.Size = New Size(280, 130)
+        lblCurrentSemester.Size = New Size(210, 130)
         lblCurrentSemester.TabIndex = 1
         lblCurrentSemester.Text = "Current Semester" & vbCrLf & "N/A"
         lblCurrentSemester.TextAlign = ContentAlignment.MiddleCenter
@@ -250,12 +287,24 @@ Partial Class StudentDashboard
         lblYearLevel.BackColor = Color.MediumBlue
         lblYearLevel.Font = New Font("Times New Roman", 18.0F, FontStyle.Bold)
         lblYearLevel.ForeColor = Color.White
-        lblYearLevel.Location = New Point(598, 10)
+        lblYearLevel.Location = New Point(443, 10)
         lblYearLevel.Name = "lblYearLevel"
-        lblYearLevel.Size = New Size(280, 130)
+        lblYearLevel.Size = New Size(210, 130)
         lblYearLevel.TabIndex = 2
         lblYearLevel.Text = "Year Level" & vbCrLf & "N/A"
         lblYearLevel.TextAlign = ContentAlignment.MiddleCenter
+        ' 
+        ' lblOverallGPA
+        ' 
+        lblOverallGPA.BackColor = Color.FromArgb(46, 204, 113)
+        lblOverallGPA.Font = New Font("Times New Roman", 18.0F, FontStyle.Bold)
+        lblOverallGPA.ForeColor = Color.White
+        lblOverallGPA.Location = New Point(663, 10)
+        lblOverallGPA.Name = "lblOverallGPA"
+        lblOverallGPA.Size = New Size(210, 130)
+        lblOverallGPA.TabIndex = 3
+        lblOverallGPA.Text = "Overall GPA" & vbCrLf & "N/A"
+        lblOverallGPA.TextAlign = ContentAlignment.MiddleCenter
         ' 
         ' pnlMyEnrollments
         ' 
@@ -397,6 +446,148 @@ Partial Class StudentDashboard
         btnRefreshGrades.Text = "🔄 Refresh"
         btnRefreshGrades.UseVisualStyleBackColor = False
         ' 
+        ' pnlGradeSummary
+        ' 
+        pnlGradeSummary.AutoScroll = True
+        pnlGradeSummary.BackColor = Color.White
+        pnlGradeSummary.Controls.Add(lblGradeSummaryTitle)
+        pnlGradeSummary.Controls.Add(lblFilterSemester)
+        pnlGradeSummary.Controls.Add(cmbFilterSemester)
+        pnlGradeSummary.Controls.Add(btnLoadGradeSummary)
+        pnlGradeSummary.Controls.Add(btnRefreshGradeSummary)
+        pnlGradeSummary.Controls.Add(dgvGradeSummary)
+        pnlGradeSummary.Controls.Add(pnlCourseAverages)
+        pnlGradeSummary.Dock = DockStyle.Fill
+        pnlGradeSummary.Location = New Point(0, 0)
+        pnlGradeSummary.Name = "pnlGradeSummary"
+        pnlGradeSummary.Padding = New Padding(20)
+        pnlGradeSummary.Size = New Size(973, 800)
+        pnlGradeSummary.TabIndex = 3
+        pnlGradeSummary.Visible = False
+        ' 
+        ' lblGradeSummaryTitle
+        ' 
+        lblGradeSummaryTitle.AutoSize = True
+        lblGradeSummaryTitle.Font = New Font("Times New Roman", 24.0F, FontStyle.Bold)
+        lblGradeSummaryTitle.ForeColor = Color.FromArgb(0, 122, 204)
+        lblGradeSummaryTitle.Location = New Point(20, 15)
+        lblGradeSummaryTitle.Name = "lblGradeSummaryTitle"
+        lblGradeSummaryTitle.Size = New Size(234, 36)
+        lblGradeSummaryTitle.TabIndex = 0
+        lblGradeSummaryTitle.Text = "Grade Summary"
+        ' 
+        ' lblFilterSemester
+        ' 
+        lblFilterSemester.AutoSize = True
+        lblFilterSemester.Font = New Font("Times New Roman", 12.0F, FontStyle.Bold)
+        lblFilterSemester.Location = New Point(20, 60)
+        lblFilterSemester.Name = "lblFilterSemester"
+        lblFilterSemester.Size = New Size(136, 19)
+        lblFilterSemester.TabIndex = 1
+        lblFilterSemester.Text = "Filter by Semester:"
+        ' 
+        ' cmbFilterSemester
+        ' 
+        cmbFilterSemester.DropDownStyle = ComboBoxStyle.DropDownList
+        cmbFilterSemester.Font = New Font("Times New Roman", 12.0F)
+        cmbFilterSemester.FormattingEnabled = True
+        cmbFilterSemester.Location = New Point(20, 85)
+        cmbFilterSemester.Name = "cmbFilterSemester"
+        cmbFilterSemester.Size = New Size(400, 27)
+        cmbFilterSemester.TabIndex = 2
+        ' 
+        ' btnLoadGradeSummary
+        ' 
+        btnLoadGradeSummary.BackColor = Color.FromArgb(0, 122, 204)
+        btnLoadGradeSummary.FlatStyle = FlatStyle.Flat
+        btnLoadGradeSummary.Font = New Font("Times New Roman", 12.0F, FontStyle.Bold)
+        btnLoadGradeSummary.ForeColor = Color.White
+        btnLoadGradeSummary.Location = New Point(440, 83)
+        btnLoadGradeSummary.Name = "btnLoadGradeSummary"
+        btnLoadGradeSummary.Size = New Size(150, 30)
+        btnLoadGradeSummary.TabIndex = 3
+        btnLoadGradeSummary.Text = "Load Summary"
+        btnLoadGradeSummary.UseVisualStyleBackColor = False
+        ' 
+        ' btnRefreshGradeSummary
+        ' 
+        btnRefreshGradeSummary.BackColor = Color.FromArgb(46, 204, 113)
+        btnRefreshGradeSummary.FlatStyle = FlatStyle.Flat
+        btnRefreshGradeSummary.Font = New Font("Times New Roman", 12.0F, FontStyle.Bold)
+        btnRefreshGradeSummary.ForeColor = Color.White
+        btnRefreshGradeSummary.Location = New Point(610, 83)
+        btnRefreshGradeSummary.Name = "btnRefreshGradeSummary"
+        btnRefreshGradeSummary.Size = New Size(150, 30)
+        btnRefreshGradeSummary.TabIndex = 4
+        btnRefreshGradeSummary.Text = "🔄 Refresh"
+        btnRefreshGradeSummary.UseVisualStyleBackColor = False
+        ' 
+        ' dgvGradeSummary
+        ' 
+        dgvGradeSummary.AllowUserToAddRows = False
+        dgvGradeSummary.AllowUserToDeleteRows = False
+        dgvGradeSummary.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill
+        dgvGradeSummary.BackgroundColor = SystemColors.Control
+        dgvGradeSummary.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        dgvGradeSummary.DefaultCellStyle.Font = New Font("Times New Roman", 10.0F)
+        dgvGradeSummary.ColumnHeadersDefaultCellStyle.Font = New Font("Times New Roman", 10.0F, FontStyle.Bold)
+        dgvGradeSummary.Location = New Point(20, 125)
+        dgvGradeSummary.Name = "dgvGradeSummary"
+        dgvGradeSummary.ReadOnly = True
+        dgvGradeSummary.RowTemplate.Height = 25
+        dgvGradeSummary.Size = New Size(1520, 350)
+        dgvGradeSummary.TabIndex = 5
+        ' 
+        ' pnlCourseAverages
+        ' 
+        pnlCourseAverages.BackColor = Color.FromArgb(245, 245, 245)
+        pnlCourseAverages.Controls.Add(lblCourseAveragesTitle)
+        pnlCourseAverages.Controls.Add(dgvCourseAverages)
+        pnlCourseAverages.Controls.Add(lblOverallAverageDisplay)
+        pnlCourseAverages.Location = New Point(20, 485)
+        pnlCourseAverages.Name = "pnlCourseAverages"
+        pnlCourseAverages.Size = New Size(1520, 280)
+        pnlCourseAverages.TabIndex = 6
+        ' 
+        ' lblCourseAveragesTitle
+        ' 
+        lblCourseAveragesTitle.AutoSize = True
+        lblCourseAveragesTitle.Font = New Font("Times New Roman", 16.0F, FontStyle.Bold)
+        lblCourseAveragesTitle.ForeColor = Color.FromArgb(0, 122, 204)
+        lblCourseAveragesTitle.Location = New Point(10, 10)
+        lblCourseAveragesTitle.Name = "lblCourseAveragesTitle"
+        lblCourseAveragesTitle.Size = New Size(271, 25)
+        lblCourseAveragesTitle.TabIndex = 0
+        lblCourseAveragesTitle.Text = "Course Averages Summary"
+        ' 
+        ' dgvCourseAverages
+        ' 
+        dgvCourseAverages.AllowUserToAddRows = False
+        dgvCourseAverages.AllowUserToDeleteRows = False
+        dgvCourseAverages.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill
+        dgvCourseAverages.BackgroundColor = SystemColors.Control
+        dgvCourseAverages.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        dgvCourseAverages.DefaultCellStyle.Font = New Font("Times New Roman", 10.0F)
+        dgvCourseAverages.ColumnHeadersDefaultCellStyle.Font = New Font("Times New Roman", 10.0F, FontStyle.Bold)
+        dgvCourseAverages.Location = New Point(10, 45)
+        dgvCourseAverages.Name = "dgvCourseAverages"
+        dgvCourseAverages.ReadOnly = True
+        dgvCourseAverages.RowTemplate.Height = 25
+        dgvCourseAverages.Size = New Size(1220, 220)
+        dgvCourseAverages.TabIndex = 1
+        ' 
+        ' lblOverallAverageDisplay
+        ' 
+        lblOverallAverageDisplay.BackColor = Color.FromArgb(0, 122, 204)
+        lblOverallAverageDisplay.Font = New Font("Times New Roman", 16.0F, FontStyle.Bold)
+        lblOverallAverageDisplay.ForeColor = Color.White
+        lblOverallAverageDisplay.Location = New Point(1250, 45)
+        lblOverallAverageDisplay.Name = "lblOverallAverageDisplay"
+        lblOverallAverageDisplay.Size = New Size(250, 220)
+        lblOverallAverageDisplay.TabIndex = 2
+        lblOverallAverageDisplay.Text = "Overall Average" & vbCrLf & vbCrLf & "N/A" & vbCrLf & vbCrLf & "GPA: N/A"
+        lblOverallAverageDisplay.TextAlign = ContentAlignment.MiddleCenter
+        ' 
         ' StudentDashboard
         ' 
         AutoScaleDimensions = New SizeF(7F, 15F)
@@ -419,6 +610,12 @@ Partial Class StudentDashboard
         pnlViewGrades.ResumeLayout(False)
         pnlViewGrades.PerformLayout()
         CType(dgvMyGrades, ComponentModel.ISupportInitialize).EndInit()
+        pnlGradeSummary.ResumeLayout(False)
+        pnlGradeSummary.PerformLayout()
+        CType(dgvGradeSummary, ComponentModel.ISupportInitialize).EndInit()
+        pnlCourseAverages.ResumeLayout(False)
+        pnlCourseAverages.PerformLayout()
+        CType(dgvCourseAverages, ComponentModel.ISupportInitialize).EndInit()
         ResumeLayout(False)
     End Sub
 
@@ -428,6 +625,7 @@ Partial Class StudentDashboard
     Friend WithEvents btnDashboard As Button
     Friend WithEvents btnMyEnrollments As Button
     Friend WithEvents btnViewGrades As Button
+    Friend WithEvents btnGradeSummary As Button
     Friend WithEvents btnLogout As Button
 
     ' Main Content
@@ -442,6 +640,7 @@ Partial Class StudentDashboard
     Friend WithEvents lblEnrolledCourses As Label
     Friend WithEvents lblCurrentSemester As Label
     Friend WithEvents lblYearLevel As Label
+    Friend WithEvents lblOverallGPA As Label
 
     ' My Enrollments Panel
     Friend WithEvents pnlMyEnrollments As Panel
@@ -457,4 +656,17 @@ Partial Class StudentDashboard
     Friend WithEvents btnLoadGrades As Button
     Friend WithEvents dgvMyGrades As DataGridView
     Friend WithEvents btnRefreshGrades As Button
+
+    ' Grade Summary Panel
+    Friend WithEvents pnlGradeSummary As Panel
+    Friend WithEvents lblGradeSummaryTitle As Label
+    Friend WithEvents lblFilterSemester As Label
+    Friend WithEvents cmbFilterSemester As ComboBox
+    Friend WithEvents btnLoadGradeSummary As Button
+    Friend WithEvents btnRefreshGradeSummary As Button
+    Friend WithEvents dgvGradeSummary As DataGridView
+    Friend WithEvents pnlCourseAverages As Panel
+    Friend WithEvents lblCourseAveragesTitle As Label
+    Friend WithEvents dgvCourseAverages As DataGridView
+    Friend WithEvents lblOverallAverageDisplay As Label
 End Class

@@ -177,6 +177,43 @@ Public Class AssignmentType
                     End If
                 End Using
 
+                ' Get the weight for the new type
+                Dim newWeight As Decimal = Convert.ToDecimal(txtDefaultWeight.Text.Trim())
+                Dim isActive As Boolean = chkIsActive.Checked
+
+                ' Calculate total weight including this new type (only if it's active)
+                Dim totalWeightQuery As String = "SELECT COALESCE(SUM(default_weight), 0) FROM AssignmentTypes WHERE is_active = TRUE"
+                Dim currentTotalWeight As Decimal = 0
+                Using totalCmd As New MySqlCommand(totalWeightQuery, connection)
+                    currentTotalWeight = Convert.ToDecimal(totalCmd.ExecuteScalar())
+                End Using
+
+                ' Calculate new total if this type is active
+                Dim newTotalWeight As Decimal = currentTotalWeight
+                If isActive Then
+                    newTotalWeight = currentTotalWeight + newWeight
+                End If
+
+                ' Show warning if total exceeds 100% (but allow it)
+                If isActive AndAlso newTotalWeight > 100 Then
+                    Dim warningResult As DialogResult = MessageBox.Show(
+   $"⚠️ WEIGHT WARNING" & vbCrLf & vbCrLf &
+        $"Current total weight of active types: {currentTotalWeight:F2}%" & vbCrLf &
+          $"New type weight: {newWeight:F2}%" & vbCrLf &
+              $"New total will be: {newTotalWeight:F2}%" & vbCrLf & vbCrLf &
+            $"💡 Note: These are DEFAULT weights (templates)" & vbCrLf &
+        $"   Teachers will customize weights per course in 'Offering Grade Weight' management." & vbCrLf & vbCrLf &
+         $"   When configuring course weights, the total MUST equal 100% per grading period." & vbCrLf & vbCrLf &
+    $"Do you want to continue creating this assignment type?",
+    "Total Weight Exceeds 100%",
+      MessageBoxButtons.YesNo,
+   MessageBoxIcon.Warning)
+
+                    If warningResult = DialogResult.No Then
+                        Return
+                    End If
+                End If
+
                 ' Get display order (optional, default to NULL)
                 Dim displayOrder As Object = DBNull.Value
                 Dim tempOrder As Integer = 0
@@ -192,19 +229,28 @@ Public Class AssignmentType
                 Using insertCmd As New MySqlCommand(insertQuery, connection)
                     insertCmd.Parameters.AddWithValue("@type_name", txtTypeName.Text.Trim())
                     insertCmd.Parameters.AddWithValue("@type_code", txtTypeCode.Text.Trim().ToUpper())
-                    insertCmd.Parameters.AddWithValue("@default_weight", Convert.ToDecimal(txtDefaultWeight.Text.Trim()))
+                    insertCmd.Parameters.AddWithValue("@default_weight", newWeight)
                     insertCmd.Parameters.AddWithValue("@description", If(String.IsNullOrWhiteSpace(txtDescription.Text), DBNull.Value, CType(txtDescription.Text.Trim(), Object)))
-                    insertCmd.Parameters.AddWithValue("@is_active", chkIsActive.Checked)
+                    insertCmd.Parameters.AddWithValue("@is_active", isActive)
                     insertCmd.Parameters.AddWithValue("@display_order", displayOrder)
 
                     insertCmd.ExecuteNonQuery()
                 End Using
 
-                MessageBox.Show($"Assignment type created successfully!" & vbCrLf & vbCrLf &
-                                $"Type Name: {txtTypeName.Text.Trim()}" & vbCrLf &
-                                $"Type Code: {txtTypeCode.Text.Trim().ToUpper()}" & vbCrLf &
-                                $"Default Weight: {txtDefaultWeight.Text.Trim()}%",
-                                "Success", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                ' Calculate final total for confirmation message
+                Dim finalTotalQuery As String = "SELECT COALESCE(SUM(default_weight), 0) FROM AssignmentTypes WHERE is_active = TRUE"
+                Dim finalTotal As Decimal = 0
+                Using finalCmd As New MySqlCommand(finalTotalQuery, connection)
+                    finalTotal = Convert.ToDecimal(finalCmd.ExecuteScalar())
+                End Using
+
+                MessageBox.Show($"✅ Assignment type created successfully!" & vbCrLf & vbCrLf &
+    $"Type Name: {txtTypeName.Text.Trim()}" & vbCrLf &
+  $"Type Code: {txtTypeCode.Text.Trim().ToUpper()}" & vbCrLf &
+   $"Default Weight: {newWeight:F2}%" & vbCrLf &
+     $"Status: {If(isActive, "Active", "Inactive")}" & vbCrLf & vbCrLf &
+  $"📊 Total weight of all active types: {finalTotal:F2}%",
+      "Success", MessageBoxButtons.OK, MessageBoxIcon.Information)
 
                 ' Clear form and reload data
                 ClearCreateForm()
@@ -255,6 +301,24 @@ Public Class AssignmentType
                     adapter.Fill(typesTable)
                     dgvAssignmentTypes.DataSource = typesTable
                     dgvAssignmentTypes.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells)
+                End Using
+
+                ' Calculate and display total weight
+                Dim totalActiveQuery As String = "SELECT COALESCE(SUM(default_weight), 0) FROM AssignmentTypes WHERE is_active = TRUE"
+                Using totalCmd As New MySqlCommand(totalActiveQuery, connection)
+                    Dim totalActive As Decimal = Convert.ToDecimal(totalCmd.ExecuteScalar())
+
+                    ' Update the title to show total weight
+                    lblViewTitle.Text = $"All Assignment Types (Active Total: {totalActive:F2}%)"
+
+                    ' Color code the title based on total
+                    If totalActive = 100 Then
+                        lblViewTitle.ForeColor = Color.FromArgb(0, 122, 204) ' Blue - Perfect
+                    ElseIf totalActive > 100 Then
+                        lblViewTitle.ForeColor = Color.FromArgb(255, 140, 0) ' Orange - Warning
+                    Else
+                        lblViewTitle.ForeColor = Color.FromArgb(0, 122, 204) ' Blue - OK (templates can be less than 100)
+                    End If
                 End Using
             End Using
         Catch ex As Exception
@@ -368,6 +432,59 @@ Public Class AssignmentType
                         End If
                     End Using
 
+                    ' Get the new weight and status
+                    Dim newWeight As Decimal = Convert.ToDecimal(txtUpdateDefaultWeight.Text.Trim())
+                    Dim isActive As Boolean = chkUpdateIsActive.Checked
+
+                    ' Get the OLD weight and status for this type
+                    Dim oldWeight As Decimal = 0
+                    Dim wasActive As Boolean = False
+                    Dim oldQuery As String = "SELECT default_weight, is_active FROM AssignmentTypes WHERE type_id = @type_id"
+                    Using oldCmd As New MySqlCommand(oldQuery, connection)
+                        oldCmd.Parameters.AddWithValue("@type_id", selectedTypeId)
+                        Using reader = oldCmd.ExecuteReader()
+                            If reader.Read() Then
+                                oldWeight = Convert.ToDecimal(reader("default_weight"))
+                                wasActive = Convert.ToBoolean(reader("is_active"))
+                            End If
+                        End Using
+                    End Using
+
+                    ' Calculate total weight of OTHER active types (excluding this one)
+                    Dim totalOthersQuery As String = "SELECT COALESCE(SUM(default_weight), 0) FROM AssignmentTypes " &
+   "WHERE is_active = TRUE AND type_id != @type_id"
+                    Dim totalOthersWeight As Decimal = 0
+                    Using totalCmd As New MySqlCommand(totalOthersQuery, connection)
+                        totalCmd.Parameters.AddWithValue("@type_id", selectedTypeId)
+                        totalOthersWeight = Convert.ToDecimal(totalCmd.ExecuteScalar())
+                    End Using
+
+                    ' Calculate new total if this type is active
+                    Dim newTotalWeight As Decimal = totalOthersWeight
+                    If isActive Then
+                        newTotalWeight = totalOthersWeight + newWeight
+                    End If
+
+                    ' Show warning if total exceeds 100% (but allow it)
+                    If isActive AndAlso newTotalWeight > 100 Then
+                        Dim warningResult As DialogResult = MessageBox.Show(
+   $"⚠️ WEIGHT WARNING" & vbCrLf & vbCrLf &
+   $"Total weight of other active types: {totalOthersWeight:F2}%" & vbCrLf &
+          $"This type's new weight: {newWeight:F2}%" & vbCrLf &
+    $"New total will be: {newTotalWeight:F2}%" & vbCrLf & vbCrLf &
+       $"💡 Note: These are DEFAULT weights (templates)" & vbCrLf &
+       $"   Teachers will customize weights per course in 'Offering Grade Weight' management." & vbCrLf & vbCrLf &
+      $"   When configuring course weights, the total MUST equal 100% per grading period." & vbCrLf & vbCrLf &
+   $"Do you want to continue updating this assignment type?",
+         "Total Weight Exceeds 100%",
+          MessageBoxButtons.YesNo,
+   MessageBoxIcon.Warning)
+
+                        If warningResult = DialogResult.No Then
+                            Return
+                        End If
+                    End If
+
                     ' Get display order
                     Dim displayOrder As Object = DBNull.Value
                     Dim tempOrder As Integer = 0
@@ -377,28 +494,37 @@ Public Class AssignmentType
 
                     ' Update assignment type
                     Dim updateQuery As String = "UPDATE AssignmentTypes SET " &
-                                                "type_name = @type_name, " &
-                                                "type_code = @type_code, " &
-                                                "default_weight = @default_weight, " &
-                                                "description = @description, " &
-                                                "is_active = @is_active, " &
-                                                "display_order = @display_order, " &
-                                                "updated_at = NOW() " &
-                                                "WHERE type_id = @type_id"
+             "type_name = @type_name, " &
+  "type_code = @type_code, " &
+  "default_weight = @default_weight, " &
+     "description = @description, " &
+        "is_active = @is_active, " &
+            "display_order = @display_order, " &
+      "updated_at = NOW() " &
+      "WHERE type_id = @type_id"
 
                     Using updateCmd As New MySqlCommand(updateQuery, connection)
                         updateCmd.Parameters.AddWithValue("@type_name", txtUpdateTypeName.Text.Trim())
                         updateCmd.Parameters.AddWithValue("@type_code", txtUpdateTypeCode.Text.Trim().ToUpper())
-                        updateCmd.Parameters.AddWithValue("@default_weight", Convert.ToDecimal(txtUpdateDefaultWeight.Text.Trim()))
+                        updateCmd.Parameters.AddWithValue("@default_weight", newWeight)
                         updateCmd.Parameters.AddWithValue("@description", If(String.IsNullOrWhiteSpace(txtUpdateDescription.Text), DBNull.Value, CType(txtUpdateDescription.Text.Trim(), Object)))
-                        updateCmd.Parameters.AddWithValue("@is_active", chkUpdateIsActive.Checked)
+                        updateCmd.Parameters.AddWithValue("@is_active", isActive)
                         updateCmd.Parameters.AddWithValue("@display_order", displayOrder)
                         updateCmd.Parameters.AddWithValue("@type_id", selectedTypeId)
 
                         updateCmd.ExecuteNonQuery()
                     End Using
 
-                    MessageBox.Show("Assignment type updated successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                    ' Calculate final total for confirmation message
+                    Dim finalTotalQuery As String = "SELECT COALESCE(SUM(default_weight), 0) FROM AssignmentTypes WHERE is_active = TRUE"
+                    Dim finalTotal As Decimal = 0
+                    Using finalCmd As New MySqlCommand(finalTotalQuery, connection)
+                        finalTotal = Convert.ToDecimal(finalCmd.ExecuteScalar())
+                    End Using
+
+                    MessageBox.Show($"✅ Assignment type updated successfully!" & vbCrLf & vbCrLf &
+          $"📊 Total weight of all active types: {finalTotal:F2}%",
+     "Success", MessageBoxButtons.OK, MessageBoxIcon.Information)
 
                     ' Refresh data
                     LoadAssignmentTypesData()

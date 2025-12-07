@@ -1,9 +1,9 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class TeacherDashboard
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -23,6 +23,7 @@ Partial Class TeacherDashboard
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         pnlSidebar = New Panel()
+        btnCalculateFinalGrades = New Button()
         btnCalculateGrade = New Button()
         btnEnrollmentManagement = New Button()
         btnDashboard = New Button()
@@ -61,6 +62,17 @@ Partial Class TeacherDashboard
         txtRemarks = New TextBox()
         btnSaveGrade = New Button()
         btnRefreshGrades = New Button()
+        ' Calculate Final Grades Panel Controls
+        pnlFinalGrades = New Panel()
+        lblFinalGradesTitle = New Label()
+        lblSelectFinalCourse = New Label()
+        cmbFinalCourseOffering = New ComboBox()
+        btnLoadFinalGrades = New Button()
+        grpFinalGradesResults = New GroupBox()
+        dgvFinalGrades = New DataGridView()
+        btnCalculateSingleStudent = New Button()
+        btnCalculateAllStudents = New Button()
+        lblFinalGradeStatus = New Label()
         pnlSidebar.SuspendLayout()
         pnlMainContent.SuspendLayout()
         pnlDashboard.SuspendLayout()
@@ -71,11 +83,15 @@ Partial Class TeacherDashboard
         pnlCalculateGrade.SuspendLayout()
         grpStudentGrades.SuspendLayout()
         CType(dgvStudentGrades, ComponentModel.ISupportInitialize).BeginInit()
+        pnlFinalGrades.SuspendLayout()
+        grpFinalGradesResults.SuspendLayout()
+        CType(dgvFinalGrades, ComponentModel.ISupportInitialize).BeginInit()
         SuspendLayout()
         ' 
         ' pnlSidebar
         ' 
         pnlSidebar.BackColor = Color.Navy
+        pnlSidebar.Controls.Add(btnCalculateFinalGrades)
         pnlSidebar.Controls.Add(btnCalculateGrade)
         pnlSidebar.Controls.Add(btnEnrollmentManagement)
         pnlSidebar.Controls.Add(btnDashboard)
@@ -86,6 +102,23 @@ Partial Class TeacherDashboard
         pnlSidebar.Name = "pnlSidebar"
         pnlSidebar.Size = New Size(200, 800)
         pnlSidebar.TabIndex = 0
+        ' 
+        ' btnCalculateFinalGrades
+        ' 
+        btnCalculateFinalGrades.BackColor = SystemColors.MenuHighlight
+        btnCalculateFinalGrades.Dock = DockStyle.Top
+        btnCalculateFinalGrades.FlatAppearance.BorderSize = 0
+        btnCalculateFinalGrades.FlatStyle = FlatStyle.Flat
+        btnCalculateFinalGrades.Font = New Font("Times New Roman", 12.0F)
+        btnCalculateFinalGrades.ForeColor = Color.White
+        btnCalculateFinalGrades.Location = New Point(0, 228)
+        btnCalculateFinalGrades.Name = "btnCalculateFinalGrades"
+        btnCalculateFinalGrades.Padding = New Padding(10, 0, 0, 0)
+        btnCalculateFinalGrades.Size = New Size(200, 50)
+        btnCalculateFinalGrades.TabIndex = 4
+        btnCalculateFinalGrades.Text = "🎓 Calculate Final Grades"
+        btnCalculateFinalGrades.TextAlign = ContentAlignment.MiddleLeft
+        btnCalculateFinalGrades.UseVisualStyleBackColor = False
         ' 
         ' btnCalculateGrade
         ' 
@@ -163,7 +196,7 @@ Partial Class TeacherDashboard
         btnLogout.Name = "btnLogout"
         btnLogout.Padding = New Padding(10, 0, 0, 0)
         btnLogout.Size = New Size(200, 50)
-        btnLogout.TabIndex = 4
+        btnLogout.TabIndex = 5
         btnLogout.Text = "🚪 Logout"
         btnLogout.TextAlign = ContentAlignment.MiddleLeft
         btnLogout.UseVisualStyleBackColor = False
@@ -173,6 +206,7 @@ Partial Class TeacherDashboard
         pnlMainContent.BackColor = Color.FromArgb(240, 240, 240)
         pnlMainContent.Controls.Add(pnlDashboard)
         pnlMainContent.Controls.Add(pnlCalculateGrade)
+        pnlMainContent.Controls.Add(pnlFinalGrades)
         pnlMainContent.Dock = DockStyle.Fill
         pnlMainContent.Location = New Point(200, 0)
         pnlMainContent.Name = "pnlMainContent"
@@ -554,6 +588,133 @@ Partial Class TeacherDashboard
         btnRefreshGrades.Text = "🔄 Refresh Grades"
         btnRefreshGrades.UseVisualStyleBackColor = False
         ' 
+        ' pnlFinalGrades
+        ' 
+        pnlFinalGrades.AutoScroll = True
+        pnlFinalGrades.BackColor = Color.White
+        pnlFinalGrades.Controls.Add(lblFinalGradesTitle)
+        pnlFinalGrades.Controls.Add(lblSelectFinalCourse)
+        pnlFinalGrades.Controls.Add(cmbFinalCourseOffering)
+        pnlFinalGrades.Controls.Add(btnLoadFinalGrades)
+        pnlFinalGrades.Controls.Add(grpFinalGradesResults)
+        pnlFinalGrades.Controls.Add(lblFinalGradeStatus)
+        pnlFinalGrades.Dock = DockStyle.Fill
+        pnlFinalGrades.Location = New Point(0, 0)
+        pnlFinalGrades.Name = "pnlFinalGrades"
+        pnlFinalGrades.Padding = New Padding(20)
+        pnlFinalGrades.Size = New Size(1000, 800)
+        pnlFinalGrades.TabIndex = 2
+        pnlFinalGrades.Visible = False
+        ' 
+        ' lblFinalGradesTitle
+        ' 
+        lblFinalGradesTitle.AutoSize = True
+        lblFinalGradesTitle.Font = New Font("Times New Roman", 24.0F, FontStyle.Bold)
+        lblFinalGradesTitle.ForeColor = Color.FromArgb(0, 122, 204)
+        lblFinalGradesTitle.Location = New Point(20, 15)
+        lblFinalGradesTitle.Name = "lblFinalGradesTitle"
+        lblFinalGradesTitle.Size = New Size(350, 36)
+        lblFinalGradesTitle.TabIndex = 0
+        lblFinalGradesTitle.Text = "Calculate Final Grades"
+        ' 
+        ' lblSelectFinalCourse
+        ' 
+        lblSelectFinalCourse.AutoSize = True
+        lblSelectFinalCourse.Font = New Font("Times New Roman", 11.0F, FontStyle.Bold)
+        lblSelectFinalCourse.Location = New Point(30, 65)
+        lblSelectFinalCourse.Name = "lblSelectFinalCourse"
+        lblSelectFinalCourse.Size = New Size(142, 17)
+        lblSelectFinalCourse.TabIndex = 1
+        lblSelectFinalCourse.Text = "Select Course Offering:"
+        ' 
+        ' cmbFinalCourseOffering
+        ' 
+        cmbFinalCourseOffering.DropDownStyle = ComboBoxStyle.DropDownList
+        cmbFinalCourseOffering.Font = New Font("Times New Roman", 11.0F)
+        cmbFinalCourseOffering.FormattingEnabled = True
+        cmbFinalCourseOffering.Location = New Point(30, 85)
+        cmbFinalCourseOffering.Name = "cmbFinalCourseOffering"
+        cmbFinalCourseOffering.Size = New Size(550, 25)
+        cmbFinalCourseOffering.TabIndex = 2
+        ' 
+        ' btnLoadFinalGrades
+        ' 
+        btnLoadFinalGrades.BackColor = Color.FromArgb(0, 122, 204)
+        btnLoadFinalGrades.FlatStyle = FlatStyle.Flat
+        btnLoadFinalGrades.Font = New Font("Times New Roman", 11.0F, FontStyle.Bold)
+        btnLoadFinalGrades.ForeColor = Color.White
+        btnLoadFinalGrades.Location = New Point(600, 80)
+        btnLoadFinalGrades.Name = "btnLoadFinalGrades"
+        btnLoadFinalGrades.Size = New Size(200, 35)
+        btnLoadFinalGrades.TabIndex = 3
+        btnLoadFinalGrades.Text = "Load Students"
+        btnLoadFinalGrades.UseVisualStyleBackColor = False
+        ' 
+        ' grpFinalGradesResults
+        ' 
+        grpFinalGradesResults.Controls.Add(dgvFinalGrades)
+        grpFinalGradesResults.Controls.Add(btnCalculateSingleStudent)
+        grpFinalGradesResults.Controls.Add(btnCalculateAllStudents)
+        grpFinalGradesResults.Font = New Font("Times New Roman", 12.0F, FontStyle.Bold)
+        grpFinalGradesResults.ForeColor = Color.FromArgb(0, 122, 204)
+        grpFinalGradesResults.Location = New Point(30, 130)
+        grpFinalGradesResults.Name = "grpFinalGradesResults"
+        grpFinalGradesResults.Size = New Size(930, 600)
+        grpFinalGradesResults.TabIndex = 4
+        grpFinalGradesResults.TabStop = False
+        grpFinalGradesResults.Text = "📊 Student Final Grades (Prelim, Midterm, Finals, Overall)"
+        grpFinalGradesResults.Visible = False
+        ' 
+        ' dgvFinalGrades
+        ' 
+        dgvFinalGrades.AllowUserToAddRows = False
+        dgvFinalGrades.AllowUserToDeleteRows = False
+        dgvFinalGrades.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill
+        dgvFinalGrades.BackgroundColor = SystemColors.Control
+        dgvFinalGrades.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        dgvFinalGrades.Location = New Point(15, 30)
+        dgvFinalGrades.Name = "dgvFinalGrades"
+        dgvFinalGrades.ReadOnly = True
+        dgvFinalGrades.SelectionMode = DataGridViewSelectionMode.FullRowSelect
+        dgvFinalGrades.Size = New Size(900, 480)
+        dgvFinalGrades.TabIndex = 0
+        ' 
+        ' btnCalculateSingleStudent
+        ' 
+        btnCalculateSingleStudent.BackColor = Color.FromArgb(46, 204, 113)
+        btnCalculateSingleStudent.FlatStyle = FlatStyle.Flat
+        btnCalculateSingleStudent.Font = New Font("Times New Roman", 12.0F, FontStyle.Bold)
+        btnCalculateSingleStudent.ForeColor = Color.White
+        btnCalculateSingleStudent.Location = New Point(15, 530)
+        btnCalculateSingleStudent.Name = "btnCalculateSingleStudent"
+        btnCalculateSingleStudent.Size = New Size(280, 50)
+        btnCalculateSingleStudent.TabIndex = 1
+        btnCalculateSingleStudent.Text = "🧮 Calculate Selected Student"
+        btnCalculateSingleStudent.UseVisualStyleBackColor = False
+        ' 
+        ' btnCalculateAllStudents
+        ' 
+        btnCalculateAllStudents.BackColor = Color.FromArgb(155, 89, 182)
+        btnCalculateAllStudents.FlatStyle = FlatStyle.Flat
+        btnCalculateAllStudents.Font = New Font("Times New Roman", 12.0F, FontStyle.Bold)
+        btnCalculateAllStudents.ForeColor = Color.White
+        btnCalculateAllStudents.Location = New Point(315, 530)
+        btnCalculateAllStudents.Name = "btnCalculateAllStudents"
+        btnCalculateAllStudents.Size = New Size(280, 50)
+        btnCalculateAllStudents.TabIndex = 2
+        btnCalculateAllStudents.Text = "🎓 Calculate All Students"
+        btnCalculateAllStudents.UseVisualStyleBackColor = False
+        ' 
+        ' lblFinalGradeStatus
+        ' 
+        lblFinalGradeStatus.Font = New Font("Times New Roman", 11.0F)
+        lblFinalGradeStatus.ForeColor = Color.DarkGreen
+        lblFinalGradeStatus.Location = New Point(30, 745)
+        lblFinalGradeStatus.Name = "lblFinalGradeStatus"
+        lblFinalGradeStatus.Size = New Size(930, 40)
+        lblFinalGradeStatus.TabIndex = 5
+        lblFinalGradeStatus.Text = ""
+        ' 
         ' TeacherDashboard
         ' 
         AutoScaleDimensions = New SizeF(7.0F, 15.0F)
@@ -578,6 +739,10 @@ Partial Class TeacherDashboard
         grpStudentGrades.ResumeLayout(False)
         grpStudentGrades.PerformLayout()
         CType(dgvStudentGrades, ComponentModel.ISupportInitialize).EndInit()
+        pnlFinalGrades.ResumeLayout(False)
+        pnlFinalGrades.PerformLayout()
+        grpFinalGradesResults.ResumeLayout(False)
+        CType(dgvFinalGrades, ComponentModel.ISupportInitialize).EndInit()
         ResumeLayout(False)
     End Sub
 
@@ -587,6 +752,7 @@ Partial Class TeacherDashboard
     Friend WithEvents btnDashboard As Button
     Friend WithEvents btnEnrollmentManagement As Button
     Friend WithEvents btnCalculateGrade As Button
+    Friend WithEvents btnCalculateFinalGrades As Button
     Friend WithEvents btnLogout As Button
 
     ' Main Content
@@ -627,4 +793,16 @@ Partial Class TeacherDashboard
     Friend WithEvents txtRemarks As TextBox
     Friend WithEvents btnSaveGrade As Button
     Friend WithEvents btnRefreshGrades As Button
+
+    ' Calculate Final Grades Panel
+    Friend WithEvents pnlFinalGrades As Panel
+    Friend WithEvents lblFinalGradesTitle As Label
+    Friend WithEvents lblSelectFinalCourse As Label
+    Friend WithEvents cmbFinalCourseOffering As ComboBox
+    Friend WithEvents btnLoadFinalGrades As Button
+    Friend WithEvents grpFinalGradesResults As GroupBox
+    Friend WithEvents dgvFinalGrades As DataGridView
+    Friend WithEvents btnCalculateSingleStudent As Button
+    Friend WithEvents btnCalculateAllStudents As Button
+    Friend WithEvents lblFinalGradeStatus As Label
 End Class
