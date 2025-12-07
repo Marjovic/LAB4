@@ -18,6 +18,18 @@
         ' Removed Me.Hide() - no longer needed
     End Sub
 
+    ' Navigate to View Student Grades
+    Private Sub btnViewStudentGrades_Click(sender As Object, e As EventArgs) Handles btnViewStudentGrades.Click
+        Dim viewGradesForm As New ViewStudentGrades()
+        viewGradesForm.ShowDialog()
+    End Sub
+
+    ' Navigate to Reports Form
+    Private Sub btnReports_Click(sender As Object, e As EventArgs) Handles btnReports.Click
+        Dim reportsForm As New ReportsForm()
+        reportsForm.ShowDialog()
+    End Sub
+
     ' Close button handler
     Private Sub btnClose_Click(sender As Object, e As EventArgs) Handles btnClose.Click
         Me.Close()

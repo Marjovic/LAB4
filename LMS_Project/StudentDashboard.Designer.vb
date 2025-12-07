@@ -22,6 +22,10 @@ Partial Class StudentDashboard
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
+        Dim DataGridViewCellStyle9 As DataGridViewCellStyle = New DataGridViewCellStyle()
+        Dim DataGridViewCellStyle10 As DataGridViewCellStyle = New DataGridViewCellStyle()
+        Dim DataGridViewCellStyle11 As DataGridViewCellStyle = New DataGridViewCellStyle()
+        Dim DataGridViewCellStyle12 As DataGridViewCellStyle = New DataGridViewCellStyle()
         pnlSidebar = New Panel()
         btnGradeSummary = New Button()
         btnViewGrades = New Button()
@@ -96,7 +100,7 @@ Partial Class StudentDashboard
         btnGradeSummary.Dock = DockStyle.Top
         btnGradeSummary.FlatAppearance.BorderSize = 0
         btnGradeSummary.FlatStyle = FlatStyle.Flat
-        btnGradeSummary.Font = New Font("Times New Roman", 12.0F)
+        btnGradeSummary.Font = New Font("Times New Roman", 12F)
         btnGradeSummary.ForeColor = Color.White
         btnGradeSummary.Location = New Point(0, 228)
         btnGradeSummary.Name = "btnGradeSummary"
@@ -113,7 +117,7 @@ Partial Class StudentDashboard
         btnViewGrades.Dock = DockStyle.Top
         btnViewGrades.FlatAppearance.BorderSize = 0
         btnViewGrades.FlatStyle = FlatStyle.Flat
-        btnViewGrades.Font = New Font("Times New Roman", 12.0F)
+        btnViewGrades.Font = New Font("Times New Roman", 12F)
         btnViewGrades.ForeColor = Color.White
         btnViewGrades.Location = New Point(0, 178)
         btnViewGrades.Name = "btnViewGrades"
@@ -130,7 +134,7 @@ Partial Class StudentDashboard
         btnMyEnrollments.Dock = DockStyle.Top
         btnMyEnrollments.FlatAppearance.BorderSize = 0
         btnMyEnrollments.FlatStyle = FlatStyle.Flat
-        btnMyEnrollments.Font = New Font("Times New Roman", 12.0F)
+        btnMyEnrollments.Font = New Font("Times New Roman", 12F)
         btnMyEnrollments.ForeColor = Color.White
         btnMyEnrollments.Location = New Point(0, 128)
         btnMyEnrollments.Name = "btnMyEnrollments"
@@ -147,7 +151,7 @@ Partial Class StudentDashboard
         btnDashboard.Dock = DockStyle.Top
         btnDashboard.FlatAppearance.BorderSize = 0
         btnDashboard.FlatStyle = FlatStyle.Flat
-        btnDashboard.Font = New Font("Times New Roman", 12.0F)
+        btnDashboard.Font = New Font("Times New Roman", 12F)
         btnDashboard.ForeColor = Color.White
         btnDashboard.Location = New Point(0, 80)
         btnDashboard.Name = "btnDashboard"
@@ -162,13 +166,13 @@ Partial Class StudentDashboard
         ' 
         lblStudentTitle.BackColor = Color.Navy
         lblStudentTitle.Dock = DockStyle.Top
-        lblStudentTitle.Font = New Font("Times New Roman", 14.0F, FontStyle.Bold)
+        lblStudentTitle.Font = New Font("Times New Roman", 14F, FontStyle.Bold)
         lblStudentTitle.ForeColor = Color.White
         lblStudentTitle.Location = New Point(0, 0)
         lblStudentTitle.Name = "lblStudentTitle"
         lblStudentTitle.Size = New Size(227, 80)
         lblStudentTitle.TabIndex = 0
-        lblStudentTitle.Text = "MGOD LMS" & vbCrLf & "Student Portal"
+        lblStudentTitle.Text = "MGOD LMS" + vbCrLf + "Student Portal"
         lblStudentTitle.TextAlign = ContentAlignment.MiddleCenter
         ' 
         ' btnLogout
@@ -177,7 +181,7 @@ Partial Class StudentDashboard
         btnLogout.Dock = DockStyle.Bottom
         btnLogout.FlatAppearance.BorderSize = 0
         btnLogout.FlatStyle = FlatStyle.Flat
-        btnLogout.Font = New Font("Times New Roman", 12.0F, FontStyle.Bold)
+        btnLogout.Font = New Font("Times New Roman", 12F, FontStyle.Bold)
         btnLogout.ForeColor = Color.White
         btnLogout.Location = New Point(0, 750)
         btnLogout.Name = "btnLogout"
@@ -218,32 +222,32 @@ Partial Class StudentDashboard
         ' lblDashboardTitle
         ' 
         lblDashboardTitle.AutoSize = True
-        lblDashboardTitle.Font = New Font("Times New Roman", 24.0F, FontStyle.Bold)
+        lblDashboardTitle.Font = New Font("Times New Roman", 24F, FontStyle.Bold)
         lblDashboardTitle.ForeColor = Color.FromArgb(0, 122, 204)
         lblDashboardTitle.Location = New Point(20, 15)
         lblDashboardTitle.Name = "lblDashboardTitle"
-        lblDashboardTitle.Size = New Size(283, 36)
+        lblDashboardTitle.Size = New Size(282, 36)
         lblDashboardTitle.TabIndex = 0
         lblDashboardTitle.Text = "Student Dashboard"
         ' 
         ' lblWelcome
         ' 
         lblWelcome.AutoSize = True
-        lblWelcome.Font = New Font("Times New Roman", 16.0F)
+        lblWelcome.Font = New Font("Times New Roman", 16F)
         lblWelcome.Location = New Point(20, 70)
         lblWelcome.Name = "lblWelcome"
-        lblWelcome.Size = New Size(159, 25)
+        lblWelcome.Size = New Size(170, 25)
         lblWelcome.TabIndex = 1
         lblWelcome.Text = "Welcome, Student"
         ' 
         ' lblStudentInfo
         ' 
         lblStudentInfo.AutoSize = True
-        lblStudentInfo.Font = New Font("Times New Roman", 12.0F)
+        lblStudentInfo.Font = New Font("Times New Roman", 12F)
         lblStudentInfo.ForeColor = Color.DimGray
         lblStudentInfo.Location = New Point(20, 100)
         lblStudentInfo.Name = "lblStudentInfo"
-        lblStudentInfo.Size = New Size(155, 19)
+        lblStudentInfo.Size = New Size(143, 19)
         lblStudentInfo.TabIndex = 2
         lblStudentInfo.Text = "Student Number: N/A"
         ' 
@@ -261,49 +265,49 @@ Partial Class StudentDashboard
         ' lblEnrolledCourses
         ' 
         lblEnrolledCourses.BackColor = SystemColors.MenuHighlight
-        lblEnrolledCourses.Font = New Font("Times New Roman", 18.0F, FontStyle.Bold)
+        lblEnrolledCourses.Font = New Font("Times New Roman", 18F, FontStyle.Bold)
         lblEnrolledCourses.ForeColor = Color.White
-        lblEnrolledCourses.Location = New Point(3, 10)
+        lblEnrolledCourses.Location = New Point(0, 10)
         lblEnrolledCourses.Name = "lblEnrolledCourses"
         lblEnrolledCourses.Size = New Size(210, 130)
         lblEnrolledCourses.TabIndex = 0
-        lblEnrolledCourses.Text = "Enrolled Courses" & vbCrLf & "0"
+        lblEnrolledCourses.Text = "Enrolled Courses" + vbCrLf + "0"
         lblEnrolledCourses.TextAlign = ContentAlignment.MiddleCenter
         ' 
         ' lblCurrentSemester
         ' 
         lblCurrentSemester.BackColor = Color.RoyalBlue
-        lblCurrentSemester.Font = New Font("Times New Roman", 18.0F, FontStyle.Bold)
+        lblCurrentSemester.Font = New Font("Times New Roman", 18F, FontStyle.Bold)
         lblCurrentSemester.ForeColor = Color.White
-        lblCurrentSemester.Location = New Point(223, 10)
+        lblCurrentSemester.Location = New Point(234, 10)
         lblCurrentSemester.Name = "lblCurrentSemester"
         lblCurrentSemester.Size = New Size(210, 130)
         lblCurrentSemester.TabIndex = 1
-        lblCurrentSemester.Text = "Current Semester" & vbCrLf & "N/A"
+        lblCurrentSemester.Text = "Current Semester" + vbCrLf + "N/A"
         lblCurrentSemester.TextAlign = ContentAlignment.MiddleCenter
         ' 
         ' lblYearLevel
         ' 
         lblYearLevel.BackColor = Color.MediumBlue
-        lblYearLevel.Font = New Font("Times New Roman", 18.0F, FontStyle.Bold)
+        lblYearLevel.Font = New Font("Times New Roman", 18F, FontStyle.Bold)
         lblYearLevel.ForeColor = Color.White
-        lblYearLevel.Location = New Point(443, 10)
+        lblYearLevel.Location = New Point(460, 10)
         lblYearLevel.Name = "lblYearLevel"
         lblYearLevel.Size = New Size(210, 130)
         lblYearLevel.TabIndex = 2
-        lblYearLevel.Text = "Year Level" & vbCrLf & "N/A"
+        lblYearLevel.Text = "Year Level" + vbCrLf + "N/A"
         lblYearLevel.TextAlign = ContentAlignment.MiddleCenter
         ' 
         ' lblOverallGPA
         ' 
         lblOverallGPA.BackColor = Color.FromArgb(46, 204, 113)
-        lblOverallGPA.Font = New Font("Times New Roman", 18.0F, FontStyle.Bold)
+        lblOverallGPA.Font = New Font("Times New Roman", 18F, FontStyle.Bold)
         lblOverallGPA.ForeColor = Color.White
-        lblOverallGPA.Location = New Point(663, 10)
+        lblOverallGPA.Location = New Point(690, 10)
         lblOverallGPA.Name = "lblOverallGPA"
         lblOverallGPA.Size = New Size(210, 130)
         lblOverallGPA.TabIndex = 3
-        lblOverallGPA.Text = "Overall GPA" & vbCrLf & "N/A"
+        lblOverallGPA.Text = "Overall GPA" + vbCrLf + "N/A"
         lblOverallGPA.TextAlign = ContentAlignment.MiddleCenter
         ' 
         ' pnlMyEnrollments
@@ -324,11 +328,11 @@ Partial Class StudentDashboard
         ' lblMyEnrollmentsTitle
         ' 
         lblMyEnrollmentsTitle.AutoSize = True
-        lblMyEnrollmentsTitle.Font = New Font("Times New Roman", 24.0F, FontStyle.Bold)
+        lblMyEnrollmentsTitle.Font = New Font("Times New Roman", 24F, FontStyle.Bold)
         lblMyEnrollmentsTitle.ForeColor = Color.FromArgb(0, 122, 204)
         lblMyEnrollmentsTitle.Location = New Point(20, 15)
         lblMyEnrollmentsTitle.Name = "lblMyEnrollmentsTitle"
-        lblMyEnrollmentsTitle.Size = New Size(241, 36)
+        lblMyEnrollmentsTitle.Size = New Size(237, 36)
         lblMyEnrollmentsTitle.TabIndex = 0
         lblMyEnrollmentsTitle.Text = "My Enrollments"
         ' 
@@ -349,7 +353,7 @@ Partial Class StudentDashboard
         ' 
         btnRefreshEnrollments.BackColor = Color.FromArgb(0, 122, 204)
         btnRefreshEnrollments.FlatStyle = FlatStyle.Flat
-        btnRefreshEnrollments.Font = New Font("Times New Roman", 12.0F, FontStyle.Bold)
+        btnRefreshEnrollments.Font = New Font("Times New Roman", 12F, FontStyle.Bold)
         btnRefreshEnrollments.ForeColor = Color.White
         btnRefreshEnrollments.Location = New Point(740, 20)
         btnRefreshEnrollments.Name = "btnRefreshEnrollments"
@@ -379,28 +383,28 @@ Partial Class StudentDashboard
         ' lblViewGradesTitle
         ' 
         lblViewGradesTitle.AutoSize = True
-        lblViewGradesTitle.Font = New Font("Times New Roman", 24.0F, FontStyle.Bold)
+        lblViewGradesTitle.Font = New Font("Times New Roman", 24F, FontStyle.Bold)
         lblViewGradesTitle.ForeColor = Color.FromArgb(0, 122, 204)
         lblViewGradesTitle.Location = New Point(20, 15)
         lblViewGradesTitle.Name = "lblViewGradesTitle"
-        lblViewGradesTitle.Size = New Size(196, 36)
+        lblViewGradesTitle.Size = New Size(167, 36)
         lblViewGradesTitle.TabIndex = 0
         lblViewGradesTitle.Text = "My Grades"
         ' 
         ' lblSelectCourseGrade
         ' 
         lblSelectCourseGrade.AutoSize = True
-        lblSelectCourseGrade.Font = New Font("Times New Roman", 12.0F, FontStyle.Bold)
+        lblSelectCourseGrade.Font = New Font("Times New Roman", 12F, FontStyle.Bold)
         lblSelectCourseGrade.Location = New Point(20, 70)
         lblSelectCourseGrade.Name = "lblSelectCourseGrade"
-        lblSelectCourseGrade.Size = New Size(103, 19)
+        lblSelectCourseGrade.Size = New Size(107, 19)
         lblSelectCourseGrade.TabIndex = 1
         lblSelectCourseGrade.Text = "Select Course:"
         ' 
         ' cmbCourseForGrades
         ' 
         cmbCourseForGrades.DropDownStyle = ComboBoxStyle.DropDownList
-        cmbCourseForGrades.Font = New Font("Times New Roman", 12.0F)
+        cmbCourseForGrades.Font = New Font("Times New Roman", 12F)
         cmbCourseForGrades.FormattingEnabled = True
         cmbCourseForGrades.Location = New Point(20, 95)
         cmbCourseForGrades.Name = "cmbCourseForGrades"
@@ -411,7 +415,7 @@ Partial Class StudentDashboard
         ' 
         btnLoadGrades.BackColor = Color.FromArgb(0, 122, 204)
         btnLoadGrades.FlatStyle = FlatStyle.Flat
-        btnLoadGrades.Font = New Font("Times New Roman", 12.0F, FontStyle.Bold)
+        btnLoadGrades.Font = New Font("Times New Roman", 12F, FontStyle.Bold)
         btnLoadGrades.ForeColor = Color.White
         btnLoadGrades.Location = New Point(540, 93)
         btnLoadGrades.Name = "btnLoadGrades"
@@ -437,7 +441,7 @@ Partial Class StudentDashboard
         ' 
         btnRefreshGrades.BackColor = Color.FromArgb(46, 204, 113)
         btnRefreshGrades.FlatStyle = FlatStyle.Flat
-        btnRefreshGrades.Font = New Font("Times New Roman", 12.0F, FontStyle.Bold)
+        btnRefreshGrades.Font = New Font("Times New Roman", 12F, FontStyle.Bold)
         btnRefreshGrades.ForeColor = Color.White
         btnRefreshGrades.Location = New Point(710, 93)
         btnRefreshGrades.Name = "btnRefreshGrades"
@@ -468,28 +472,28 @@ Partial Class StudentDashboard
         ' lblGradeSummaryTitle
         ' 
         lblGradeSummaryTitle.AutoSize = True
-        lblGradeSummaryTitle.Font = New Font("Times New Roman", 24.0F, FontStyle.Bold)
+        lblGradeSummaryTitle.Font = New Font("Times New Roman", 24F, FontStyle.Bold)
         lblGradeSummaryTitle.ForeColor = Color.FromArgb(0, 122, 204)
         lblGradeSummaryTitle.Location = New Point(20, 15)
         lblGradeSummaryTitle.Name = "lblGradeSummaryTitle"
-        lblGradeSummaryTitle.Size = New Size(234, 36)
+        lblGradeSummaryTitle.Size = New Size(244, 36)
         lblGradeSummaryTitle.TabIndex = 0
         lblGradeSummaryTitle.Text = "Grade Summary"
         ' 
         ' lblFilterSemester
         ' 
         lblFilterSemester.AutoSize = True
-        lblFilterSemester.Font = New Font("Times New Roman", 12.0F, FontStyle.Bold)
+        lblFilterSemester.Font = New Font("Times New Roman", 12F, FontStyle.Bold)
         lblFilterSemester.Location = New Point(20, 60)
         lblFilterSemester.Name = "lblFilterSemester"
-        lblFilterSemester.Size = New Size(136, 19)
+        lblFilterSemester.Size = New Size(137, 19)
         lblFilterSemester.TabIndex = 1
         lblFilterSemester.Text = "Filter by Semester:"
         ' 
         ' cmbFilterSemester
         ' 
         cmbFilterSemester.DropDownStyle = ComboBoxStyle.DropDownList
-        cmbFilterSemester.Font = New Font("Times New Roman", 12.0F)
+        cmbFilterSemester.Font = New Font("Times New Roman", 12F)
         cmbFilterSemester.FormattingEnabled = True
         cmbFilterSemester.Location = New Point(20, 85)
         cmbFilterSemester.Name = "cmbFilterSemester"
@@ -500,7 +504,7 @@ Partial Class StudentDashboard
         ' 
         btnLoadGradeSummary.BackColor = Color.FromArgb(0, 122, 204)
         btnLoadGradeSummary.FlatStyle = FlatStyle.Flat
-        btnLoadGradeSummary.Font = New Font("Times New Roman", 12.0F, FontStyle.Bold)
+        btnLoadGradeSummary.Font = New Font("Times New Roman", 12F, FontStyle.Bold)
         btnLoadGradeSummary.ForeColor = Color.White
         btnLoadGradeSummary.Location = New Point(440, 83)
         btnLoadGradeSummary.Name = "btnLoadGradeSummary"
@@ -513,7 +517,7 @@ Partial Class StudentDashboard
         ' 
         btnRefreshGradeSummary.BackColor = Color.FromArgb(46, 204, 113)
         btnRefreshGradeSummary.FlatStyle = FlatStyle.Flat
-        btnRefreshGradeSummary.Font = New Font("Times New Roman", 12.0F, FontStyle.Bold)
+        btnRefreshGradeSummary.Font = New Font("Times New Roman", 12F, FontStyle.Bold)
         btnRefreshGradeSummary.ForeColor = Color.White
         btnRefreshGradeSummary.Location = New Point(610, 83)
         btnRefreshGradeSummary.Name = "btnRefreshGradeSummary"
@@ -528,13 +532,26 @@ Partial Class StudentDashboard
         dgvGradeSummary.AllowUserToDeleteRows = False
         dgvGradeSummary.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill
         dgvGradeSummary.BackgroundColor = SystemColors.Control
+        DataGridViewCellStyle9.Alignment = DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle9.BackColor = SystemColors.Control
+        DataGridViewCellStyle9.Font = New Font("Times New Roman", 10F, FontStyle.Bold)
+        DataGridViewCellStyle9.ForeColor = SystemColors.WindowText
+        DataGridViewCellStyle9.SelectionBackColor = SystemColors.Highlight
+        DataGridViewCellStyle9.SelectionForeColor = SystemColors.HighlightText
+        DataGridViewCellStyle9.WrapMode = DataGridViewTriState.True
+        dgvGradeSummary.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle9
         dgvGradeSummary.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        dgvGradeSummary.DefaultCellStyle.Font = New Font("Times New Roman", 10.0F)
-        dgvGradeSummary.ColumnHeadersDefaultCellStyle.Font = New Font("Times New Roman", 10.0F, FontStyle.Bold)
+        DataGridViewCellStyle10.Alignment = DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle10.BackColor = SystemColors.Window
+        DataGridViewCellStyle10.Font = New Font("Times New Roman", 10F)
+        DataGridViewCellStyle10.ForeColor = SystemColors.ControlText
+        DataGridViewCellStyle10.SelectionBackColor = SystemColors.Highlight
+        DataGridViewCellStyle10.SelectionForeColor = SystemColors.HighlightText
+        DataGridViewCellStyle10.WrapMode = DataGridViewTriState.False
+        dgvGradeSummary.DefaultCellStyle = DataGridViewCellStyle10
         dgvGradeSummary.Location = New Point(20, 125)
         dgvGradeSummary.Name = "dgvGradeSummary"
         dgvGradeSummary.ReadOnly = True
-        dgvGradeSummary.RowTemplate.Height = 25
         dgvGradeSummary.Size = New Size(1520, 350)
         dgvGradeSummary.TabIndex = 5
         ' 
@@ -552,11 +569,11 @@ Partial Class StudentDashboard
         ' lblCourseAveragesTitle
         ' 
         lblCourseAveragesTitle.AutoSize = True
-        lblCourseAveragesTitle.Font = New Font("Times New Roman", 16.0F, FontStyle.Bold)
+        lblCourseAveragesTitle.Font = New Font("Times New Roman", 16F, FontStyle.Bold)
         lblCourseAveragesTitle.ForeColor = Color.FromArgb(0, 122, 204)
         lblCourseAveragesTitle.Location = New Point(10, 10)
         lblCourseAveragesTitle.Name = "lblCourseAveragesTitle"
-        lblCourseAveragesTitle.Size = New Size(271, 25)
+        lblCourseAveragesTitle.Size = New Size(265, 25)
         lblCourseAveragesTitle.TabIndex = 0
         lblCourseAveragesTitle.Text = "Course Averages Summary"
         ' 
@@ -566,26 +583,39 @@ Partial Class StudentDashboard
         dgvCourseAverages.AllowUserToDeleteRows = False
         dgvCourseAverages.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill
         dgvCourseAverages.BackgroundColor = SystemColors.Control
+        DataGridViewCellStyle11.Alignment = DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle11.BackColor = SystemColors.Control
+        DataGridViewCellStyle11.Font = New Font("Times New Roman", 10F, FontStyle.Bold)
+        DataGridViewCellStyle11.ForeColor = SystemColors.WindowText
+        DataGridViewCellStyle11.SelectionBackColor = SystemColors.Highlight
+        DataGridViewCellStyle11.SelectionForeColor = SystemColors.HighlightText
+        DataGridViewCellStyle11.WrapMode = DataGridViewTriState.True
+        dgvCourseAverages.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle11
         dgvCourseAverages.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        dgvCourseAverages.DefaultCellStyle.Font = New Font("Times New Roman", 10.0F)
-        dgvCourseAverages.ColumnHeadersDefaultCellStyle.Font = New Font("Times New Roman", 10.0F, FontStyle.Bold)
+        DataGridViewCellStyle12.Alignment = DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle12.BackColor = SystemColors.Window
+        DataGridViewCellStyle12.Font = New Font("Times New Roman", 10F)
+        DataGridViewCellStyle12.ForeColor = SystemColors.ControlText
+        DataGridViewCellStyle12.SelectionBackColor = SystemColors.Highlight
+        DataGridViewCellStyle12.SelectionForeColor = SystemColors.HighlightText
+        DataGridViewCellStyle12.WrapMode = DataGridViewTriState.False
+        dgvCourseAverages.DefaultCellStyle = DataGridViewCellStyle12
         dgvCourseAverages.Location = New Point(10, 45)
         dgvCourseAverages.Name = "dgvCourseAverages"
         dgvCourseAverages.ReadOnly = True
-        dgvCourseAverages.RowTemplate.Height = 25
         dgvCourseAverages.Size = New Size(1220, 220)
         dgvCourseAverages.TabIndex = 1
         ' 
         ' lblOverallAverageDisplay
         ' 
         lblOverallAverageDisplay.BackColor = Color.FromArgb(0, 122, 204)
-        lblOverallAverageDisplay.Font = New Font("Times New Roman", 16.0F, FontStyle.Bold)
+        lblOverallAverageDisplay.Font = New Font("Times New Roman", 16F, FontStyle.Bold)
         lblOverallAverageDisplay.ForeColor = Color.White
         lblOverallAverageDisplay.Location = New Point(1250, 45)
         lblOverallAverageDisplay.Name = "lblOverallAverageDisplay"
         lblOverallAverageDisplay.Size = New Size(250, 220)
         lblOverallAverageDisplay.TabIndex = 2
-        lblOverallAverageDisplay.Text = "Overall Average" & vbCrLf & vbCrLf & "N/A" & vbCrLf & vbCrLf & "GPA: N/A"
+        lblOverallAverageDisplay.Text = "Overall Average" + vbCrLf + vbCrLf + "N/A" + vbCrLf + vbCrLf + "GPA: N/A"
         lblOverallAverageDisplay.TextAlign = ContentAlignment.MiddleCenter
         ' 
         ' StudentDashboard

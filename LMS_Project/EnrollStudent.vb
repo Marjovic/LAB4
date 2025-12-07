@@ -650,7 +650,7 @@ Public Class EnrollStudent
         If cmbBulkSemester.SelectedValue Is Nothing OrElse
            cmbBulkProgram.SelectedValue Is Nothing OrElse
       cmbBulkYearLevel.SelectedValue Is Nothing OrElse
-         cmbBulkDepartment.SelectedValue Is Nothing Then
+     cmbBulkDepartment.SelectedValue Is Nothing Then
             MessageBox.Show("Please select all required filters.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
             Return
         End If
@@ -678,7 +678,7 @@ Public Class EnrollStudent
                 End Using
 
                 ' Preview query: Get students and their AVAILABLE Course Offerings for the selected semester
-                ' Based on Course Offerings that match Program Curriculum requirements
+                ' FILTERED by courses taught by the currently logged-in instructor
                 Dim previewQuery As String = "SELECT DISTINCT " &
   "s.student_id, " &
    "co.offering_id, " &
@@ -693,14 +693,20 @@ Public Class EnrollStudent
      "  ELSE 'Ready to Enroll' " &
  "END as 'Status' " &
   "FROM Students s " &
-               "INNER JOIN Program_Curriculum pc ON s.program_id = pc.program_id " &
-         "    AND s.year_level_id = pc.year_level_id " &
+     "INNER JOIN Program_Curriculum pc ON s.program_id = pc.program_id " &
+  "    AND s.year_level_id = pc.year_level_id " &
       "    AND pc.semester_type_id = @semester_type_id " &
-       "    AND pc.is_active = TRUE " &
+ "    AND pc.is_active = TRUE " &
      "INNER JOIN Course_Offerings co ON pc.course_id = co.course_id " &
      " AND co.semester_id = @semester_id " &
-           "    AND co.offering_status = 'Open' " &
-     "INNER JOIN Courses c ON co.course_id = c.course_id " &
+"    AND co.offering_status = 'Open' "
+
+                ' Add instructor filter if current user is an instructor
+                If currentInstructorId > 0 Then
+                    previewQuery &= "    AND co.instructor_id = @instructor_id " & vbCrLf
+                End If
+
+                previewQuery &= "INNER JOIN Courses c ON co.course_id = c.course_id " &
    "LEFT JOIN Instructors i ON co.instructor_id = i.instructor_id " &
   "LEFT JOIN Enrollments e ON s.student_id = e.student_id " &
       " AND co.offering_id = e.offering_id " &
@@ -716,16 +722,27 @@ Public Class EnrollStudent
                     adapter.SelectCommand.Parameters.AddWithValue("@department_id", departmentId)
                     adapter.SelectCommand.Parameters.AddWithValue("@semester_type_id", semesterTypeId)
 
+                    ' Add instructor parameter if filtering
+                    If currentInstructorId > 0 Then
+                        adapter.SelectCommand.Parameters.AddWithValue("@instructor_id", currentInstructorId)
+                    End If
+
                     Dim previewTable As New DataTable()
                     adapter.Fill(previewTable)
 
                     If previewTable.Rows.Count = 0 Then
-                        MessageBox.Show("No students or course offerings found matching the selected criteria." & vbCrLf & vbCrLf &
+                        Dim noDataMessage As String = "No students or course offerings found matching the selected criteria." & vbCrLf & vbCrLf &
            "Please ensure:" & vbCrLf &
     "1. Students exist with the selected program, year level, and department" & vbCrLf &
-     "2. Program curriculum is defined for this program/year level/semester type" & vbCrLf &
-       "3. Course offerings (Open status) exist for the selected semester that match the curriculum",
-       "No Data Found", MessageBoxButtons.OK, MessageBoxIcon.Information)
+  "2. Program curriculum is defined for this program/year level/semester type" & vbCrLf &
+       "3. Course offerings (Open status) exist for the selected semester that match the curriculum"
+
+                        ' Add instructor-specific message if applicable
+                        If currentInstructorId > 0 Then
+                            noDataMessage &= vbCrLf & "4. You are assigned as the instructor for relevant course offerings"
+                        End If
+
+                        MessageBox.Show(noDataMessage, "No Data Found", MessageBoxButtons.OK, MessageBoxIcon.Information)
                         dgvBulkEnrollmentPreview.DataSource = Nothing
                         btnExecuteBulkEnrollment.Enabled = False
                         lblBulkInfo.Text = "No matching records found."
@@ -754,7 +771,12 @@ Public Class EnrollStudent
                         End If
                     Next
 
-                    lblBulkInfo.Text = $"Preview: {readyCount} enrollments ready, {alreadyCount} already enrolled"
+                    ' Update info label with instructor-specific message if applicable
+                    Dim infoMessage As String = $"Preview: {readyCount} enrollments ready, {alreadyCount} already enrolled"
+                    If currentInstructorId > 0 Then
+                        infoMessage &= " (filtered to your courses only)"
+                    End If
+                    lblBulkInfo.Text = infoMessage
                     btnExecuteBulkEnrollment.Enabled = (readyCount > 0)
                 End Using
             End Using
@@ -767,7 +789,7 @@ Public Class EnrollStudent
         Dim result As DialogResult = MessageBox.Show(
    "Are you sure you want to enroll all students shown in the preview?" & vbCrLf & vbCrLf &
       "This will create enrollments for all students marked as 'Ready to Enroll'.",
-          "Confirm Bulk Enrollment", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
+  "Confirm Bulk Enrollment", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
 
         If result = DialogResult.No Then Return
 
@@ -799,16 +821,23 @@ Public Class EnrollStudent
                 End Using
 
                 ' Get students and offerings to enroll based on Course Offerings
+                ' FILTERED by courses taught by the currently logged-in instructor
                 Dim enrollQuery As String = "SELECT DISTINCT s.student_id, co.offering_id " &
         "FROM Students s " &
       "INNER JOIN Program_Curriculum pc ON s.program_id = pc.program_id " &
-     "    AND s.year_level_id = pc.year_level_id " &
-        "    AND pc.semester_type_id = @semester_type_id " &
+  "    AND s.year_level_id = pc.year_level_id " &
+     "    AND pc.semester_type_id = @semester_type_id " &
        "    AND pc.is_active = TRUE " &
    "INNER JOIN Course_Offerings co ON pc.course_id = co.course_id " &
-      "    AND co.semester_id = @semester_id " &
-               "    AND co.offering_status = 'Open' " &
-             "LEFT JOIN Enrollments e ON s.student_id = e.student_id " &
+    "    AND co.semester_id = @semester_id " &
+       "    AND co.offering_status = 'Open' "
+
+                ' Add instructor filter if current user is an instructor
+                If currentInstructorId > 0 Then
+                    enrollQuery &= "    AND co.instructor_id = @instructor_id " & vbCrLf
+                End If
+
+                enrollQuery &= "LEFT JOIN Enrollments e ON s.student_id = e.student_id " &
 "    AND co.offering_id = e.offering_id " &
   "WHERE s.program_id = @program_id " &
  "    AND s.year_level_id = @year_level_id " &
@@ -823,6 +852,11 @@ Public Class EnrollStudent
                     cmd.Parameters.AddWithValue("@year_level_id", yearLevelId)
                     cmd.Parameters.AddWithValue("@department_id", departmentId)
                     cmd.Parameters.AddWithValue("@semester_type_id", semesterTypeId)
+
+                    ' Add instructor parameter if filtering
+                    If currentInstructorId > 0 Then
+                        cmd.Parameters.AddWithValue("@instructor_id", currentInstructorId)
+                    End If
 
                     Using reader As MySqlDataReader = cmd.ExecuteReader()
                         While reader.Read()
@@ -845,8 +879,8 @@ Public Class EnrollStudent
                 Dim failCount As Integer = 0
 
                 Dim insertQuery As String = "INSERT INTO Enrollments " &
-          "(student_id, offering_id, enrollment_date, status_id, created_at, updated_at) " &
-            "VALUES (@student_id, @offering_id, NOW(), @status_id, NOW(), NOW())"
+       "(student_id, offering_id, enrollment_date, status_id, created_at, updated_at) " &
+ "VALUES (@student_id, @offering_id, NOW(), @status_id, NOW(), NOW())"
 
                 For Each enrollment In enrollmentsToCreate
                     Try
@@ -863,11 +897,17 @@ Public Class EnrollStudent
                     End Try
                 Next
 
-                MessageBox.Show($"Bulk enrollment completed!" & vbCrLf & vbCrLf &
-            $"Successful: {successCount}" & vbCrLf &
-            $"Failed: {failCount}" & vbCrLf & vbCrLf &
-                 "Students have been enrolled in the available course offerings.",
-       "Bulk Enrollment Complete", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                Dim successMessage As String = $"Bulk enrollment completed!" & vbCrLf & vbCrLf &
+  $"Successful: {successCount}" & vbCrLf &
+  $"Failed: {failCount}" & vbCrLf & vbCrLf &
+                 "Students have been enrolled in the available course offerings."
+
+                ' Add instructor-specific message if applicable
+                If currentInstructorId > 0 Then
+                    successMessage &= vbCrLf & "(Enrollments created only for your courses)"
+                End If
+
+                MessageBox.Show(successMessage, "Bulk Enrollment Complete", MessageBoxButtons.OK, MessageBoxIcon.Information)
 
                 ' Refresh preview and enrollments data
                 btnPreviewBulkEnrollment_Click(Nothing, Nothing)

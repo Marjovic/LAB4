@@ -23,8 +23,10 @@ Partial Class GradingManagement
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         pnlSidebar = New Panel()
+        btnReports = New Button()
         btnAssignmentType = New Button()
         btnOfferingGradeWeight = New Button()
+        btnViewStudentGrades = New Button()
         lblGradingTitle = New Label()
         btnClose = New Button()
         pnlMainContent = New Panel()
@@ -34,6 +36,8 @@ Partial Class GradingManagement
         ' pnlSidebar
         ' 
         pnlSidebar.BackColor = Color.Navy
+        pnlSidebar.Controls.Add(btnReports)
+        pnlSidebar.Controls.Add(btnViewStudentGrades)
         pnlSidebar.Controls.Add(btnOfferingGradeWeight)
         pnlSidebar.Controls.Add(btnAssignmentType)
         pnlSidebar.Controls.Add(lblGradingTitle)
@@ -43,6 +47,21 @@ Partial Class GradingManagement
         pnlSidebar.Name = "pnlSidebar"
         pnlSidebar.Size = New Size(220, 800)
         pnlSidebar.TabIndex = 0
+        ' 
+        ' btnReports
+        ' 
+        btnReports.BackColor = Color.FromArgb(CByte(35), CByte(35), CByte(38))
+        btnReports.Dock = DockStyle.Top
+        btnReports.FlatAppearance.BorderSize = 0
+        btnReports.FlatStyle = FlatStyle.Flat
+        btnReports.Font = New Font("Times New Roman", 11.0F)
+        btnReports.ForeColor = Color.White
+        btnReports.Location = New Point(0, 230)
+        btnReports.Name = "btnReports"
+        btnReports.Size = New Size(220, 50)
+        btnReports.TabIndex = 4
+        btnReports.Text = "📊 Reports"
+        btnReports.UseVisualStyleBackColor = False
         ' 
         ' btnAssignmentType
         ' 
@@ -74,6 +93,21 @@ Partial Class GradingManagement
         btnOfferingGradeWeight.Text = "⚖️ Offerings Grade Management"
         btnOfferingGradeWeight.UseVisualStyleBackColor = False
         ' 
+        ' btnViewStudentGrades
+        ' 
+        btnViewStudentGrades.BackColor = Color.FromArgb(CByte(35), CByte(35), CByte(38))
+        btnViewStudentGrades.Dock = DockStyle.Top
+        btnViewStudentGrades.FlatAppearance.BorderSize = 0
+        btnViewStudentGrades.FlatStyle = FlatStyle.Flat
+        btnViewStudentGrades.Font = New Font("Times New Roman", 11.0F)
+        btnViewStudentGrades.ForeColor = Color.White
+        btnViewStudentGrades.Location = New Point(0, 180)
+        btnViewStudentGrades.Name = "btnViewStudentGrades"
+        btnViewStudentGrades.Size = New Size(220, 50)
+        btnViewStudentGrades.TabIndex = 3
+        btnViewStudentGrades.Text = "📊 View Student Grades"
+        btnViewStudentGrades.UseVisualStyleBackColor = False
+        ' 
         ' lblGradingTitle
         ' 
         lblGradingTitle.BackColor = Color.Navy
@@ -98,7 +132,7 @@ Partial Class GradingManagement
         btnClose.Location = New Point(0, 750)
         btnClose.Name = "btnClose"
         btnClose.Size = New Size(220, 50)
-        btnClose.TabIndex = 3
+        btnClose.TabIndex = 5
         btnClose.Text = "🚪 Close"
         btnClose.UseVisualStyleBackColor = False
         ' 
@@ -131,6 +165,8 @@ Partial Class GradingManagement
     Friend WithEvents lblGradingTitle As Label
     Friend WithEvents btnAssignmentType As Button
     Friend WithEvents btnOfferingGradeWeight As Button
+    Friend WithEvents btnViewStudentGrades As Button
+    Friend WithEvents btnReports As Button
     Friend WithEvents btnClose As Button
 
     ' Main Content

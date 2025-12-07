@@ -23,6 +23,7 @@ Partial Class TeacherDashboard
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         pnlSidebar = New Panel()
+        btnReports = New Button()
         btnCalculateFinalGrades = New Button()
         btnCalculateGrade = New Button()
         btnEnrollmentManagement = New Button()
@@ -91,6 +92,7 @@ Partial Class TeacherDashboard
         ' pnlSidebar
         ' 
         pnlSidebar.BackColor = Color.Navy
+        pnlSidebar.Controls.Add(btnReports)
         pnlSidebar.Controls.Add(btnCalculateFinalGrades)
         pnlSidebar.Controls.Add(btnCalculateGrade)
         pnlSidebar.Controls.Add(btnEnrollmentManagement)
@@ -102,6 +104,23 @@ Partial Class TeacherDashboard
         pnlSidebar.Name = "pnlSidebar"
         pnlSidebar.Size = New Size(200, 800)
         pnlSidebar.TabIndex = 0
+        ' 
+        ' btnReports
+        ' 
+        btnReports.BackColor = SystemColors.MenuHighlight
+        btnReports.Dock = DockStyle.Top
+        btnReports.FlatAppearance.BorderSize = 0
+        btnReports.FlatStyle = FlatStyle.Flat
+        btnReports.Font = New Font("Times New Roman", 12.0F)
+        btnReports.ForeColor = Color.White
+        btnReports.Location = New Point(0, 278)
+        btnReports.Name = "btnReports"
+        btnReports.Padding = New Padding(10, 0, 0, 0)
+        btnReports.Size = New Size(200, 50)
+        btnReports.TabIndex = 5
+        btnReports.Text = "📊 Reports"
+        btnReports.TextAlign = ContentAlignment.MiddleLeft
+        btnReports.UseVisualStyleBackColor = False
         ' 
         ' btnCalculateFinalGrades
         ' 
@@ -753,6 +772,7 @@ Partial Class TeacherDashboard
     Friend WithEvents btnEnrollmentManagement As Button
     Friend WithEvents btnCalculateGrade As Button
     Friend WithEvents btnCalculateFinalGrades As Button
+    Friend WithEvents btnReports As Button
     Friend WithEvents btnLogout As Button
 
     ' Main Content

@@ -24,6 +24,7 @@ Partial Class Admin
     Private Sub InitializeComponent()
         Dim DataGridViewCellStyle1 As DataGridViewCellStyle = New DataGridViewCellStyle()
         pnlSidebar = New Panel()
+        btnGradingManagement = New Button()
         btnEnrollmentManagement = New Button()
         btnCourseManagement = New Button()
         btnProgramManagement = New Button()
@@ -31,7 +32,6 @@ Partial Class Admin
         btnDepartmentDetails = New Button()
         btnUpdateDeleteDepartment = New Button()
         btnAddDepartment = New Button()
-        btnGradingManagement = New Button()
         btnDepartmentManagement = New Button()
         pnlUserManagementSubmenu = New Panel()
         btnResetPassword = New Button()
@@ -255,7 +255,7 @@ Partial Class Admin
         btnEnrollmentManagement.Padding = New Padding(10, 0, 0, 0)
         btnEnrollmentManagement.Size = New Size(227, 50)
         btnEnrollmentManagement.TabIndex = 8
-        btnEnrollmentManagement.Text = "📝Enrollment Management"
+        btnEnrollmentManagement.Text = "📝Semester/Term Management"
         btnEnrollmentManagement.TextAlign = ContentAlignment.MiddleLeft
         btnEnrollmentManagement.UseVisualStyleBackColor = False
         ' 
@@ -284,7 +284,7 @@ Partial Class Admin
         btnProgramManagement.FlatStyle = FlatStyle.Flat
         btnProgramManagement.Font = New Font("Times New Roman", 12.0F)
         btnProgramManagement.ForeColor = Color.White
-        btnProgramManagement.Location = New Point(0, 546)  ' ← This position will shift
+        btnProgramManagement.Location = New Point(0, 546)
         btnProgramManagement.Name = "btnProgramManagement"
         btnProgramManagement.Padding = New Padding(10, 0, 0, 0)
         btnProgramManagement.Size = New Size(227, 50)
@@ -292,7 +292,6 @@ Partial Class Admin
         btnProgramManagement.Text = "🎓Program Management"
         btnProgramManagement.TextAlign = ContentAlignment.MiddleLeft
         btnProgramManagement.UseVisualStyleBackColor = False
-
         ' 
         ' pnlDepartmentManagementSubmenu
         ' 
@@ -506,7 +505,7 @@ Partial Class Admin
         ' 
         ' btnLogout
         ' 
-        btnLogout.BackColor = Color.FromArgb(192, 0, 0)
+        btnLogout.BackColor = Color.FromArgb(CByte(192), CByte(0), CByte(0))
         btnLogout.Dock = DockStyle.Bottom
         btnLogout.FlatAppearance.BorderSize = 0
         btnLogout.FlatStyle = FlatStyle.Flat
@@ -523,7 +522,7 @@ Partial Class Admin
         ' 
         ' pnlMainContent
         ' 
-        pnlMainContent.BackColor = Color.FromArgb(240, 240, 240)
+        pnlMainContent.BackColor = Color.FromArgb(CByte(240), CByte(240), CByte(240))
         pnlMainContent.Controls.Add(pnlDepartmentManagement)
         pnlMainContent.Controls.Add(pnlAddDepartment)
         pnlMainContent.Controls.Add(pnlUpdateDeleteDepartment)
@@ -562,13 +561,13 @@ Partial Class Admin
         dgvDepartments.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize
         DataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft
         DataGridViewCellStyle1.BackColor = SystemColors.Window
-        DataGridViewCellStyle1.Font = New Font("Times New Roman", 11.0F, FontStyle.Regular, GraphicsUnit.Point, 0)
+        DataGridViewCellStyle1.Font = New Font("Times New Roman", 11.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         DataGridViewCellStyle1.ForeColor = SystemColors.ControlText
         DataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight
         DataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText
         DataGridViewCellStyle1.WrapMode = DataGridViewTriState.True
         dgvDepartments.DefaultCellStyle = DataGridViewCellStyle1
-        dgvDepartments.Font = New Font("Times New Roman", 11.0F, FontStyle.Regular, GraphicsUnit.Point, 0)
+        dgvDepartments.Font = New Font("Times New Roman", 11.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         dgvDepartments.Location = New Point(20, 80)
         dgvDepartments.Name = "dgvDepartments"
         dgvDepartments.ReadOnly = True
@@ -581,11 +580,11 @@ Partial Class Admin
         ' lblDepartmentManagementTitle
         ' 
         lblDepartmentManagementTitle.AutoSize = True
-        lblDepartmentManagementTitle.Font = New Font("Times New Roman", 24.0F, FontStyle.Bold, GraphicsUnit.Point, 0)
-        lblDepartmentManagementTitle.ForeColor = Color.FromArgb(0, 122, 204)
+        lblDepartmentManagementTitle.Font = New Font("Times New Roman", 24.0F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
+        lblDepartmentManagementTitle.ForeColor = Color.FromArgb(CByte(0), CByte(122), CByte(204))
         lblDepartmentManagementTitle.Location = New Point(20, 20)
         lblDepartmentManagementTitle.Name = "lblDepartmentManagementTitle"
-        lblDepartmentManagementTitle.Size = New Size(370, 36)
+        lblDepartmentManagementTitle.Size = New Size(242, 36)
         lblDepartmentManagementTitle.TabIndex = 0
         lblDepartmentManagementTitle.Text = "All Departments"
         ' 
@@ -614,8 +613,8 @@ Partial Class Admin
         ' lblAddDepartmentTitle
         ' 
         lblAddDepartmentTitle.AutoSize = True
-        lblAddDepartmentTitle.Font = New Font("Times New Roman", 20.0F, FontStyle.Bold, GraphicsUnit.Point, 0)
-        lblAddDepartmentTitle.ForeColor = Color.FromArgb(0, 122, 204)
+        lblAddDepartmentTitle.Font = New Font("Times New Roman", 20.0F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
+        lblAddDepartmentTitle.ForeColor = Color.FromArgb(CByte(0), CByte(122), CByte(204))
         lblAddDepartmentTitle.Location = New Point(30, 20)
         lblAddDepartmentTitle.Name = "lblAddDepartmentTitle"
         lblAddDepartmentTitle.Size = New Size(268, 31)
@@ -625,7 +624,7 @@ Partial Class Admin
         ' lblDeptCode
         ' 
         lblDeptCode.AutoSize = True
-        lblDeptCode.Font = New Font("Times New Roman", 12.0F, FontStyle.Regular, GraphicsUnit.Point, 0)
+        lblDeptCode.Font = New Font("Times New Roman", 12.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         lblDeptCode.Location = New Point(50, 75)
         lblDeptCode.Name = "lblDeptCode"
         lblDeptCode.Size = New Size(130, 19)
@@ -635,7 +634,7 @@ Partial Class Admin
         ' txtDeptCode
         ' 
         txtDeptCode.CharacterCasing = CharacterCasing.Upper
-        txtDeptCode.Font = New Font("Times New Roman", 12.0F, FontStyle.Regular, GraphicsUnit.Point, 0)
+        txtDeptCode.Font = New Font("Times New Roman", 12.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         txtDeptCode.Location = New Point(50, 97)
         txtDeptCode.Name = "txtDeptCode"
         txtDeptCode.Size = New Size(400, 26)
@@ -644,7 +643,7 @@ Partial Class Admin
         ' lblDeptName
         ' 
         lblDeptName.AutoSize = True
-        lblDeptName.Font = New Font("Times New Roman", 12.0F, FontStyle.Regular, GraphicsUnit.Point, 0)
+        lblDeptName.Font = New Font("Times New Roman", 12.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         lblDeptName.Location = New Point(50, 145)
         lblDeptName.Name = "lblDeptName"
         lblDeptName.Size = New Size(133, 19)
@@ -653,7 +652,7 @@ Partial Class Admin
         ' 
         ' txtDeptName
         ' 
-        txtDeptName.Font = New Font("Times New Roman", 12.0F, FontStyle.Regular, GraphicsUnit.Point, 0)
+        txtDeptName.Font = New Font("Times New Roman", 12.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         txtDeptName.Location = New Point(50, 167)
         txtDeptName.Name = "txtDeptName"
         txtDeptName.Size = New Size(790, 26)
@@ -662,7 +661,7 @@ Partial Class Admin
         ' lblDeptDescription
         ' 
         lblDeptDescription.AutoSize = True
-        lblDeptDescription.Font = New Font("Times New Roman", 12.0F, FontStyle.Regular, GraphicsUnit.Point, 0)
+        lblDeptDescription.Font = New Font("Times New Roman", 12.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         lblDeptDescription.Location = New Point(50, 215)
         lblDeptDescription.Name = "lblDeptDescription"
         lblDeptDescription.Size = New Size(144, 19)
@@ -671,7 +670,7 @@ Partial Class Admin
         ' 
         ' txtDeptDescription
         ' 
-        txtDeptDescription.Font = New Font("Times New Roman", 12.0F, FontStyle.Regular, GraphicsUnit.Point, 0)
+        txtDeptDescription.Font = New Font("Times New Roman", 12.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         txtDeptDescription.Location = New Point(50, 237)
         txtDeptDescription.Multiline = True
         txtDeptDescription.Name = "txtDeptDescription"
@@ -681,7 +680,7 @@ Partial Class Admin
         ' lblDeptHeadInstructor
         ' 
         lblDeptHeadInstructor.AutoSize = True
-        lblDeptHeadInstructor.Font = New Font("Times New Roman", 12.0F, FontStyle.Regular, GraphicsUnit.Point, 0)
+        lblDeptHeadInstructor.Font = New Font("Times New Roman", 12.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         lblDeptHeadInstructor.Location = New Point(50, 340)
         lblDeptHeadInstructor.Name = "lblDeptHeadInstructor"
         lblDeptHeadInstructor.Size = New Size(170, 19)
@@ -691,7 +690,7 @@ Partial Class Admin
         ' cmbDeptHeadInstructor
         ' 
         cmbDeptHeadInstructor.DropDownStyle = ComboBoxStyle.DropDownList
-        cmbDeptHeadInstructor.Font = New Font("Times New Roman", 12.0F, FontStyle.Regular, GraphicsUnit.Point, 0)
+        cmbDeptHeadInstructor.Font = New Font("Times New Roman", 12.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         cmbDeptHeadInstructor.FormattingEnabled = True
         cmbDeptHeadInstructor.Location = New Point(50, 362)
         cmbDeptHeadInstructor.Name = "cmbDeptHeadInstructor"
@@ -700,9 +699,9 @@ Partial Class Admin
         ' 
         ' btnSubmitDepartment
         ' 
-        btnSubmitDepartment.BackColor = Color.FromArgb(0, 122, 204)
+        btnSubmitDepartment.BackColor = Color.FromArgb(CByte(0), CByte(122), CByte(204))
         btnSubmitDepartment.FlatStyle = FlatStyle.Flat
-        btnSubmitDepartment.Font = New Font("Times New Roman", 12.0F, FontStyle.Bold, GraphicsUnit.Point, 0)
+        btnSubmitDepartment.Font = New Font("Times New Roman", 12.0F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
         btnSubmitDepartment.ForeColor = Color.White
         btnSubmitDepartment.Location = New Point(50, 420)
         btnSubmitDepartment.Name = "btnSubmitDepartment"
@@ -733,8 +732,8 @@ Partial Class Admin
         ' lblUpdateDeleteDeptTitle
         ' 
         lblUpdateDeleteDeptTitle.AutoSize = True
-        lblUpdateDeleteDeptTitle.Font = New Font("Times New Roman", 24.0F, FontStyle.Bold, GraphicsUnit.Point, 0)
-        lblUpdateDeleteDeptTitle.ForeColor = Color.FromArgb(0, 122, 204)
+        lblUpdateDeleteDeptTitle.Font = New Font("Times New Roman", 24.0F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
+        lblUpdateDeleteDeptTitle.ForeColor = Color.FromArgb(CByte(0), CByte(122), CByte(204))
         lblUpdateDeleteDeptTitle.Location = New Point(20, 20)
         lblUpdateDeleteDeptTitle.Name = "lblUpdateDeleteDeptTitle"
         lblUpdateDeleteDeptTitle.Size = New Size(448, 36)
@@ -744,7 +743,7 @@ Partial Class Admin
         ' lblSelectDepartment
         ' 
         lblSelectDepartment.AutoSize = True
-        lblSelectDepartment.Font = New Font("Times New Roman", 14.0F, FontStyle.Regular, GraphicsUnit.Point, 0)
+        lblSelectDepartment.Font = New Font("Times New Roman", 14.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         lblSelectDepartment.Location = New Point(40, 80)
         lblSelectDepartment.Name = "lblSelectDepartment"
         lblSelectDepartment.Size = New Size(146, 21)
@@ -754,7 +753,7 @@ Partial Class Admin
         ' cmbSelectDepartment
         ' 
         cmbSelectDepartment.DropDownStyle = ComboBoxStyle.DropDownList
-        cmbSelectDepartment.Font = New Font("Times New Roman", 14.0F, FontStyle.Regular, GraphicsUnit.Point, 0)
+        cmbSelectDepartment.Font = New Font("Times New Roman", 14.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         cmbSelectDepartment.FormattingEnabled = True
         cmbSelectDepartment.Location = New Point(40, 105)
         cmbSelectDepartment.Name = "cmbSelectDepartment"
@@ -763,9 +762,9 @@ Partial Class Admin
         ' 
         ' btnLoadDepartmentData
         ' 
-        btnLoadDepartmentData.BackColor = Color.FromArgb(0, 122, 204)
+        btnLoadDepartmentData.BackColor = Color.FromArgb(CByte(0), CByte(122), CByte(204))
         btnLoadDepartmentData.FlatStyle = FlatStyle.Flat
-        btnLoadDepartmentData.Font = New Font("Times New Roman", 12.0F, FontStyle.Bold, GraphicsUnit.Point, 0)
+        btnLoadDepartmentData.Font = New Font("Times New Roman", 12.0F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
         btnLoadDepartmentData.ForeColor = Color.White
         btnLoadDepartmentData.Location = New Point(460, 105)
         btnLoadDepartmentData.Name = "btnLoadDepartmentData"
@@ -796,7 +795,7 @@ Partial Class Admin
         ' lblUpdateDeptCode
         ' 
         lblUpdateDeptCode.AutoSize = True
-        lblUpdateDeptCode.Font = New Font("Times New Roman", 12.0F, FontStyle.Regular, GraphicsUnit.Point, 0)
+        lblUpdateDeptCode.Font = New Font("Times New Roman", 12.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         lblUpdateDeptCode.Location = New Point(50, 30)
         lblUpdateDeptCode.Name = "lblUpdateDeptCode"
         lblUpdateDeptCode.Size = New Size(130, 19)
@@ -806,7 +805,7 @@ Partial Class Admin
         ' txtUpdateDeptCode
         ' 
         txtUpdateDeptCode.CharacterCasing = CharacterCasing.Upper
-        txtUpdateDeptCode.Font = New Font("Times New Roman", 12.0F, FontStyle.Regular, GraphicsUnit.Point, 0)
+        txtUpdateDeptCode.Font = New Font("Times New Roman", 12.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         txtUpdateDeptCode.Location = New Point(50, 52)
         txtUpdateDeptCode.Name = "txtUpdateDeptCode"
         txtUpdateDeptCode.Size = New Size(400, 26)
@@ -815,7 +814,7 @@ Partial Class Admin
         ' lblUpdateDeptName
         ' 
         lblUpdateDeptName.AutoSize = True
-        lblUpdateDeptName.Font = New Font("Times New Roman", 12.0F, FontStyle.Regular, GraphicsUnit.Point, 0)
+        lblUpdateDeptName.Font = New Font("Times New Roman", 12.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         lblUpdateDeptName.Location = New Point(50, 100)
         lblUpdateDeptName.Name = "lblUpdateDeptName"
         lblUpdateDeptName.Size = New Size(133, 19)
@@ -824,7 +823,7 @@ Partial Class Admin
         ' 
         ' txtUpdateDeptName
         ' 
-        txtUpdateDeptName.Font = New Font("Times New Roman", 12.0F, FontStyle.Regular, GraphicsUnit.Point, 0)
+        txtUpdateDeptName.Font = New Font("Times New Roman", 12.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         txtUpdateDeptName.Location = New Point(50, 122)
         txtUpdateDeptName.Name = "txtUpdateDeptName"
         txtUpdateDeptName.Size = New Size(790, 26)
@@ -833,7 +832,7 @@ Partial Class Admin
         ' lblUpdateDeptDescription
         ' 
         lblUpdateDeptDescription.AutoSize = True
-        lblUpdateDeptDescription.Font = New Font("Times New Roman", 12.0F, FontStyle.Regular, GraphicsUnit.Point, 0)
+        lblUpdateDeptDescription.Font = New Font("Times New Roman", 12.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         lblUpdateDeptDescription.Location = New Point(50, 170)
         lblUpdateDeptDescription.Name = "lblUpdateDeptDescription"
         lblUpdateDeptDescription.Size = New Size(144, 19)
@@ -842,7 +841,7 @@ Partial Class Admin
         ' 
         ' txtUpdateDeptDescription
         ' 
-        txtUpdateDeptDescription.Font = New Font("Times New Roman", 12.0F, FontStyle.Regular, GraphicsUnit.Point, 0)
+        txtUpdateDeptDescription.Font = New Font("Times New Roman", 12.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         txtUpdateDeptDescription.Location = New Point(50, 192)
         txtUpdateDeptDescription.Multiline = True
         txtUpdateDeptDescription.Name = "txtUpdateDeptDescription"
@@ -852,7 +851,7 @@ Partial Class Admin
         ' lblUpdateDeptHeadInstructor
         ' 
         lblUpdateDeptHeadInstructor.AutoSize = True
-        lblUpdateDeptHeadInstructor.Font = New Font("Times New Roman", 12.0F, FontStyle.Regular, GraphicsUnit.Point, 0)
+        lblUpdateDeptHeadInstructor.Font = New Font("Times New Roman", 12.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         lblUpdateDeptHeadInstructor.Location = New Point(50, 295)
         lblUpdateDeptHeadInstructor.Name = "lblUpdateDeptHeadInstructor"
         lblUpdateDeptHeadInstructor.Size = New Size(170, 19)
@@ -862,7 +861,7 @@ Partial Class Admin
         ' cmbUpdateDeptHeadInstructor
         ' 
         cmbUpdateDeptHeadInstructor.DropDownStyle = ComboBoxStyle.DropDownList
-        cmbUpdateDeptHeadInstructor.Font = New Font("Times New Roman", 12.0F, FontStyle.Regular, GraphicsUnit.Point, 0)
+        cmbUpdateDeptHeadInstructor.Font = New Font("Times New Roman", 12.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         cmbUpdateDeptHeadInstructor.FormattingEnabled = True
         cmbUpdateDeptHeadInstructor.Location = New Point(50, 317)
         cmbUpdateDeptHeadInstructor.Name = "cmbUpdateDeptHeadInstructor"
@@ -871,9 +870,9 @@ Partial Class Admin
         ' 
         ' btnUpdateDepartment
         ' 
-        btnUpdateDepartment.BackColor = Color.FromArgb(0, 122, 204)
+        btnUpdateDepartment.BackColor = Color.FromArgb(CByte(0), CByte(122), CByte(204))
         btnUpdateDepartment.FlatStyle = FlatStyle.Flat
-        btnUpdateDepartment.Font = New Font("Times New Roman", 12.0F, FontStyle.Bold, GraphicsUnit.Point, 0)
+        btnUpdateDepartment.Font = New Font("Times New Roman", 12.0F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
         btnUpdateDepartment.ForeColor = Color.White
         btnUpdateDepartment.Location = New Point(40, 570)
         btnUpdateDepartment.Name = "btnUpdateDepartment"
@@ -885,9 +884,9 @@ Partial Class Admin
         ' 
         ' btnDeleteDepartment
         ' 
-        btnDeleteDepartment.BackColor = Color.FromArgb(255, 71, 71)
+        btnDeleteDepartment.BackColor = Color.FromArgb(CByte(255), CByte(71), CByte(71))
         btnDeleteDepartment.FlatStyle = FlatStyle.Flat
-        btnDeleteDepartment.Font = New Font("Times New Roman", 12.0F, FontStyle.Bold, GraphicsUnit.Point, 0)
+        btnDeleteDepartment.Font = New Font("Times New Roman", 12.0F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
         btnDeleteDepartment.ForeColor = Color.White
         btnDeleteDepartment.Location = New Point(260, 570)
         btnDeleteDepartment.Name = "btnDeleteDepartment"
@@ -913,7 +912,7 @@ Partial Class Admin
         ' lblDashboardTitle
         ' 
         lblDashboardTitle.AutoSize = True
-        lblDashboardTitle.Font = New Font("Times New Roman", 24.0F, FontStyle.Bold, GraphicsUnit.Point, 0)
+        lblDashboardTitle.Font = New Font("Times New Roman", 24.0F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
         lblDashboardTitle.ForeColor = Color.Black
         lblDashboardTitle.Location = New Point(20, 15)
         lblDashboardTitle.Name = "lblDashboardTitle"
@@ -924,7 +923,7 @@ Partial Class Admin
         ' lblWelcome
         ' 
         lblWelcome.AutoSize = True
-        lblWelcome.Font = New Font("Times New Roman", 16.0F, FontStyle.Regular, GraphicsUnit.Point, 0)
+        lblWelcome.Font = New Font("Times New Roman", 16.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         lblWelcome.Location = New Point(20, 70)
         lblWelcome.Name = "lblWelcome"
         lblWelcome.Size = New Size(224, 25)
@@ -944,37 +943,37 @@ Partial Class Admin
         ' lblTotalUsers
         ' 
         lblTotalUsers.BackColor = SystemColors.MenuHighlight
-        lblTotalUsers.Font = New Font("Times New Roman", 18.0F, FontStyle.Bold, GraphicsUnit.Point, 0)
+        lblTotalUsers.Font = New Font("Times New Roman", 18.0F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
         lblTotalUsers.ForeColor = Color.White
         lblTotalUsers.Location = New Point(3, 10)
         lblTotalUsers.Name = "lblTotalUsers"
         lblTotalUsers.Size = New Size(280, 130)
         lblTotalUsers.TabIndex = 0
-        lblTotalUsers.Text = "Total Users" + vbCrLf + "0"
+        lblTotalUsers.Text = "Total Users" & vbCrLf & "0"
         lblTotalUsers.TextAlign = ContentAlignment.MiddleCenter
         ' 
         ' lblTotalInstructors
         ' 
         lblTotalInstructors.BackColor = Color.RoyalBlue
-        lblTotalInstructors.Font = New Font("Times New Roman", 18.0F, FontStyle.Bold, GraphicsUnit.Point, 0)
+        lblTotalInstructors.Font = New Font("Times New Roman", 18.0F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
         lblTotalInstructors.ForeColor = Color.White
         lblTotalInstructors.Location = New Point(300, 10)
         lblTotalInstructors.Name = "lblTotalInstructors"
         lblTotalInstructors.Size = New Size(280, 130)
         lblTotalInstructors.TabIndex = 1
-        lblTotalInstructors.Text = "Total Instructors" + vbCrLf + "0"
+        lblTotalInstructors.Text = "Total Instructors" & vbCrLf & "0"
         lblTotalInstructors.TextAlign = ContentAlignment.MiddleCenter
         ' 
         ' lblTotalStudents
         ' 
         lblTotalStudents.BackColor = Color.MediumBlue
-        lblTotalStudents.Font = New Font("Times New Roman", 18.0F, FontStyle.Bold, GraphicsUnit.Point, 0)
+        lblTotalStudents.Font = New Font("Times New Roman", 18.0F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
         lblTotalStudents.ForeColor = Color.White
         lblTotalStudents.Location = New Point(598, 11)
         lblTotalStudents.Name = "lblTotalStudents"
         lblTotalStudents.Size = New Size(280, 130)
         lblTotalStudents.TabIndex = 2
-        lblTotalStudents.Text = "Total Students" + vbCrLf + "0"
+        lblTotalStudents.Text = "Total Students" & vbCrLf & "0"
         lblTotalStudents.TextAlign = ContentAlignment.MiddleCenter
         ' 
         ' pnlAddUser
@@ -1008,8 +1007,8 @@ Partial Class Admin
         ' lblAddUserTitle
         ' 
         lblAddUserTitle.AutoSize = True
-        lblAddUserTitle.Font = New Font("Times New Roman", 20.0F, FontStyle.Bold, GraphicsUnit.Point, 0)
-        lblAddUserTitle.ForeColor = Color.FromArgb(0, 122, 204)
+        lblAddUserTitle.Font = New Font("Times New Roman", 20.0F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
+        lblAddUserTitle.ForeColor = Color.FromArgb(CByte(0), CByte(122), CByte(204))
         lblAddUserTitle.Location = New Point(30, 20)
         lblAddUserTitle.Name = "lblAddUserTitle"
         lblAddUserTitle.Size = New Size(183, 31)
@@ -1019,7 +1018,7 @@ Partial Class Admin
         ' lblFirstName
         ' 
         lblFirstName.AutoSize = True
-        lblFirstName.Font = New Font("Times New Roman", 12.0F, FontStyle.Regular, GraphicsUnit.Point, 0)
+        lblFirstName.Font = New Font("Times New Roman", 12.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         lblFirstName.Location = New Point(50, 75)
         lblFirstName.Name = "lblFirstName"
         lblFirstName.Size = New Size(89, 19)
@@ -1028,7 +1027,7 @@ Partial Class Admin
         ' 
         ' txtFirstName
         ' 
-        txtFirstName.Font = New Font("Times New Roman", 12.0F, FontStyle.Regular, GraphicsUnit.Point, 0)
+        txtFirstName.Font = New Font("Times New Roman", 12.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         txtFirstName.Location = New Point(50, 97)
         txtFirstName.Name = "txtFirstName"
         txtFirstName.Size = New Size(250, 26)
@@ -1037,7 +1036,7 @@ Partial Class Admin
         ' lblMiddleName
         ' 
         lblMiddleName.AutoSize = True
-        lblMiddleName.Font = New Font("Times New Roman", 12.0F, FontStyle.Regular, GraphicsUnit.Point, 0)
+        lblMiddleName.Font = New Font("Times New Roman", 12.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         lblMiddleName.Location = New Point(320, 75)
         lblMiddleName.Name = "lblMiddleName"
         lblMiddleName.Size = New Size(159, 19)
@@ -1046,7 +1045,7 @@ Partial Class Admin
         ' 
         ' txtMiddleName
         ' 
-        txtMiddleName.Font = New Font("Times New Roman", 12.0F, FontStyle.Regular, GraphicsUnit.Point, 0)
+        txtMiddleName.Font = New Font("Times New Roman", 12.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         txtMiddleName.Location = New Point(320, 97)
         txtMiddleName.Name = "txtMiddleName"
         txtMiddleName.Size = New Size(250, 26)
@@ -1055,7 +1054,7 @@ Partial Class Admin
         ' lblLastName
         ' 
         lblLastName.AutoSize = True
-        lblLastName.Font = New Font("Times New Roman", 12.0F, FontStyle.Regular, GraphicsUnit.Point, 0)
+        lblLastName.Font = New Font("Times New Roman", 12.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         lblLastName.Location = New Point(590, 75)
         lblLastName.Name = "lblLastName"
         lblLastName.Size = New Size(88, 19)
@@ -1064,7 +1063,7 @@ Partial Class Admin
         ' 
         ' txtLastName
         ' 
-        txtLastName.Font = New Font("Times New Roman", 12.0F, FontStyle.Regular, GraphicsUnit.Point, 0)
+        txtLastName.Font = New Font("Times New Roman", 12.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         txtLastName.Location = New Point(590, 97)
         txtLastName.Name = "txtLastName"
         txtLastName.Size = New Size(250, 26)
@@ -1073,7 +1072,7 @@ Partial Class Admin
         ' lblUsername
         ' 
         lblUsername.AutoSize = True
-        lblUsername.Font = New Font("Times New Roman", 12.0F, FontStyle.Regular, GraphicsUnit.Point, 0)
+        lblUsername.Font = New Font("Times New Roman", 12.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         lblUsername.Location = New Point(50, 145)
         lblUsername.Name = "lblUsername"
         lblUsername.Size = New Size(82, 19)
@@ -1082,7 +1081,7 @@ Partial Class Admin
         ' 
         ' txtUsername
         ' 
-        txtUsername.Font = New Font("Times New Roman", 12.0F, FontStyle.Regular, GraphicsUnit.Point, 0)
+        txtUsername.Font = New Font("Times New Roman", 12.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         txtUsername.Location = New Point(50, 167)
         txtUsername.Name = "txtUsername"
         txtUsername.Size = New Size(790, 26)
@@ -1091,7 +1090,7 @@ Partial Class Admin
         ' lblPassword
         ' 
         lblPassword.AutoSize = True
-        lblPassword.Font = New Font("Times New Roman", 12.0F, FontStyle.Regular, GraphicsUnit.Point, 0)
+        lblPassword.Font = New Font("Times New Roman", 12.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         lblPassword.Location = New Point(50, 210)
         lblPassword.Name = "lblPassword"
         lblPassword.Size = New Size(81, 19)
@@ -1100,7 +1099,7 @@ Partial Class Admin
         ' 
         ' txtPassword
         ' 
-        txtPassword.Font = New Font("Times New Roman", 12.0F, FontStyle.Regular, GraphicsUnit.Point, 0)
+        txtPassword.Font = New Font("Times New Roman", 12.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         txtPassword.Location = New Point(50, 232)
         txtPassword.Name = "txtPassword"
         txtPassword.PasswordChar = "*"c
@@ -1110,7 +1109,7 @@ Partial Class Admin
         ' lblRole
         ' 
         lblRole.AutoSize = True
-        lblRole.Font = New Font("Times New Roman", 12.0F, FontStyle.Regular, GraphicsUnit.Point, 0)
+        lblRole.Font = New Font("Times New Roman", 12.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         lblRole.Location = New Point(50, 275)
         lblRole.Name = "lblRole"
         lblRole.Size = New Size(49, 19)
@@ -1120,7 +1119,7 @@ Partial Class Admin
         ' cmbRole
         ' 
         cmbRole.DropDownStyle = ComboBoxStyle.DropDownList
-        cmbRole.Font = New Font("Times New Roman", 12.0F, FontStyle.Regular, GraphicsUnit.Point, 0)
+        cmbRole.Font = New Font("Times New Roman", 12.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         cmbRole.FormattingEnabled = True
         cmbRole.Location = New Point(50, 297)
         cmbRole.Name = "cmbRole"
@@ -1129,7 +1128,7 @@ Partial Class Admin
         ' 
         ' pnlStudentFields
         ' 
-        pnlStudentFields.BackColor = Color.FromArgb(240, 248, 255)
+        pnlStudentFields.BackColor = Color.FromArgb(CByte(240), CByte(248), CByte(255))
         pnlStudentFields.BorderStyle = BorderStyle.FixedSingle
         pnlStudentFields.Controls.Add(lblStudentFieldsTitle)
         pnlStudentFields.Controls.Add(lblDateOfBirth)
@@ -1152,7 +1151,7 @@ Partial Class Admin
         ' 
         ' lblStudentFieldsTitle
         ' 
-        lblStudentFieldsTitle.BackColor = Color.FromArgb(0, 122, 204)
+        lblStudentFieldsTitle.BackColor = Color.FromArgb(CByte(0), CByte(122), CByte(204))
         lblStudentFieldsTitle.Font = New Font("Times New Roman", 12.0F, FontStyle.Bold)
         lblStudentFieldsTitle.ForeColor = Color.White
         lblStudentFieldsTitle.Location = New Point(-1, -1)
@@ -1187,10 +1186,10 @@ Partial Class Admin
         ' 
         lblProgram.AutoSize = True
         lblProgram.Font = New Font("Times New Roman", 12.0F)
+        lblProgram.ForeColor = Color.FromArgb(CByte(192), CByte(0), CByte(0))
         lblProgram.Location = New Point(400, 60)
-        lblProgram.ForeColor = Color.FromArgb(192, 0, 0)
         lblProgram.Name = "lblProgram"
-        lblProgram.Size = New Size(120, 19)
+        lblProgram.Size = New Size(76, 19)
         lblProgram.TabIndex = 3
         lblProgram.Text = "Program: *"
         ' 
@@ -1208,7 +1207,7 @@ Partial Class Admin
         ' 
         lblYearLevel.AutoSize = True
         lblYearLevel.Font = New Font("Times New Roman", 12.0F, FontStyle.Bold)
-        lblYearLevel.ForeColor = Color.FromArgb(192, 0, 0)
+        lblYearLevel.ForeColor = Color.FromArgb(CByte(192), CByte(0), CByte(0))
         lblYearLevel.Location = New Point(20, 130)
         lblYearLevel.Name = "lblYearLevel"
         lblYearLevel.Size = New Size(93, 19)
@@ -1229,7 +1228,7 @@ Partial Class Admin
         ' 
         lblDepartment.AutoSize = True
         lblDepartment.Font = New Font("Times New Roman", 12.0F, FontStyle.Bold)
-        lblDepartment.ForeColor = Color.FromArgb(192, 0, 0)
+        lblDepartment.ForeColor = Color.FromArgb(CByte(192), CByte(0), CByte(0))
         lblDepartment.Location = New Point(400, 130)
         lblDepartment.Name = "lblDepartment"
         lblDepartment.Size = New Size(101, 19)
@@ -1286,7 +1285,7 @@ Partial Class Admin
         ' 
         ' pnlInstructorFields
         ' 
-        pnlInstructorFields.BackColor = Color.FromArgb(240, 255, 240)
+        pnlInstructorFields.BackColor = Color.FromArgb(CByte(240), CByte(255), CByte(240))
         pnlInstructorFields.BorderStyle = BorderStyle.FixedSingle
         pnlInstructorFields.Controls.Add(lblInstructorFieldsTitle)
         pnlInstructorFields.Controls.Add(lblInstructorEmail)
@@ -1305,7 +1304,7 @@ Partial Class Admin
         ' 
         ' lblInstructorFieldsTitle
         ' 
-        lblInstructorFieldsTitle.BackColor = Color.FromArgb(46, 204, 113)
+        lblInstructorFieldsTitle.BackColor = Color.FromArgb(CByte(46), CByte(204), CByte(113))
         lblInstructorFieldsTitle.Font = New Font("Times New Roman", 12.0F, FontStyle.Bold)
         lblInstructorFieldsTitle.ForeColor = Color.White
         lblInstructorFieldsTitle.Location = New Point(-1, -1)
@@ -1393,9 +1392,9 @@ Partial Class Admin
         ' 
         ' btnSubmitUser
         ' 
-        btnSubmitUser.BackColor = Color.FromArgb(0, 122, 204)
+        btnSubmitUser.BackColor = Color.FromArgb(CByte(0), CByte(122), CByte(204))
         btnSubmitUser.FlatStyle = FlatStyle.Flat
-        btnSubmitUser.Font = New Font("Times New Roman", 12.0F, FontStyle.Bold, GraphicsUnit.Point, 0)
+        btnSubmitUser.Font = New Font("Times New Roman", 12.0F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
         btnSubmitUser.ForeColor = Color.White
         btnSubmitUser.Location = New Point(50, 745)
         btnSubmitUser.Name = "btnSubmitUser"
@@ -1426,8 +1425,8 @@ Partial Class Admin
         ' lblUserDetailsTitle
         ' 
         lblUserDetailsTitle.AutoSize = True
-        lblUserDetailsTitle.Font = New Font("Times New Roman", 24.0F, FontStyle.Bold, GraphicsUnit.Point, 0)
-        lblUserDetailsTitle.ForeColor = Color.FromArgb(0, 122, 204)
+        lblUserDetailsTitle.Font = New Font("Times New Roman", 24.0F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
+        lblUserDetailsTitle.ForeColor = Color.FromArgb(CByte(0), CByte(122), CByte(204))
         lblUserDetailsTitle.Location = New Point(20, 20)
         lblUserDetailsTitle.Name = "lblUserDetailsTitle"
         lblUserDetailsTitle.Size = New Size(266, 36)
@@ -1437,7 +1436,7 @@ Partial Class Admin
         ' lblUsers
         ' 
         lblUsers.AutoSize = True
-        lblUsers.Font = New Font("Times New Roman", 14.0F, FontStyle.Bold, GraphicsUnit.Point, 0)
+        lblUsers.Font = New Font("Times New Roman", 14.0F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
         lblUsers.Location = New Point(40, 80)
         lblUsers.Name = "lblUsers"
         lblUsers.Size = New Size(84, 22)
@@ -1450,7 +1449,7 @@ Partial Class Admin
         dgvUsers.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill
         dgvUsers.BackgroundColor = SystemColors.Control
         dgvUsers.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        dgvUsers.Font = New Font("Times New Roman", 12.0F, FontStyle.Regular, GraphicsUnit.Point, 0)
+        dgvUsers.Font = New Font("Times New Roman", 12.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         dgvUsers.Location = New Point(40, 110)
         dgvUsers.Name = "dgvUsers"
         dgvUsers.ReadOnly = True
@@ -1460,7 +1459,7 @@ Partial Class Admin
         ' lblInstructors
         ' 
         lblInstructors.AutoSize = True
-        lblInstructors.Font = New Font("Times New Roman", 14.0F, FontStyle.Bold, GraphicsUnit.Point, 0)
+        lblInstructors.Font = New Font("Times New Roman", 14.0F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
         lblInstructors.Location = New Point(40, 280)
         lblInstructors.Name = "lblInstructors"
         lblInstructors.Size = New Size(100, 22)
@@ -1473,7 +1472,7 @@ Partial Class Admin
         dgvInstructors.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill
         dgvInstructors.BackgroundColor = SystemColors.Control
         dgvInstructors.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        dgvInstructors.Font = New Font("Times New Roman", 12.0F, FontStyle.Regular, GraphicsUnit.Point, 0)
+        dgvInstructors.Font = New Font("Times New Roman", 12.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         dgvInstructors.Location = New Point(40, 310)
         dgvInstructors.Name = "dgvInstructors"
         dgvInstructors.ReadOnly = True
@@ -1483,7 +1482,7 @@ Partial Class Admin
         ' lblStudents
         ' 
         lblStudents.AutoSize = True
-        lblStudents.Font = New Font("Times New Roman", 14.0F, FontStyle.Bold, GraphicsUnit.Point, 0)
+        lblStudents.Font = New Font("Times New Roman", 14.0F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
         lblStudents.Location = New Point(40, 530)
         lblStudents.Name = "lblStudents"
         lblStudents.Size = New Size(80, 22)
@@ -1496,7 +1495,7 @@ Partial Class Admin
         dgvStudents.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill
         dgvStudents.BackgroundColor = SystemColors.Control
         dgvStudents.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        dgvStudents.Font = New Font("Times New Roman", 12.0F, FontStyle.Regular, GraphicsUnit.Point, 0)
+        dgvStudents.Font = New Font("Times New Roman", 12.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         dgvStudents.Location = New Point(40, 560)
         dgvStudents.Name = "dgvStudents"
         dgvStudents.ReadOnly = True
@@ -1524,8 +1523,8 @@ Partial Class Admin
         ' lblResetPasswordTitle
         ' 
         lblResetPasswordTitle.AutoSize = True
-        lblResetPasswordTitle.Font = New Font("Times New Roman", 24.0F, FontStyle.Bold, GraphicsUnit.Point, 0)
-        lblResetPasswordTitle.ForeColor = Color.FromArgb(0, 122, 204)
+        lblResetPasswordTitle.Font = New Font("Times New Roman", 24.0F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
+        lblResetPasswordTitle.ForeColor = Color.FromArgb(CByte(0), CByte(122), CByte(204))
         lblResetPasswordTitle.Location = New Point(20, 20)
         lblResetPasswordTitle.Name = "lblResetPasswordTitle"
         lblResetPasswordTitle.Size = New Size(228, 36)
@@ -1535,7 +1534,7 @@ Partial Class Admin
         ' lblSelectUserReset
         ' 
         lblSelectUserReset.AutoSize = True
-        lblSelectUserReset.Font = New Font("Times New Roman", 14.0F, FontStyle.Regular, GraphicsUnit.Point, 0)
+        lblSelectUserReset.Font = New Font("Times New Roman", 14.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         lblSelectUserReset.Location = New Point(40, 90)
         lblSelectUserReset.Name = "lblSelectUserReset"
         lblSelectUserReset.Size = New Size(95, 21)
@@ -1545,7 +1544,7 @@ Partial Class Admin
         ' cmbSelectUserReset
         ' 
         cmbSelectUserReset.DropDownStyle = ComboBoxStyle.DropDownList
-        cmbSelectUserReset.Font = New Font("Times New Roman", 14.0F, FontStyle.Regular, GraphicsUnit.Point, 0)
+        cmbSelectUserReset.Font = New Font("Times New Roman", 14.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         cmbSelectUserReset.FormattingEnabled = True
         cmbSelectUserReset.Location = New Point(40, 115)
         cmbSelectUserReset.Name = "cmbSelectUserReset"
@@ -1555,7 +1554,7 @@ Partial Class Admin
         ' lblNewPassword
         ' 
         lblNewPassword.AutoSize = True
-        lblNewPassword.Font = New Font("Times New Roman", 14.0F, FontStyle.Regular, GraphicsUnit.Point, 0)
+        lblNewPassword.Font = New Font("Times New Roman", 14.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         lblNewPassword.Location = New Point(40, 160)
         lblNewPassword.Name = "lblNewPassword"
         lblNewPassword.Size = New Size(123, 21)
@@ -1564,7 +1563,7 @@ Partial Class Admin
         ' 
         ' txtNewPassword
         ' 
-        txtNewPassword.Font = New Font("Times New Roman", 14.0F, FontStyle.Regular, GraphicsUnit.Point, 0)
+        txtNewPassword.Font = New Font("Times New Roman", 14.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         txtNewPassword.Location = New Point(40, 185)
         txtNewPassword.Name = "txtNewPassword"
         txtNewPassword.PasswordChar = "*"c
@@ -1573,9 +1572,9 @@ Partial Class Admin
         ' 
         ' btnGeneratePassword
         ' 
-        btnGeneratePassword.BackColor = Color.FromArgb(255, 159, 64)
+        btnGeneratePassword.BackColor = Color.FromArgb(CByte(255), CByte(159), CByte(64))
         btnGeneratePassword.FlatStyle = FlatStyle.Flat
-        btnGeneratePassword.Font = New Font("Times New Roman", 12.0F, FontStyle.Bold, GraphicsUnit.Point, 0)
+        btnGeneratePassword.Font = New Font("Times New Roman", 12.0F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
         btnGeneratePassword.ForeColor = Color.White
         btnGeneratePassword.Location = New Point(40, 240)
         btnGeneratePassword.Name = "btnGeneratePassword"
@@ -1586,9 +1585,9 @@ Partial Class Admin
         ' 
         ' btnResetPasswordSubmit
         ' 
-        btnResetPasswordSubmit.BackColor = Color.FromArgb(0, 122, 204)
+        btnResetPasswordSubmit.BackColor = Color.FromArgb(CByte(0), CByte(122), CByte(204))
         btnResetPasswordSubmit.FlatStyle = FlatStyle.Flat
-        btnResetPasswordSubmit.Font = New Font("Times New Roman", 14.0F, FontStyle.Bold, GraphicsUnit.Point, 0)
+        btnResetPasswordSubmit.Font = New Font("Times New Roman", 14.0F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
         btnResetPasswordSubmit.ForeColor = Color.White
         btnResetPasswordSubmit.Location = New Point(40, 300)
         btnResetPasswordSubmit.Name = "btnResetPasswordSubmit"
@@ -1619,8 +1618,8 @@ Partial Class Admin
         ' lblUpdateDeleteTitle
         ' 
         lblUpdateDeleteTitle.AutoSize = True
-        lblUpdateDeleteTitle.Font = New Font("Times New Roman", 24.0F, FontStyle.Bold, GraphicsUnit.Point, 0)
-        lblUpdateDeleteTitle.ForeColor = Color.FromArgb(0, 122, 204)
+        lblUpdateDeleteTitle.Font = New Font("Times New Roman", 24.0F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
+        lblUpdateDeleteTitle.ForeColor = Color.FromArgb(CByte(0), CByte(122), CByte(204))
         lblUpdateDeleteTitle.Location = New Point(20, 20)
         lblUpdateDeleteTitle.Name = "lblUpdateDeleteTitle"
         lblUpdateDeleteTitle.Size = New Size(344, 36)
@@ -1630,7 +1629,7 @@ Partial Class Admin
         ' lblSelectUserUpdate
         ' 
         lblSelectUserUpdate.AutoSize = True
-        lblSelectUserUpdate.Font = New Font("Times New Roman", 14.0F, FontStyle.Regular, GraphicsUnit.Point, 0)
+        lblSelectUserUpdate.Font = New Font("Times New Roman", 14.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         lblSelectUserUpdate.Location = New Point(40, 80)
         lblSelectUserUpdate.Name = "lblSelectUserUpdate"
         lblSelectUserUpdate.Size = New Size(95, 21)
@@ -1640,7 +1639,7 @@ Partial Class Admin
         ' cmbSelectUserUpdate
         ' 
         cmbSelectUserUpdate.DropDownStyle = ComboBoxStyle.DropDownList
-        cmbSelectUserUpdate.Font = New Font("Times New Roman", 14.0F, FontStyle.Regular, GraphicsUnit.Point, 0)
+        cmbSelectUserUpdate.Font = New Font("Times New Roman", 14.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         cmbSelectUserUpdate.FormattingEnabled = True
         cmbSelectUserUpdate.Location = New Point(40, 105)
         cmbSelectUserUpdate.Name = "cmbSelectUserUpdate"
@@ -1649,9 +1648,9 @@ Partial Class Admin
         ' 
         ' btnLoadUserData
         ' 
-        btnLoadUserData.BackColor = Color.FromArgb(0, 122, 204)
+        btnLoadUserData.BackColor = Color.FromArgb(CByte(0), CByte(122), CByte(204))
         btnLoadUserData.FlatStyle = FlatStyle.Flat
-        btnLoadUserData.Font = New Font("Times New Roman", 12.0F, FontStyle.Bold, GraphicsUnit.Point, 0)
+        btnLoadUserData.Font = New Font("Times New Roman", 12.0F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
         btnLoadUserData.ForeColor = Color.White
         btnLoadUserData.Location = New Point(460, 105)
         btnLoadUserData.Name = "btnLoadUserData"
@@ -1687,7 +1686,7 @@ Partial Class Admin
         ' lblUpdateFirstName
         ' 
         lblUpdateFirstName.AutoSize = True
-        lblUpdateFirstName.Font = New Font("Times New Roman", 12.0F, FontStyle.Regular, GraphicsUnit.Point, 0)
+        lblUpdateFirstName.Font = New Font("Times New Roman", 12.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         lblUpdateFirstName.Location = New Point(50, 30)
         lblUpdateFirstName.Name = "lblUpdateFirstName"
         lblUpdateFirstName.Size = New Size(89, 19)
@@ -1696,7 +1695,7 @@ Partial Class Admin
         ' 
         ' txtUpdateFirstName
         ' 
-        txtUpdateFirstName.Font = New Font("Times New Roman", 12.0F, FontStyle.Regular, GraphicsUnit.Point, 0)
+        txtUpdateFirstName.Font = New Font("Times New Roman", 12.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         txtUpdateFirstName.Location = New Point(50, 52)
         txtUpdateFirstName.Name = "txtUpdateFirstName"
         txtUpdateFirstName.Size = New Size(250, 26)
@@ -1705,7 +1704,7 @@ Partial Class Admin
         ' lblUpdateMiddleName
         ' 
         lblUpdateMiddleName.AutoSize = True
-        lblUpdateMiddleName.Font = New Font("Times New Roman", 12.0F, FontStyle.Regular, GraphicsUnit.Point, 0)
+        lblUpdateMiddleName.Font = New Font("Times New Roman", 12.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         lblUpdateMiddleName.Location = New Point(320, 30)
         lblUpdateMiddleName.Name = "lblUpdateMiddleName"
         lblUpdateMiddleName.Size = New Size(159, 19)
@@ -1714,7 +1713,7 @@ Partial Class Admin
         ' 
         ' txtUpdateMiddleName
         ' 
-        txtUpdateMiddleName.Font = New Font("Times New Roman", 12.0F, FontStyle.Regular, GraphicsUnit.Point, 0)
+        txtUpdateMiddleName.Font = New Font("Times New Roman", 12.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         txtUpdateMiddleName.Location = New Point(320, 52)
         txtUpdateMiddleName.Name = "txtUpdateMiddleName"
         txtUpdateMiddleName.Size = New Size(250, 26)
@@ -1723,7 +1722,7 @@ Partial Class Admin
         ' lblUpdateLastName
         ' 
         lblUpdateLastName.AutoSize = True
-        lblUpdateLastName.Font = New Font("Times New Roman", 12.0F, FontStyle.Regular, GraphicsUnit.Point, 0)
+        lblUpdateLastName.Font = New Font("Times New Roman", 12.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         lblUpdateLastName.Location = New Point(590, 30)
         lblUpdateLastName.Name = "lblUpdateLastName"
         lblUpdateLastName.Size = New Size(88, 19)
@@ -1732,7 +1731,7 @@ Partial Class Admin
         ' 
         ' txtUpdateLastName
         ' 
-        txtUpdateLastName.Font = New Font("Times New Roman", 12.0F, FontStyle.Regular, GraphicsUnit.Point, 0)
+        txtUpdateLastName.Font = New Font("Times New Roman", 12.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         txtUpdateLastName.Location = New Point(590, 52)
         txtUpdateLastName.Name = "txtUpdateLastName"
         txtUpdateLastName.Size = New Size(250, 26)
@@ -1741,7 +1740,7 @@ Partial Class Admin
         ' lblUpdateUsername
         ' 
         lblUpdateUsername.AutoSize = True
-        lblUpdateUsername.Font = New Font("Times New Roman", 12.0F, FontStyle.Regular, GraphicsUnit.Point, 0)
+        lblUpdateUsername.Font = New Font("Times New Roman", 12.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         lblUpdateUsername.Location = New Point(50, 90)
         lblUpdateUsername.Name = "lblUpdateUsername"
         lblUpdateUsername.Size = New Size(82, 19)
@@ -1750,7 +1749,7 @@ Partial Class Admin
         ' 
         ' txtUpdateUsername
         ' 
-        txtUpdateUsername.Font = New Font("Times New Roman", 12.0F, FontStyle.Regular, GraphicsUnit.Point, 0)
+        txtUpdateUsername.Font = New Font("Times New Roman", 12.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         txtUpdateUsername.Location = New Point(50, 112)
         txtUpdateUsername.Name = "txtUpdateUsername"
         txtUpdateUsername.Size = New Size(790, 26)
@@ -1759,7 +1758,7 @@ Partial Class Admin
         ' lblUpdateRole
         ' 
         lblUpdateRole.AutoSize = True
-        lblUpdateRole.Font = New Font("Times New Roman", 12.0F, FontStyle.Regular, GraphicsUnit.Point, 0)
+        lblUpdateRole.Font = New Font("Times New Roman", 12.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         lblUpdateRole.Location = New Point(50, 160)
         lblUpdateRole.Name = "lblUpdateRole"
         lblUpdateRole.Size = New Size(49, 19)
@@ -1769,7 +1768,7 @@ Partial Class Admin
         ' lblUpdateRoleDisplay
         ' 
         lblUpdateRoleDisplay.AutoSize = True
-        lblUpdateRoleDisplay.Font = New Font("Times New Roman", 12.0F, FontStyle.Regular, GraphicsUnit.Point, 0)
+        lblUpdateRoleDisplay.Font = New Font("Times New Roman", 12.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         lblUpdateRoleDisplay.Location = New Point(50, 190)
         lblUpdateRoleDisplay.Name = "lblUpdateRoleDisplay"
         lblUpdateRoleDisplay.Size = New Size(0, 19)
@@ -1779,7 +1778,7 @@ Partial Class Admin
         ' cmbUpdateRole
         ' 
         cmbUpdateRole.DropDownStyle = ComboBoxStyle.DropDownList
-        cmbUpdateRole.Font = New Font("Times New Roman", 12.0F, FontStyle.Regular, GraphicsUnit.Point, 0)
+        cmbUpdateRole.Font = New Font("Times New Roman", 12.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         cmbUpdateRole.FormattingEnabled = True
         cmbUpdateRole.Location = New Point(50, 182)
         cmbUpdateRole.Name = "cmbUpdateRole"
@@ -1788,7 +1787,7 @@ Partial Class Admin
         ' 
         ' pnlUpdateStudentFields
         ' 
-        pnlUpdateStudentFields.BackColor = Color.FromArgb(240, 248, 255)
+        pnlUpdateStudentFields.BackColor = Color.FromArgb(CByte(240), CByte(248), CByte(255))
         pnlUpdateStudentFields.BorderStyle = BorderStyle.FixedSingle
         pnlUpdateStudentFields.Controls.Add(lblUpdateStudentTitle)
         pnlUpdateStudentFields.Controls.Add(lblUpdateDateOfBirth)
@@ -1811,7 +1810,7 @@ Partial Class Admin
         ' 
         ' lblUpdateStudentTitle
         ' 
-        lblUpdateStudentTitle.BackColor = Color.FromArgb(0, 122, 204)
+        lblUpdateStudentTitle.BackColor = Color.FromArgb(CByte(0), CByte(122), CByte(204))
         lblUpdateStudentTitle.Font = New Font("Times New Roman", 12.0F, FontStyle.Bold)
         lblUpdateStudentTitle.ForeColor = Color.White
         lblUpdateStudentTitle.Location = New Point(-1, -1)
@@ -1846,10 +1845,10 @@ Partial Class Admin
         ' 
         lblUpdateProgram.AutoSize = True
         lblUpdateProgram.Font = New Font("Times New Roman", 12.0F)
+        lblUpdateProgram.ForeColor = Color.FromArgb(CByte(192), CByte(0), CByte(0))
         lblUpdateProgram.Location = New Point(400, 60)
-        lblUpdateProgram.ForeColor = Color.FromArgb(192, 0, 0)
-        lblUpdateProgram.Name = "lblUpdateGender"
-        lblUpdateProgram.Size = New Size(120, 19)
+        lblUpdateProgram.Name = "lblUpdateProgram"
+        lblUpdateProgram.Size = New Size(76, 19)
         lblUpdateProgram.TabIndex = 3
         lblUpdateProgram.Text = "Program: *"
         ' 
@@ -1867,7 +1866,7 @@ Partial Class Admin
         ' 
         lblUpdateYearLevel.AutoSize = True
         lblUpdateYearLevel.Font = New Font("Times New Roman", 12.0F, FontStyle.Bold)
-        lblUpdateYearLevel.ForeColor = Color.FromArgb(192, 0, 0)
+        lblUpdateYearLevel.ForeColor = Color.FromArgb(CByte(192), CByte(0), CByte(0))
         lblUpdateYearLevel.Location = New Point(20, 130)
         lblUpdateYearLevel.Name = "lblUpdateYearLevel"
         lblUpdateYearLevel.Size = New Size(93, 19)
@@ -1888,7 +1887,7 @@ Partial Class Admin
         ' 
         lblUpdateDepartment.AutoSize = True
         lblUpdateDepartment.Font = New Font("Times New Roman", 12.0F, FontStyle.Bold)
-        lblUpdateDepartment.ForeColor = Color.FromArgb(192, 0, 0)
+        lblUpdateDepartment.ForeColor = Color.FromArgb(CByte(192), CByte(0), CByte(0))
         lblUpdateDepartment.Location = New Point(400, 130)
         lblUpdateDepartment.Name = "lblUpdateDepartment"
         lblUpdateDepartment.Size = New Size(101, 19)
@@ -1945,7 +1944,7 @@ Partial Class Admin
         ' 
         ' pnlUpdateInstructorFields
         ' 
-        pnlUpdateInstructorFields.BackColor = Color.FromArgb(240, 255, 240)
+        pnlUpdateInstructorFields.BackColor = Color.FromArgb(CByte(240), CByte(255), CByte(240))
         pnlUpdateInstructorFields.BorderStyle = BorderStyle.FixedSingle
         pnlUpdateInstructorFields.Controls.Add(lblUpdateInstructorTitle)
         pnlUpdateInstructorFields.Controls.Add(lblUpdateInstructorEmail)
@@ -1966,7 +1965,7 @@ Partial Class Admin
         ' 
         ' lblUpdateInstructorTitle
         ' 
-        lblUpdateInstructorTitle.BackColor = Color.FromArgb(46, 204, 113)
+        lblUpdateInstructorTitle.BackColor = Color.FromArgb(CByte(46), CByte(204), CByte(113))
         lblUpdateInstructorTitle.Font = New Font("Times New Roman", 12.0F, FontStyle.Bold)
         lblUpdateInstructorTitle.ForeColor = Color.White
         lblUpdateInstructorTitle.Location = New Point(-1, -1)
@@ -2074,9 +2073,9 @@ Partial Class Admin
         ' 
         ' btnUpdateUser
         ' 
-        btnUpdateUser.BackColor = Color.FromArgb(0, 122, 204)
+        btnUpdateUser.BackColor = Color.FromArgb(CByte(0), CByte(122), CByte(204))
         btnUpdateUser.FlatStyle = FlatStyle.Flat
-        btnUpdateUser.Font = New Font("Times New Roman", 12.0F, FontStyle.Bold, GraphicsUnit.Point, 0)
+        btnUpdateUser.Font = New Font("Times New Roman", 12.0F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
         btnUpdateUser.ForeColor = Color.White
         btnUpdateUser.Location = New Point(40, 790)
         btnUpdateUser.Name = "btnUpdateUser"
@@ -2088,9 +2087,9 @@ Partial Class Admin
         ' 
         ' btnDeleteUser
         ' 
-        btnDeleteUser.BackColor = Color.FromArgb(255, 71, 71)
+        btnDeleteUser.BackColor = Color.FromArgb(CByte(255), CByte(71), CByte(71))
         btnDeleteUser.FlatStyle = FlatStyle.Flat
-        btnDeleteUser.Font = New Font("Times New Roman", 12.0F, FontStyle.Bold, GraphicsUnit.Point, 0)
+        btnDeleteUser.Font = New Font("Times New Roman", 12.0F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
         btnDeleteUser.ForeColor = Color.White
         btnDeleteUser.Location = New Point(260, 790)
         btnDeleteUser.Name = "btnDeleteUser"
@@ -2107,7 +2106,7 @@ Partial Class Admin
         ClientSize = New Size(1200, 800)
         Controls.Add(pnlMainContent)
         Controls.Add(pnlSidebar)
-        Font = New Font("Times New Roman", 16.0F, FontStyle.Regular, GraphicsUnit.Point, 0)
+        Font = New Font("Times New Roman", 16.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         Name = "Admin"
         StartPosition = FormStartPosition.CenterScreen
         Text = "Admin Dashboard"

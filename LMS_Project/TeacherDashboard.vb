@@ -81,6 +81,7 @@ Public Class TeacherDashboard
         btnEnrollmentManagement.BackColor = Color.FromArgb(45, 45, 48)
         btnCalculateGrade.BackColor = Color.FromArgb(45, 45, 48)
         btnCalculateFinalGrades.BackColor = Color.FromArgb(45, 45, 48)
+        btnReports.BackColor = Color.FromArgb(45, 45, 48)
     End Sub
 
     Private Sub SetActiveButton(btn As Button)
@@ -116,6 +117,12 @@ Public Class TeacherDashboard
         InitializeFinalGradesCourseDropdown()
         grpFinalGradesResults.Visible = False
         lblFinalGradeStatus.Text = ""
+    End Sub
+
+    Private Sub btnReports_Click(sender As Object, e As EventArgs) Handles btnReports.Click
+        SetActiveButton(btnReports)
+        Dim reportsForm As New ReportsForm()
+        reportsForm.ShowDialog()
     End Sub
 
     Private Sub btnLogout_Click(sender As Object, e As EventArgs) Handles btnLogout.Click
@@ -289,32 +296,32 @@ Public Class TeacherDashboard
 
         For Each row As DataGridViewRow In dgvCourseOverview.Rows
             ' Color code based on pass rate
-          If row.Cells("Pass Rate").Value IsNot Nothing Then
-     Dim passRateStr As String = row.Cells("Pass Rate").Value.ToString().Replace("%", "")
-    Dim passRate As Decimal = 0
-         If Decimal.TryParse(passRateStr, passRate) Then
-If passRate < 60 Then
-      row.Cells("Pass Rate").Style.BackColor = Color.LightCoral
-               row.Cells("Pass Rate").Style.ForeColor = Color.DarkRed
-      ElseIf passRate >= 80 Then
-    row.Cells("Pass Rate").Style.BackColor = Color.LightGreen
-  row.Cells("Pass Rate").Style.ForeColor = Color.DarkGreen
-               End If
+            If row.Cells("Pass Rate").Value IsNot Nothing Then
+                Dim passRateStr As String = row.Cells("Pass Rate").Value.ToString().Replace("%", "")
+                Dim passRate As Decimal = 0
+                If Decimal.TryParse(passRateStr, passRate) Then
+                    If passRate < 60 Then
+                        row.Cells("Pass Rate").Style.BackColor = Color.LightCoral
+                        row.Cells("Pass Rate").Style.ForeColor = Color.DarkRed
+                    ElseIf passRate >= 80 Then
+                        row.Cells("Pass Rate").Style.BackColor = Color.LightGreen
+                        row.Cells("Pass Rate").Style.ForeColor = Color.DarkGreen
+                    End If
+                End If
             End If
-         End If
 
-      ' Color code pending grades
+            ' Color code pending grades
             If row.Cells("Pending Grades").Value IsNot Nothing Then
-      Dim pending As Integer = 0
-          If Integer.TryParse(row.Cells("Pending Grades").Value.ToString(), pending) Then
-            If pending > 0 Then
-   row.Cells("Pending Grades").Style.BackColor = Color.LightYellow
-      row.Cells("Pending Grades").Style.ForeColor = Color.DarkOrange
-        End If
-     End If
+                Dim pending As Integer = 0
+                If Integer.TryParse(row.Cells("Pending Grades").Value.ToString(), pending) Then
+                    If pending > 0 Then
+                        row.Cells("Pending Grades").Style.BackColor = Color.LightYellow
+                        row.Cells("Pending Grades").Style.ForeColor = Color.DarkOrange
+                    End If
+                End If
             End If
         Next
-  End Sub
+    End Sub
 
     Private Sub LoadAlerts()
         Try
@@ -1039,11 +1046,11 @@ If passRate < 60 Then
 
     Private Sub InitializeFinalGradesCourseDropdown()
         Try
-        Using connection As New MySqlConnection(connectionString)
-    connection.Open()
+            Using connection As New MySqlConnection(connectionString)
+                connection.Open()
 
-    ' Get course offerings assigned to this instructor
-    Dim query As String = "SELECT co.offering_id, " &
+                ' Get course offerings assigned to this instructor
+                Dim query As String = "SELECT co.offering_id, " &
             "CONCAT(c.course_code, ' - ', c.course_name, ' (Section: ', co.section, ' - ', " &
      "ay.academic_year_name, ' ', st.type_name, ')') as display_name, " &
     "ay.year_start, c.course_code " &
@@ -1073,33 +1080,33 @@ If passRate < 60 Then
                     cmbFinalCourseOffering.ValueMember = "offering_id"
                     cmbFinalCourseOffering.SelectedIndex = 0
                 End Using
-        End Using
+            End Using
         Catch ex As Exception
-    MessageBox.Show($"Error loading course offerings: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
-   End Try
+            MessageBox.Show($"Error loading course offerings: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
     End Sub
 
     Private Sub btnLoadFinalGrades_Click(sender As Object, e As EventArgs) Handles btnLoadFinalGrades.Click
-     ' Validate selection
+        ' Validate selection
         If cmbFinalCourseOffering.SelectedValue Is Nothing OrElse IsDBNull(cmbFinalCourseOffering.SelectedValue) Then
             MessageBox.Show("Please select a course offering.", "Selection Required", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-         Return
-     End If
+            Return
+        End If
 
         LoadFinalGradesData()
         grpFinalGradesResults.Visible = True
- lblFinalGradeStatus.Text = ""
-  End Sub
+        lblFinalGradeStatus.Text = ""
+    End Sub
 
     Private Sub LoadFinalGradesData()
         Try
             Using connection As New MySqlConnection(connectionString)
-           connection.Open()
+                connection.Open()
 
-    Dim offeringId As Integer = Convert.ToInt32(cmbFinalCourseOffering.SelectedValue)
+                Dim offeringId As Integer = Convert.ToInt32(cmbFinalCourseOffering.SelectedValue)
 
-     ' Load students with their enrollment IDs and existing final grades
-  Dim query As String = "SELECT " &
+                ' Load students with their enrollment IDs and existing final grades
+                Dim query As String = "SELECT " &
          "e.enrollment_id as 'Enrollment ID', " &
    "s.student_id as 'Student ID', " &
        "s.student_number as 'Student Number', " &
@@ -1123,119 +1130,119 @@ If passRate < 60 Then
             "AND est.status_name = 'Enrolled' " &
   "ORDER BY s.last_name, s.first_name"
 
-        Using adapter As New MySqlDataAdapter(query, connection)
-          adapter.SelectCommand.Parameters.AddWithValue("@offering_id", offeringId)
+                Using adapter As New MySqlDataAdapter(query, connection)
+                    adapter.SelectCommand.Parameters.AddWithValue("@offering_id", offeringId)
 
-        Dim gradesTable As New DataTable()
-      adapter.Fill(gradesTable)
-           dgvFinalGrades.DataSource = gradesTable
-         dgvFinalGrades.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells)
+                    Dim gradesTable As New DataTable()
+                    adapter.Fill(gradesTable)
+                    dgvFinalGrades.DataSource = gradesTable
+                    dgvFinalGrades.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells)
 
-     ' Hide the ID columns
-                 If dgvFinalGrades.Columns.Contains("Enrollment ID") Then
-               dgvFinalGrades.Columns("Enrollment ID").Visible = False
-    End If
-      If dgvFinalGrades.Columns.Contains("Student ID") Then
-               dgvFinalGrades.Columns("Student ID").Visible = False
-             End If
+                    ' Hide the ID columns
+                    If dgvFinalGrades.Columns.Contains("Enrollment ID") Then
+                        dgvFinalGrades.Columns("Enrollment ID").Visible = False
+                    End If
+                    If dgvFinalGrades.Columns.Contains("Student ID") Then
+                        dgvFinalGrades.Columns("Student ID").Visible = False
+                    End If
 
-           ' Format and color code the grid
-    FormatFinalGradesGrid()
+                    ' Format and color code the grid
+                    FormatFinalGradesGrid()
 
-    ' Update status
-        Dim totalStudents As Integer = gradesTable.Rows.Count
-        Dim calculatedCount As Integer = gradesTable.AsEnumerable().Count(Function(r) r("Status").ToString() <> "Not Calculated")
-      lblFinalGradeStatus.Text = $"Total Students: {totalStudents} | Grades Calculated: {calculatedCount} | Pending: {totalStudents - calculatedCount}"
-  lblFinalGradeStatus.ForeColor = If(calculatedCount = totalStudents, Color.DarkGreen, Color.DarkOrange)
-      End Using
+                    ' Update status
+                    Dim totalStudents As Integer = gradesTable.Rows.Count
+                    Dim calculatedCount As Integer = gradesTable.AsEnumerable().Count(Function(r) r("Status").ToString() <> "Not Calculated")
+                    lblFinalGradeStatus.Text = $"Total Students: {totalStudents} | Grades Calculated: {calculatedCount} | Pending: {totalStudents - calculatedCount}"
+                    lblFinalGradeStatus.ForeColor = If(calculatedCount = totalStudents, Color.DarkGreen, Color.DarkOrange)
+                End Using
             End Using
         Catch ex As Exception
-        MessageBox.Show($"Error loading final grades: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            MessageBox.Show($"Error loading final grades: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
     End Sub
 
     Private Sub FormatFinalGradesGrid()
-   If dgvFinalGrades Is Nothing OrElse dgvFinalGrades.Rows.Count = 0 Then
+        If dgvFinalGrades Is Nothing OrElse dgvFinalGrades.Rows.Count = 0 Then
             Return
         End If
 
         For Each row As DataGridViewRow In dgvFinalGrades.Rows
-          ' Color code based on status
+            ' Color code based on status
             If row.Cells("Status").Value IsNot Nothing Then
-       Dim status As String = row.Cells("Status").Value.ToString()
-    Select Case status
-      Case "PASSED"
-        row.Cells("Status").Style.BackColor = Color.LightGreen
-   row.Cells("Status").Style.ForeColor = Color.DarkGreen
-             Case "FAILED"
-        row.Cells("Status").Style.BackColor = Color.LightCoral
-row.Cells("Status").Style.ForeColor = Color.DarkRed
-         Case "Not Calculated"
-             row.Cells("Status").Style.BackColor = Color.LightYellow
-          row.Cells("Status").Style.ForeColor = Color.DarkOrange
-   End Select
-        End If
+                Dim status As String = row.Cells("Status").Value.ToString()
+                Select Case status
+                    Case "PASSED"
+                        row.Cells("Status").Style.BackColor = Color.LightGreen
+                        row.Cells("Status").Style.ForeColor = Color.DarkGreen
+                    Case "FAILED"
+                        row.Cells("Status").Style.BackColor = Color.LightCoral
+                        row.Cells("Status").Style.ForeColor = Color.DarkRed
+                    Case "Not Calculated"
+                        row.Cells("Status").Style.BackColor = Color.LightYellow
+                        row.Cells("Status").Style.ForeColor = Color.DarkOrange
+                End Select
+            End If
 
- ' Color code overall grade
-       If row.Cells("Overall Grade").Value IsNot Nothing Then
-   Dim overallGrade As Decimal = 0
+            ' Color code overall grade
+            If row.Cells("Overall Grade").Value IsNot Nothing Then
+                Dim overallGrade As Decimal = 0
                 If Decimal.TryParse(row.Cells("Overall Grade").Value.ToString(), overallGrade) Then
-       If overallGrade >= 75 Then
-            row.Cells("Overall Grade").Style.BackColor = Color.LightGreen
-                 ElseIf overallGrade > 0 Then
-               row.Cells("Overall Grade").Style.BackColor = Color.LightCoral
-       End If
-          End If
-  End If
+                    If overallGrade >= 75 Then
+                        row.Cells("Overall Grade").Style.BackColor = Color.LightGreen
+                    ElseIf overallGrade > 0 Then
+                        row.Cells("Overall Grade").Style.BackColor = Color.LightCoral
+                    End If
+                End If
+            End If
         Next
     End Sub
 
     Private Sub btnCalculateSingleStudent_Click(sender As Object, e As EventArgs) Handles btnCalculateSingleStudent.Click
-   ' Validate selection
+        ' Validate selection
         If dgvFinalGrades.SelectedRows.Count = 0 Then
-        MessageBox.Show("Please select a student from the grid.", "Selection Required", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            MessageBox.Show("Please select a student from the grid.", "Selection Required", MessageBoxButtons.OK, MessageBoxIcon.Warning)
             Return
- End If
+        End If
 
         Dim selectedRow As DataGridViewRow = dgvFinalGrades.SelectedRows(0)
-    Dim enrollmentId As Integer = Convert.ToInt32(selectedRow.Cells("Enrollment ID").Value)
-    Dim studentName As String = selectedRow.Cells("Student Name").Value.ToString()
+        Dim enrollmentId As Integer = Convert.ToInt32(selectedRow.Cells("Enrollment ID").Value)
+        Dim studentName As String = selectedRow.Cells("Student Name").Value.ToString()
 
-  ' Confirm calculation
+        ' Confirm calculation
         Dim result As DialogResult = MessageBox.Show($"Calculate final grade for {studentName}?" & vbCrLf & vbCrLf &
     "This will calculate the Prelim, Midterm, Finals, and Overall grade based on entered scores.",
             "Confirm Calculation", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
 
-    If result = DialogResult.Yes Then
-    CalculateSingleStudentGrade(enrollmentId, studentName)
+        If result = DialogResult.Yes Then
+            CalculateSingleStudentGrade(enrollmentId, studentName)
         End If
     End Sub
 
     Private Sub CalculateSingleStudentGrade(enrollmentId As Integer, studentName As String)
         Try
-      Using connection As New MySqlConnection(connectionString)
-       connection.Open()
+            Using connection As New MySqlConnection(connectionString)
+                connection.Open()
 
-         ' Call the stored procedure
-      Using cmd As New MySqlCommand("sp_CalculateCourseGrade", connection)
-       cmd.CommandType = CommandType.StoredProcedure
-    cmd.Parameters.AddWithValue("p_enrollment_id", enrollmentId)
-         cmd.Parameters.AddWithValue("p_graded_by", currentInstructorId)
+                ' Call the stored procedure
+                Using cmd As New MySqlCommand("sp_CalculateCourseGrade", connection)
+                    cmd.CommandType = CommandType.StoredProcedure
+                    cmd.Parameters.AddWithValue("p_enrollment_id", enrollmentId)
+                    cmd.Parameters.AddWithValue("p_graded_by", currentInstructorId)
 
-    Using reader = cmd.ExecuteReader()
- If reader.Read() Then
-      Dim status As String = reader("status").ToString()
-   Dim message As String = reader("message").ToString()
+                    Using reader = cmd.ExecuteReader()
+                        If reader.Read() Then
+                            Dim status As String = reader("status").ToString()
+                            Dim message As String = reader("message").ToString()
 
-                 If status = "SUCCESS" Then
-       Dim prelimGrade As Decimal = Convert.ToDecimal(reader("prelim_grade"))
-     Dim midtermGrade As Decimal = Convert.ToDecimal(reader("midterm_grade"))
-                  Dim finalsGrade As Decimal = Convert.ToDecimal(reader("finals_grade"))
-       Dim overallGrade As Decimal = Convert.ToDecimal(reader("overall_grade"))
-         Dim gpaPoints As Decimal = Convert.ToDecimal(reader("gpa_points"))
-        Dim gradeStatus As String = reader("grade_status").ToString()
+                            If status = "SUCCESS" Then
+                                Dim prelimGrade As Decimal = Convert.ToDecimal(reader("prelim_grade"))
+                                Dim midtermGrade As Decimal = Convert.ToDecimal(reader("midterm_grade"))
+                                Dim finalsGrade As Decimal = Convert.ToDecimal(reader("finals_grade"))
+                                Dim overallGrade As Decimal = Convert.ToDecimal(reader("overall_grade"))
+                                Dim gpaPoints As Decimal = Convert.ToDecimal(reader("gpa_points"))
+                                Dim gradeStatus As String = reader("grade_status").ToString()
 
-           MessageBox.Show($"Grade calculated successfully for {studentName}!" & vbCrLf & vbCrLf &
+                                MessageBox.Show($"Grade calculated successfully for {studentName}!" & vbCrLf & vbCrLf &
       $"📚 Period Grades:" & vbCrLf +
         $"   Prelim:   {prelimGrade:F2}%" & vbCrLf +
             $"Midterm:  {midtermGrade:F2}%" & vbCrLf +
@@ -1247,113 +1254,113 @@ row.Cells("Status").Style.ForeColor = Color.DarkRed
             "Grade Calculated", MessageBoxButtons.OK,
    If(gradeStatus = "PASSED", MessageBoxIcon.Information, MessageBoxIcon.Warning))
 
-           ' Refresh the grid
-      LoadFinalGradesData()
-          Else
-     MessageBox.Show($"Error calculating grade: {message}", "Calculation Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
-        End If
-        End If
-     End Using
+                                ' Refresh the grid
+                                LoadFinalGradesData()
+                            Else
+                                MessageBox.Show($"Error calculating grade: {message}", "Calculation Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                            End If
+                        End If
+                    End Using
                 End Using
-        End Using
+            End Using
         Catch ex As Exception
-       MessageBox.Show($"Error calculating grade: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
-     End Try
+            MessageBox.Show($"Error calculating grade: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
     End Sub
 
     Private Sub btnCalculateAllStudents_Click(sender As Object, e As EventArgs) Handles btnCalculateAllStudents.Click
         ' Validate selection
         If cmbFinalCourseOffering.SelectedValue Is Nothing OrElse IsDBNull(cmbFinalCourseOffering.SelectedValue) Then
-       MessageBox.Show("Please select a course offering first.", "Selection Required", MessageBoxButtons.OK, MessageBoxIcon.Warning)
- Return
+            MessageBox.Show("Please select a course offering first.", "Selection Required", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            Return
         End If
 
-   If dgvFinalGrades.Rows.Count = 0 Then
+        If dgvFinalGrades.Rows.Count = 0 Then
             MessageBox.Show("No students found for this course offering.", "No Students", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-   Return
+            Return
         End If
 
         ' Confirm calculation for all students
         Dim totalStudents As Integer = dgvFinalGrades.Rows.Count
-      Dim result As DialogResult = MessageBox.Show($"Calculate final grades for ALL {totalStudents} students in this course?" & vbCrLf & vbCrLf &
+        Dim result As DialogResult = MessageBox.Show($"Calculate final grades for ALL {totalStudents} students in this course?" & vbCrLf & vbCrLf &
       "This will calculate the Prelim, Midterm, Finals, and Overall grade for each student based on their entered scores." & vbCrLf & vbCrLf &
      "This operation may take a few moments.",
         "Confirm Bulk Calculation", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
 
         If result = DialogResult.Yes Then
-CalculateAllStudentsGrades()
+            CalculateAllStudentsGrades()
         End If
- End Sub
+    End Sub
 
     Private Sub CalculateAllStudentsGrades()
-    Dim successCount As Integer = 0
+        Dim successCount As Integer = 0
         Dim failCount As Integer = 0
-   Dim passedCount As Integer = 0
-Dim failedCount As Integer = 0
+        Dim passedCount As Integer = 0
+        Dim failedCount As Integer = 0
         Dim errorMessages As New List(Of String)
 
         Try
             ' Change cursor to wait
             Cursor = Cursors.WaitCursor
-          lblFinalGradeStatus.Text = "Calculating grades for all students..."
+            lblFinalGradeStatus.Text = "Calculating grades for all students..."
             lblFinalGradeStatus.ForeColor = Color.Blue
-      Application.DoEvents()
+            Application.DoEvents()
 
-Using connection As New MySqlConnection(connectionString)
-           connection.Open()
+            Using connection As New MySqlConnection(connectionString)
+                connection.Open()
 
-         For Each row As DataGridViewRow In dgvFinalGrades.Rows
-       Dim enrollmentId As Integer = Convert.ToInt32(row.Cells("Enrollment ID").Value)
-        Dim studentName As String = row.Cells("Student Name").Value.ToString()
+                For Each row As DataGridViewRow In dgvFinalGrades.Rows
+                    Dim enrollmentId As Integer = Convert.ToInt32(row.Cells("Enrollment ID").Value)
+                    Dim studentName As String = row.Cells("Student Name").Value.ToString()
 
-  Try
-         ' Call the stored procedure for each student
-  Using cmd As New MySqlCommand("sp_CalculateCourseGrade", connection)
-    cmd.CommandType = CommandType.StoredProcedure
-       cmd.Parameters.AddWithValue("p_enrollment_id", enrollmentId)
-  cmd.Parameters.AddWithValue("p_graded_by", currentInstructorId)
+                    Try
+                        ' Call the stored procedure for each student
+                        Using cmd As New MySqlCommand("sp_CalculateCourseGrade", connection)
+                            cmd.CommandType = CommandType.StoredProcedure
+                            cmd.Parameters.AddWithValue("p_enrollment_id", enrollmentId)
+                            cmd.Parameters.AddWithValue("p_graded_by", currentInstructorId)
 
-         Using reader = cmd.ExecuteReader()
-     If reader.Read() Then
-             Dim status As String = reader("status").ToString()
+                            Using reader = cmd.ExecuteReader()
+                                If reader.Read() Then
+                                    Dim status As String = reader("status").ToString()
 
-     If status = "SUCCESS" Then
-     successCount += 1
-  Dim gradeStatus As String = reader("grade_status").ToString()
-         If gradeStatus = "PASSED" Then
-    passedCount += 1
-              Else
-        failedCount += 1
-End If
-      Else
-              failCount += 1
-                 errorMessages.Add($"{studentName}: {reader("message")}")
-               End If
-        End If
-         End Using
-     End Using
-               Catch ex As Exception
-   failCount += 1
-        errorMessages.Add($"{studentName}: {ex.Message}")
-       End Try
-         Next
+                                    If status = "SUCCESS" Then
+                                        successCount += 1
+                                        Dim gradeStatus As String = reader("grade_status").ToString()
+                                        If gradeStatus = "PASSED" Then
+                                            passedCount += 1
+                                        Else
+                                            failedCount += 1
+                                        End If
+                                    Else
+                                        failCount += 1
+                                        errorMessages.Add($"{studentName}: {reader("message")}")
+                                    End If
+                                End If
+                            End Using
+                        End Using
+                    Catch ex As Exception
+                        failCount += 1
+                        errorMessages.Add($"{studentName}: {ex.Message}")
+                    End Try
+                Next
             End Using
 
-        ' Show results
+            ' Show results
             Dim resultMessage As String = $"Bulk Grade Calculation Complete!" & vbCrLf & vbCrLf &
    $"✅ Successfully Calculated: {successCount}" & vbCrLf &
    $"   • Passed: {passedCount}" & vbCrLf &
    $"   • Failed: {failedCount}" & vbCrLf &
       $"❌ Errors: {failCount}"
 
-If errorMessages.Count > 0 AndAlso errorMessages.Count <= 5 Then
-           resultMessage &= vbCrLf & vbCrLf & "Error Details:" & vbCrLf & String.Join(vbCrLf, errorMessages)
-        ElseIf errorMessages.Count > 5 Then
-              resultMessage &= vbCrLf & vbCrLf & $"First 5 errors:" & vbCrLf & String.Join(vbCrLf, errorMessages.Take(5))
- resultMessage &= vbCrLf & $"... and {errorMessages.Count - 5} more errors"
-   End If
+            If errorMessages.Count > 0 AndAlso errorMessages.Count <= 5 Then
+                resultMessage &= vbCrLf & vbCrLf & "Error Details:" & vbCrLf & String.Join(vbCrLf, errorMessages)
+            ElseIf errorMessages.Count > 5 Then
+                resultMessage &= vbCrLf & vbCrLf & $"First 5 errors:" & vbCrLf & String.Join(vbCrLf, errorMessages.Take(5))
+                resultMessage &= vbCrLf & $"... and {errorMessages.Count - 5} more errors"
+            End If
 
- MessageBox.Show(resultMessage, "Calculation Complete",
+            MessageBox.Show(resultMessage, "Calculation Complete",
                 MessageBoxButtons.OK,
                 If(failCount = 0, MessageBoxIcon.Information, MessageBoxIcon.Warning))
 
@@ -1361,14 +1368,14 @@ If errorMessages.Count > 0 AndAlso errorMessages.Count <= 5 Then
             LoadFinalGradesData()
 
         Catch ex As Exception
-  MessageBox.Show($"Error during bulk calculation: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            MessageBox.Show($"Error during bulk calculation: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
         Finally
-   Cursor = Cursors.Default
+            Cursor = Cursors.Default
         End Try
     End Sub
 
     Private Sub ClearGradeForm()
-    grpStudentGrades.Visible = False
+        grpStudentGrades.Visible = False
         ClearGradeInputs()
     End Sub
 
@@ -1384,40 +1391,40 @@ If errorMessages.Count > 0 AndAlso errorMessages.Count <= 5 Then
         If e.RowIndex >= 0 Then
             Dim selectedRow As DataGridViewRow = dgvStudentGrades.Rows(e.RowIndex)
 
-       ' Get student ID from hidden column
+            ' Get student ID from hidden column
             If selectedRow.Cells("Student ID").Value IsNot Nothing Then
-       Dim studentId As Integer = Convert.ToInt32(selectedRow.Cells("Student ID").Value)
+                Dim studentId As Integer = Convert.ToInt32(selectedRow.Cells("Student ID").Value)
 
-          ' Find and select the student in the dropdown
-    For i As Integer = 0 To cmbSelectStudent.Items.Count - 1
-    Dim item As DataRowView = TryCast(cmbSelectStudent.Items(i), DataRowView)
-               If item IsNot Nothing AndAlso Not IsDBNull(item("student_id")) Then
-        If Convert.ToInt32(item("student_id")) = studentId Then
-       cmbSelectStudent.SelectedIndex = i
-          Exit For
+                ' Find and select the student in the dropdown
+                For i As Integer = 0 To cmbSelectStudent.Items.Count - 1
+                    Dim item As DataRowView = TryCast(cmbSelectStudent.Items(i), DataRowView)
+                    If item IsNot Nothing AndAlso Not IsDBNull(item("student_id")) Then
+                        If Convert.ToInt32(item("student_id")) = studentId Then
+                            cmbSelectStudent.SelectedIndex = i
+                            Exit For
+                        End If
+                    End If
+                Next
+
+                ' Populate grade value if exists
+                If selectedRow.Cells("Score").Value IsNot Nothing AndAlso selectedRow.Cells("Score").Value.ToString() <> "N/A" Then
+                    txtGradeValue.Text = selectedRow.Cells("Score").Value.ToString()
+                Else
+                    txtGradeValue.Clear()
+                End If
+
+                ' Populate notes if exists
+                If selectedRow.Cells("Notes").Value IsNot Nothing Then
+                    txtRemarks.Text = selectedRow.Cells("Notes").Value.ToString()
+                Else
+                    txtRemarks.Clear()
+                End If
+            End If
         End If
-          End If
-     Next
-
-        ' Populate grade value if exists
-     If selectedRow.Cells("Score").Value IsNot Nothing AndAlso selectedRow.Cells("Score").Value.ToString() <> "N/A" Then
- txtGradeValue.Text = selectedRow.Cells("Score").Value.ToString()
-     Else
-               txtGradeValue.Clear()
-         End If
-
-          ' Populate notes if exists
-  If selectedRow.Cells("Notes").Value IsNot Nothing Then
-txtRemarks.Text = selectedRow.Cells("Notes").Value.ToString()
-        Else
-       txtRemarks.Clear()
-       End If
-     End If
-     End If
     End Sub
 
     Private Sub TeacherDashboard_FormClosed(sender As Object, e As FormClosedEventArgs) Handles MyBase.FormClosed
-    login.ClearUserSession()
+        login.ClearUserSession()
         Dim loginForm As New login()
         loginForm.Show()
     End Sub

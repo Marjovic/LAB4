@@ -249,7 +249,7 @@ Partial Class Enrollment
         lblEnrollmentTitle.Name = "lblEnrollmentTitle"
         lblEnrollmentTitle.Size = New Size(232, 80)
         lblEnrollmentTitle.TabIndex = 0
-        lblEnrollmentTitle.Text = "Enrollment Management"
+        lblEnrollmentTitle.Text = "Semester/Term Management"
         lblEnrollmentTitle.TextAlign = ContentAlignment.MiddleCenter
         ' 
         ' btnClose
