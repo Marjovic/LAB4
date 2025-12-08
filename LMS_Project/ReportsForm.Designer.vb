@@ -337,7 +337,7 @@ Partial Class ReportsForm
         ' Export Button
         btnExportTranscript = New Button With {
      .Name = "btnExportTranscript",
-     .Text = "📤 Export to Excel",
+     .Text = "📤 Export to PDF",
    .Font = New Font("Times New Roman", 11, FontStyle.Bold),
    .Location = New Point(660, 620),
       .Size = New Size(250, 45),
@@ -571,7 +571,7 @@ Partial Class ReportsForm
         ' Export Button
         btnExportAnalytics = New Button With {
             .Name = "btnExportAnalytics",
-            .Text = "📤 Export Analytics",
+            .Text = "📤 Export Analytics to PDF",
        .Font = New Font("Times New Roman", 11, FontStyle.Bold),
        .Location = New Point(900, 610),
 .Size = New Size(280, 45),
