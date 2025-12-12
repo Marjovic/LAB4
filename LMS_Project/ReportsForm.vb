@@ -1,6 +1,10 @@
 ﻿Imports MySql.Data.MySqlClient
 Imports iTextSharp.text
 Imports iTextSharp.text.pdf
+Imports LiveChartsCore
+Imports LiveChartsCore.SkiaSharpView
+Imports LiveChartsCore.SkiaSharpView.Painting
+Imports SkiaSharp
 
 Public Class ReportsForm
     ' Connection string
@@ -79,10 +83,197 @@ Public Class ReportsForm
     Private Sub btnCourseAnalytics_Click(sender As Object, e As EventArgs) Handles btnCourseAnalytics.Click
         ShowPanel(pnlCourseAnalytics)
         SetActiveButton(btnCourseAnalytics)
+        ' Initialize charts with empty data
+        InitializeCharts()
     End Sub
 
-    Private Sub btnClose_Click(sender As Object, e As EventArgs) Handles btnClose.Click
-        Me.Close()
+    ' ============= TOGGLE VIEW METHOD =============
+    Private Sub btnToggleView_Click(sender As Object, e As EventArgs) Handles btnToggleView.Click
+        If pnlChartsContainer.Visible Then
+            ' Switch to Table View
+            pnlChartsContainer.Visible = False
+            pnlTableContainer.Visible = True
+            btnToggleView.Text = "📊 Show Chart View"
+            btnToggleView.BackColor = Color.FromArgb(0, 122, 204)
+        Else
+            ' Switch to Chart View
+            pnlChartsContainer.Visible = True
+            pnlTableContainer.Visible = False
+            btnToggleView.Text = "📋 Show Table View"
+            btnToggleView.BackColor = Color.FromArgb(108, 117, 125)
+        End If
+    End Sub
+
+    ' ============= CHART INITIALIZATION =============
+    Private Sub InitializeCharts()
+        Try
+            ' Initialize Pass Rate Gauge (Donut style)
+            InitializeGaugeChart(chartPassRate, 0, "Pass Rate", SKColors.LimeGreen, SKColors.LightCoral)
+
+            ' Initialize Retention Rate Gauge
+            InitializeGaugeChart(chartRetention, 0, "Retention", SKColors.DodgerBlue, SKColors.LightGray)
+
+            ' Initialize Grade Distribution Pie
+            InitializeGradeDistributionPie()
+
+            ' Initialize Bar Chart
+            InitializePerformanceBarChart()
+
+            ' Initialize Comparison Chart
+            InitializeComparisonChart()
+
+        Catch ex As Exception
+            ' Silent initialization - if charts fail, default to table view
+            If pnlChartsContainer IsNot Nothing AndAlso pnlTableContainer IsNot Nothing Then
+                pnlChartsContainer.Visible = False
+                pnlTableContainer.Visible = True
+                If btnToggleView IsNot Nothing Then
+                    btnToggleView.Text = "📊 Show Chart View"
+                    btnToggleView.BackColor = Color.FromArgb(0, 122, 204)
+                End If
+            End If
+            MessageBox.Show($"Charts initialization encountered an error. Defaulting to table view. Error: {ex.Message}", "Chart Info", MessageBoxButtons.OK, MessageBoxIcon.Information)
+        End Try
+    End Sub
+
+    Private Sub InitializeGaugeChart(chart As LiveChartsCore.SkiaSharpView.WinForms.PieChart, percentage As Double, title As String, mainColor As SKColor, bgColor As SKColor)
+        Try
+            Dim series As New List(Of ISeries)
+
+            ' Main value
+            series.Add(New PieSeries(Of Double) With {
+                .Values = New Double() {percentage},
+                .Fill = New SolidColorPaint(mainColor),
+                .InnerRadius = 60,
+                .MaxRadialColumnWidth = 25,
+                .DataLabelsSize = 0,
+                .HoverPushout = 0
+            })
+
+            ' Remaining (background)
+            series.Add(New PieSeries(Of Double) With {
+                .Values = New Double() {100 - percentage},
+                .Fill = New SolidColorPaint(bgColor),
+                .InnerRadius = 60,
+                .MaxRadialColumnWidth = 25,
+                .DataLabelsSize = 0,
+                .HoverPushout = 0
+            })
+
+            chart.Series = series
+            chart.InitialRotation = -90
+            chart.MaxAngle = 360
+        Catch ex As Exception
+            ' Silent error
+        End Try
+    End Sub
+
+    Private Sub InitializeGradeDistributionPie()
+        Try
+            Dim series As New List(Of ISeries)
+
+            ' Default empty data
+            series.Add(New PieSeries(Of Double) With {
+                .Values = New Double() {25},
+                .Name = "Excellent",
+                .Fill = New SolidColorPaint(SKColors.DarkGreen),
+                .DataLabelsSize = 10,
+                .DataLabelsPaint = New SolidColorPaint(SKColors.White)
+            })
+            series.Add(New PieSeries(Of Double) With {
+                .Values = New Double() {35},
+                .Name = "Good",
+                .Fill = New SolidColorPaint(SKColors.LimeGreen),
+                .DataLabelsSize = 10
+            })
+            series.Add(New PieSeries(Of Double) With {
+                .Values = New Double() {25},
+                .Name = "Fair",
+                .Fill = New SolidColorPaint(SKColors.Orange),
+                .DataLabelsSize = 10
+            })
+            series.Add(New PieSeries(Of Double) With {
+                .Values = New Double() {15},
+                .Name = "Needs Work",
+                .Fill = New SolidColorPaint(SKColors.Crimson),
+                .DataLabelsSize = 10
+            })
+
+            chartGradeDistribution.Series = series
+        Catch ex As Exception
+            ' Silent error
+        End Try
+    End Sub
+
+    Private Sub InitializePerformanceBarChart()
+        Try
+            Dim series As New List(Of ISeries)
+
+            series.Add(New ColumnSeries(Of Double) With {
+                .Values = New Double() {85, 78, 92, 70, 88},
+                .Name = "Avg Grade",
+                .Fill = New SolidColorPaint(SKColors.DodgerBlue),
+                .MaxBarWidth = 35
+            })
+
+            chartPerformanceBar.Series = series
+            chartPerformanceBar.XAxes = New List(Of Axis) From {
+                New Axis With {
+                    .Labels = New String() {"Dept 1", "Dept 2", "Dept 3", "Dept 4", "Dept 5"},
+                    .LabelsRotation = 0,
+                    .TextSize = 10,
+                    .LabelsPaint = New SolidColorPaint(SKColors.DarkSlateGray)
+                }
+            }
+            chartPerformanceBar.YAxes = New List(Of Axis) From {
+                New Axis With {
+                    .MinLimit = 0,
+                    .MaxLimit = 100,
+                    .TextSize = 10,
+                    .LabelsPaint = New SolidColorPaint(SKColors.DarkSlateGray)
+                }
+            }
+        Catch ex As Exception
+            ' Silent error
+        End Try
+    End Sub
+
+    Private Sub InitializeComparisonChart()
+        Try
+            Dim series As New List(Of ISeries)
+
+            series.Add(New ColumnSeries(Of Double) With {
+                .Values = New Double() {45, 52, 48, 55, 50},
+                .Name = "Passed",
+                .Fill = New SolidColorPaint(SKColors.LimeGreen),
+                .MaxBarWidth = 30
+            })
+            series.Add(New ColumnSeries(Of Double) With {
+                .Values = New Double() {5, 8, 2, 5, 10},
+                .Name = "Failed",
+                .Fill = New SolidColorPaint(SKColors.Crimson),
+                .MaxBarWidth = 30
+            })
+
+            chartDepartmentComparison.Series = series
+            chartDepartmentComparison.XAxes = New List(Of Axis) From {
+                New Axis With {
+                    .Labels = New String() {"Course 1", "Course 2", "Course 3", "Course 4", "Course 5"},
+                    .LabelsRotation = 0,
+                    .TextSize = 10,
+                    .LabelsPaint = New SolidColorPaint(SKColors.DarkSlateGray)
+                }
+            }
+            chartDepartmentComparison.YAxes = New List(Of Axis) From {
+                New Axis With {
+                    .MinLimit = 0,
+                    .TextSize = 10,
+                    .LabelsPaint = New SolidColorPaint(SKColors.DarkSlateGray)
+                }
+            }
+        Catch ex As Exception
+            ' Silent error
+        End Try
     End Sub
 
     ' ============= STUDENT TRANSCRIPT METHODS =============
@@ -500,6 +691,16 @@ Public Class ReportsForm
                                 End Select
                             End If
 
+                            ' Color code letter grade
+                            If col.HeaderText = "Letter Grade" Then
+                                Select Case cellValue
+                                    Case "NG"
+                                        dataCell.BackgroundColor = New iTextSharp.text.BaseColor(255, 228, 196)
+                                    Case "INC"
+                                        dataCell.BackgroundColor = New iTextSharp.text.BaseColor(240, 230, 140)
+                                End Select
+                            End If
+
                             courseTable.AddCell(dataCell)
                         End If
                     Next
@@ -510,7 +711,7 @@ Public Class ReportsForm
 
             ' Add footer
             doc.Add(New iTextSharp.text.Paragraph(" "))
-            Dim footer As New iTextSharp.text.Paragraph($"End of Transcript Report - Generated by MGOD LMS", smallFont)
+            Dim footer As New iTextSharp.text.Paragraph("End of Transcript Report - Generated by MGOD LMS", smallFont)
             footer.Alignment = iTextSharp.text.Element.ALIGN_CENTER
             doc.Add(footer)
 
@@ -714,26 +915,26 @@ Public Class ReportsForm
                 ' Build query with filters
                 Dim query As String = "SELECT " &
     "course_code as 'Course Code', " &
-       "course_name as 'Course Name', " &
-         "section as 'Section', " &
-      "academic_year_name as 'Academic Year', " &
+  "course_name as 'Course Name', " &
+   "section as 'Section', " &
+    "academic_year_name as 'Academic Year', " &
     "semester_type as 'Semester', " &
          "term_type as 'Term', " &
    "instructor_name as 'Instructor', " &
  "department_name as 'Department', " &
   "total_enrolled as 'Total Enrolled', " &
   "max_students as 'Max Students', " &
-            "CONCAT(enrollment_percentage, '%') as 'Enrollment %', " &
+     "CONCAT(enrollment_percentage, '%') as 'Enrollment %', " &
   "CONCAT(retention_rate_percentage, '%') as 'Retention %', " &
-           "CONCAT(drop_rate_percentage, '%') as 'Drop %', " &
+ "CONCAT(drop_rate_percentage, '%') as 'Drop %', " &
       "students_with_final_grades as 'Graded', " &
-         "average_final_grade as 'Avg Grade', " &
-         "CONCAT(pass_rate_percentage, '%') as 'Pass Rate', " &
+   "average_final_grade as 'Avg Grade', " &
+ "CONCAT(pass_rate_percentage, '%') as 'Pass Rate', " &
          "passing_students as 'Passed', " &
        "failing_students as 'Failed', " &
               "performance_rating as 'Performance', " &
   "failure_risk_level as 'Risk Level' " &
-        "FROM CoursePerformanceAnalytics WHERE 1=1 "
+    "FROM CoursePerformanceAnalytics WHERE 1=1 "
 
                 Dim parameters As New List(Of MySqlParameter)
 
@@ -792,8 +993,11 @@ Public Class ReportsForm
                         ' Apply formatting
                         FormatAnalyticsGrid()
 
-                        ' Calculate summary
+                        ' Calculate summary and update KPI cards
                         CalculateAnalyticsSummary(connection, parameters)
+
+                        ' Update Charts with real data
+                        UpdateChartsWithData(connection, parameters)
 
                         grpAnalyticsSummary.Visible = True
                     End Using
@@ -804,18 +1008,303 @@ Public Class ReportsForm
         End Try
     End Sub
 
+    Private Sub UpdateChartsWithData(connection As MySqlConnection, parameters As List(Of MySqlParameter))
+        Try
+            ' Get summary data for charts
+            Dim summaryQuery As String = "SELECT " &
+    "COUNT(DISTINCT offering_id) as total_offerings, " &
+  "SUM(total_enrolled) as total_students, " &
+        "ROUND(AVG(average_final_grade), 2) as overall_avg_grade, " &
+   "ROUND(AVG(pass_rate_percentage), 2) as overall_pass_rate, " &
+            "ROUND(AVG(retention_rate_percentage), 2) as overall_retention, " &
+    "SUM(passing_students) as total_passed, " &
+   "SUM(failing_students) as total_failed " &
+      "FROM CoursePerformanceAnalytics WHERE 1=1 "
+
+            ' Apply same filters
+            If cmbAcademicYear.SelectedIndex > 0 Then
+                summaryQuery &= "AND academic_year_name = @academic_year "
+            End If
+            If cmbSemester.SelectedIndex > 0 Then
+                summaryQuery &= "AND semester_type = @semester "
+            End If
+            If cmbTerm.SelectedIndex > 0 Then
+                summaryQuery &= "AND term_type = @term "
+            End If
+            If cmbDepartment.SelectedIndex > 0 Then
+                summaryQuery &= "AND department_name = @department "
+            End If
+            If cmbCourse.SelectedIndex > 0 AndAlso Not IsDBNull(cmbCourse.SelectedValue) Then
+                summaryQuery &= "AND course_id = @course_id "
+            End If
+            If cmbInstructor.SelectedIndex > 0 AndAlso Not IsDBNull(cmbInstructor.SelectedValue) Then
+                summaryQuery &= "AND instructor_id = @instructor_id "
+            End If
+
+            Using cmd As New MySqlCommand(summaryQuery, connection)
+                For Each param In parameters
+                    cmd.Parameters.Add(New MySqlParameter(param.ParameterName, param.Value))
+                Next
+
+                Using reader As MySqlDataReader = cmd.ExecuteReader()
+                    If reader.Read() Then
+                        Dim totalOfferings As Integer = If(IsDBNull(reader("total_offerings")), 0, Convert.ToInt32(reader("total_offerings")))
+                        Dim totalStudents As Integer = If(IsDBNull(reader("total_students")), 0, Convert.ToInt32(reader("total_students")))
+                        Dim avgGrade As Double = If(IsDBNull(reader("overall_avg_grade")), 0, Convert.ToDouble(reader("overall_avg_grade")))
+                        Dim passRate As Double = If(IsDBNull(reader("overall_pass_rate")), 0, Convert.ToDouble(reader("overall_pass_rate")))
+                        Dim retentionRate As Double = If(IsDBNull(reader("overall_retention")), 0, Convert.ToDouble(reader("overall_retention")))
+                        Dim totalPassed As Integer = If(IsDBNull(reader("total_passed")), 0, Convert.ToInt32(reader("total_passed")))
+                        Dim totalFailed As Integer = If(IsDBNull(reader("total_failed")), 0, Convert.ToInt32(reader("total_failed")))
+
+                        ' Update KPI Cards
+                        lblTotalCoursesValue.Text = totalOfferings.ToString()
+                        lblTotalStudentsValue.Text = totalStudents.ToString()
+                        lblAvgGradeValue.Text = $"{avgGrade:F1}%"
+                        lblPassRateValue.Text = $"{passRate:F1}%"
+
+                        ' Update Gauge Charts
+                        UpdateGaugeChart(chartPassRate, passRate, SKColors.LimeGreen, SKColors.LightCoral)
+                        UpdateGaugeChart(chartRetention, retentionRate, SKColors.DodgerBlue, SKColors.LightGray)
+
+                        ' Update Grade Distribution Pie (Pass/Fail)
+                        UpdatePassFailPie(totalPassed, totalFailed)
+                    End If
+                End Using
+            End Using
+
+            ' Update Department Performance Bar Chart
+            UpdateDepartmentBarChart(connection, parameters)
+
+            ' Update Pass/Fail Comparison Chart
+            UpdateComparisonBarChart(connection, parameters)
+
+        Catch ex As Exception
+            ' Silent error
+        End Try
+    End Sub
+
+    Private Sub UpdateGaugeChart(chart As LiveChartsCore.SkiaSharpView.WinForms.PieChart, percentage As Double, mainColor As SKColor, bgColor As SKColor)
+        Try
+            Dim series As New List(Of ISeries)
+
+            series.Add(New PieSeries(Of Double) With {
+        .Values = New Double() {percentage},
+    .Fill = New SolidColorPaint(mainColor),
+          .InnerRadius = 60,
+                .MaxRadialColumnWidth = 25,
+       .DataLabelsSize = 14,
+   .DataLabelsPaint = New SolidColorPaint(SKColors.Black),
+                .DataLabelsPosition = LiveChartsCore.Measure.PolarLabelsPosition.Middle,
+     .DataLabelsFormatter = Function(point) $"{percentage:F1}%",
+       .HoverPushout = 0
+            })
+
+            series.Add(New PieSeries(Of Double) With {
+        .Values = New Double() {100 - percentage},
+     .Fill = New SolidColorPaint(bgColor),
+     .InnerRadius = 60,
+     .MaxRadialColumnWidth = 25,
+       .DataLabelsSize = 0,
+         .HoverPushout = 0
+            })
+
+            chart.Series = series
+            chart.InitialRotation = -90
+            chart.MaxAngle = 360
+        Catch ex As Exception
+            ' Silent error
+        End Try
+    End Sub
+
+    Private Sub UpdatePassFailPie(passed As Integer, failed As Integer)
+        Try
+            Dim total As Integer = passed + failed
+            If total = 0 Then Return
+
+            Dim series As New List(Of ISeries)
+
+            series.Add(New PieSeries(Of Integer) With {
+     .Values = New Integer() {passed},
+       .Name = $"Passed ({passed})",
+        .Fill = New SolidColorPaint(SKColors.LimeGreen),
+          .DataLabelsSize = 11,
+.DataLabelsPaint = New SolidColorPaint(SKColors.White),
+          .DataLabelsPosition = LiveChartsCore.Measure.PolarLabelsPosition.Middle,
+          .DataLabelsFormatter = Function(point) $"{(passed * 100.0 / total):F0}%"
+            })
+
+            series.Add(New PieSeries(Of Integer) With {
+     .Values = New Integer() {failed},
+       .Name = $"Failed ({failed})",
+     .Fill = New SolidColorPaint(SKColors.Crimson),
+                .DataLabelsSize = 11,
+         .DataLabelsPaint = New SolidColorPaint(SKColors.White),
+    .DataLabelsPosition = LiveChartsCore.Measure.PolarLabelsPosition.Middle,
+             .DataLabelsFormatter = Function(point) $"{(failed * 100.0 / total):F0}%"
+            })
+
+            chartGradeDistribution.Series = series
+        Catch ex As Exception
+            ' Silent error
+        End Try
+    End Sub
+
+    Private Sub UpdateDepartmentBarChart(connection As MySqlConnection, parameters As List(Of MySqlParameter))
+        Try
+            ' Get department performance data - MODIFIED to use department_code
+            Dim query As String = "SELECT " &
+              "d.department_code, " &
+       "ROUND(AVG(cpa.average_final_grade), 1) as avg_grade " &
+                  "FROM CoursePerformanceAnalytics cpa " &
+                  "INNER JOIN Departments d ON cpa.department_name = d.department_name " &
+                  "WHERE cpa.average_final_grade IS NOT NULL "
+
+            If cmbAcademicYear.SelectedIndex > 0 Then query &= "AND cpa.academic_year_name = @academic_year "
+            If cmbSemester.SelectedIndex > 0 Then query &= "AND cpa.semester_type = @semester "
+            If cmbTerm.SelectedIndex > 0 Then query &= "AND cpa.term_type = @term "
+
+            query &= "GROUP BY d.department_code ORDER BY avg_grade DESC LIMIT 6"
+
+            Dim labels As New List(Of String)
+            Dim values As New List(Of Double)
+
+            Using cmd As New MySqlCommand(query, connection)
+                For Each param In parameters
+                    If param.ParameterName = "@academic_year" OrElse param.ParameterName = "@semester" OrElse param.ParameterName = "@term" Then
+                        cmd.Parameters.Add(New MySqlParameter(param.ParameterName, param.Value))
+                    End If
+                Next
+
+                Using reader As MySqlDataReader = cmd.ExecuteReader()
+                    While reader.Read()
+                        Dim deptCode As String = If(IsDBNull(reader("department_code")), "Unknown", reader("department_code").ToString())
+                        labels.Add(deptCode)
+                        values.Add(If(IsDBNull(reader("avg_grade")), 0, Convert.ToDouble(reader("avg_grade"))))
+                    End While
+                End Using
+            End Using
+
+            If values.Count > 0 Then
+                Dim series As New List(Of ISeries)
+                series.Add(New ColumnSeries(Of Double) With {
+             .Values = values.ToArray(),
+         .Name = "Avg Grade",
+                   .Fill = New SolidColorPaint(SKColors.DodgerBlue),
+             .MaxBarWidth = 40,
+              .DataLabelsSize = 10,
+            .DataLabelsPaint = New SolidColorPaint(SKColors.Black),
+       .DataLabelsPosition = LiveChartsCore.Measure.DataLabelsPosition.Top,
+          .DataLabelsFormatter = Function(point) $"{point.Model:F1}"
+            })
+
+                chartPerformanceBar.Series = series
+                chartPerformanceBar.XAxes = New List(Of Axis) From {
+          New Axis With {
+              .Labels = labels.ToArray(),
+                .LabelsRotation = 0,
+              .TextSize = 10,
+                  .LabelsPaint = New SolidColorPaint(SKColors.DarkSlateGray)
+        }
+         }
+                chartPerformanceBar.YAxes = New List(Of Axis) From {
+            New Axis With {
+                 .MinLimit = 0,
+    .MaxLimit = 100,
+                 .TextSize = 10,
+                .LabelsPaint = New SolidColorPaint(SKColors.DarkSlateGray)
+           }
+     }
+            End If
+
+        Catch ex As Exception
+            ' Silent error
+        End Try
+    End Sub
+
+    Private Sub UpdateComparisonBarChart(connection As MySqlConnection, parameters As List(Of MySqlParameter))
+        Try
+            ' Get course pass/fail comparison data
+            Dim query As String = "SELECT " &
+  "course_code, " &
+        "SUM(passing_students) as passed, " &
+                "SUM(failing_students) as failed " &
+          "FROM CoursePerformanceAnalytics WHERE 1=1 "
+
+            If cmbAcademicYear.SelectedIndex > 0 Then query &= "AND academic_year_name = @academic_year "
+            If cmbSemester.SelectedIndex > 0 Then query &= "AND semester_type = @semester "
+            If cmbTerm.SelectedIndex > 0 Then query &= "AND term_type = @term "
+            If cmbDepartment.SelectedIndex > 0 Then query &= "AND department_name = @department "
+
+            query &= "GROUP BY course_code ORDER BY passed DESC LIMIT 6"
+
+            Dim labels As New List(Of String)
+            Dim passedValues As New List(Of Double)
+            Dim failedValues As New List(Of Double)
+
+            Using cmd As New MySqlCommand(query, connection)
+                For Each param In parameters
+                    cmd.Parameters.Add(New MySqlParameter(param.ParameterName, param.Value))
+                Next
+
+                Using reader As MySqlDataReader = cmd.ExecuteReader()
+                    While reader.Read()
+                        labels.Add(If(IsDBNull(reader("course_code")), "N/A", reader("course_code").ToString()))
+                        passedValues.Add(If(IsDBNull(reader("passed")), 0, Convert.ToDouble(reader("passed"))))
+                        failedValues.Add(If(IsDBNull(reader("failed")), 0, Convert.ToDouble(reader("failed"))))
+                    End While
+                End Using
+            End Using
+
+            If passedValues.Count > 0 Then
+                Dim series As New List(Of ISeries)
+                series.Add(New ColumnSeries(Of Double) With {
+    .Values = passedValues.ToArray(),
+        .Name = "Passed",
+          .Fill = New SolidColorPaint(SKColors.LimeGreen),
+       .MaxBarWidth = 30
+  })
+                series.Add(New ColumnSeries(Of Double) With {
+ .Values = failedValues.ToArray(),
+        .Name = "Failed",
+  .Fill = New SolidColorPaint(SKColors.Crimson),
+        .MaxBarWidth = 30
+          })
+
+                chartDepartmentComparison.Series = series
+                chartDepartmentComparison.XAxes = New List(Of Axis) From {
+      New Axis With {
+             .Labels = labels.ToArray(),
+         .LabelsRotation = 0,
+          .TextSize = 9,
+     .LabelsPaint = New SolidColorPaint(SKColors.DarkSlateGray)
+   }
+         }
+                chartDepartmentComparison.YAxes = New List(Of Axis) From {
+     New Axis With {
+          .MinLimit = 0,
+      .TextSize = 10,
+    .LabelsPaint = New SolidColorPaint(SKColors.DarkSlateGray)
+            }
+    }
+            End If
+
+        Catch ex As Exception
+            ' Silent error
+        End Try
+    End Sub
+
     Private Sub CalculateAnalyticsSummary(connection As MySqlConnection, parameters As List(Of MySqlParameter))
         Try
             Dim query As String = "SELECT " &
-        "COUNT(DISTINCT offering_id) as total_offerings, " &
-                "SUM(total_enrolled) as total_students, " &
-                "ROUND(AVG(enrollment_percentage), 2) as avg_enrollment_pct, " &
+   "COUNT(DISTINCT offering_id) as total_offerings, " &
+       "SUM(total_enrolled) as total_students, " &
+      "ROUND(AVG(enrollment_percentage), 2) as avg_enrollment_pct, " &
   "ROUND(AVG(average_final_grade), 2) as overall_avg_grade, " &
-                "ROUND(AVG(pass_rate_percentage), 2) as overall_pass_rate, " &
+     "ROUND(AVG(pass_rate_percentage), 2) as overall_pass_rate, " &
      "ROUND(AVG(retention_rate_percentage), 2) as overall_retention, " &
    "SUM(passing_students) as total_passed, " &
              "SUM(failing_students) as total_failed " &
-                "FROM CoursePerformanceAnalytics WHERE 1=1 "
+        "FROM CoursePerformanceAnalytics WHERE 1=1 "
 
             ' Apply same filters
             If cmbAcademicYear.SelectedIndex > 0 Then
@@ -858,9 +1347,15 @@ Public Class ReportsForm
                         Dim totalPassed As String = If(IsDBNull(reader("total_passed")), "0", reader("total_passed").ToString())
                         Dim totalFailed As String = If(IsDBNull(reader("total_failed")), "0", reader("total_failed").ToString())
 
-                        lblAnalyticsSummary.Text = $"Total Course Offerings: {totalOfferings}  |  Total Students Enrolled: {totalStudents}  |  Avg Enrollment: {avgEnrollment}" & vbCrLf &
-            $"Overall Average Grade: {overallGrade}  |  Pass Rate: {passRate}  |  Retention Rate: {retention}" & vbCrLf &
-          $"Total Passed: {totalPassed}  |  Total Failed: {totalFailed}"
+                        ' Update summary label with formatted text
+                        lblAnalyticsSummary.Text = $"📚 Course Offerings: {totalOfferings}" & vbCrLf &
+        $"👥 Total Students Enrolled: {totalStudents}" & vbCrLf &
+     $"📊 Avg Enrollment: {avgEnrollment}" & vbCrLf &
+      $"📈 Overall Grade: {overallGrade}%" & vbCrLf &
+         $"✅ Pass Rate: {passRate}" & vbCrLf &
+   $"🔄 Retention: {retention}" & vbCrLf &
+    $"✔️ Passed: {totalPassed}" & vbCrLf &
+   $"❌ Failed: {totalFailed}"
                     End If
                 End Using
             End Using
@@ -935,11 +1430,11 @@ Public Class ReportsForm
             If saveDialog.ShowDialog() = DialogResult.OK Then
                 ExportAnalyticsToPDF(saveDialog.FileName)
                 MessageBox.Show($"Analytics exported successfully to:{vbCrLf}{saveDialog.FileName}",
-      "Export Complete", MessageBoxButtons.OK, MessageBoxIcon.Information)
+        "Export Complete", MessageBoxButtons.OK, MessageBoxIcon.Information)
 
                 ' Ask if user wants to open the file
                 Dim result As DialogResult = MessageBox.Show("Would you like to open the exported PDF now?",
-  "Open File", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
+      "Open File", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
                 If result = DialogResult.Yes Then
                     Try
                         Process.Start(New ProcessStartInfo(saveDialog.FileName) With {.UseShellExecute = True})
@@ -992,17 +1487,137 @@ Public Class ReportsForm
             AddFilterRow(filterTable, "Instructor", If(cmbInstructor.SelectedIndex > 0, cmbInstructor.Text, "All"))
             doc.Add(filterTable)
 
-            ' Add summary section
-            If grpAnalyticsSummary.Visible AndAlso Not String.IsNullOrEmpty(lblAnalyticsSummary.Text) Then
-                Dim summaryTitle As New iTextSharp.text.Paragraph("ANALYTICS SUMMARY", boldFont)
-                summaryTitle.SpacingBefore = 10
-                doc.Add(summaryTitle)
+            ' ====== ADD KPI CARDS SECTION ======
+            Dim kpiTitle As New iTextSharp.text.Paragraph("KEY PERFORMANCE INDICATORS", boldFont)
+            kpiTitle.SpacingBefore = 10
+            doc.Add(kpiTitle)
 
-                Dim summaryPara As New iTextSharp.text.Paragraph(lblAnalyticsSummary.Text.Replace(vbCrLf, " | "), normalFont)
-                summaryPara.SpacingBefore = 5
-                summaryPara.SpacingAfter = 15
-                doc.Add(summaryPara)
+            Dim kpiTable As New iTextSharp.text.pdf.PdfPTable(4)
+            kpiTable.WidthPercentage = 100
+            kpiTable.SpacingBefore = 5
+            kpiTable.SpacingAfter = 10
+
+            ' Add KPI cells
+            AddKPICell(kpiTable, "📚 Total Courses", lblTotalCoursesValue.Text, New iTextSharp.text.BaseColor(0, 122, 204))
+            AddKPICell(kpiTable, "👥 Total Students Enrolled", lblTotalStudentsValue.Text, New iTextSharp.text.BaseColor(40, 167, 69))
+            AddKPICell(kpiTable, "📈 Avg Grade", lblAvgGradeValue.Text, New iTextSharp.text.BaseColor(255, 193, 7))
+            AddKPICell(kpiTable, "✅ Pass Rate", lblPassRateValue.Text, New iTextSharp.text.BaseColor(220, 53, 69))
+            doc.Add(kpiTable)
+
+            ' ====== ADD CHARTS SECTION ======
+            Dim chartsTitle As New iTextSharp.text.Paragraph("VISUAL ANALYTICS", boldFont)
+            chartsTitle.SpacingBefore = 10
+            doc.Add(chartsTitle)
+            doc.Add(New iTextSharp.text.Paragraph(" "))
+
+            ' Create a table for gauge charts (2 columns)
+            Dim gaugeTable As New iTextSharp.text.pdf.PdfPTable(4)
+            gaugeTable.WidthPercentage = 100
+            gaugeTable.SpacingBefore = 5
+
+            ' Capture and add Pass Rate Gauge
+            Dim passRateImage As iTextSharp.text.Image = CaptureChartAsImage(chartPassRate, 200, 150)
+            If passRateImage IsNot Nothing Then
+                Dim passCell As New iTextSharp.text.pdf.PdfPCell(passRateImage)
+                passCell.Border = iTextSharp.text.Rectangle.BOX
+                passCell.Padding = 5
+                passCell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER
+                passCell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE
+                gaugeTable.AddCell(passCell)
+            Else
+                AddChartPlaceholder(gaugeTable, "Pass Rate Gauge")
             End If
+
+            ' Capture and add Retention Rate Gauge
+            Dim retentionImage As iTextSharp.text.Image = CaptureChartAsImage(chartRetention, 200, 150)
+            If retentionImage IsNot Nothing Then
+                Dim retCell As New iTextSharp.text.pdf.PdfPCell(retentionImage)
+                retCell.Border = iTextSharp.text.Rectangle.BOX
+                retCell.Padding = 5
+                retCell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER
+                retCell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE
+                gaugeTable.AddCell(retCell)
+            Else
+                AddChartPlaceholder(gaugeTable, "Retention Rate Gauge")
+            End If
+
+            ' Capture and add Grade Distribution Pie
+            Dim gradeDistImage As iTextSharp.text.Image = CaptureChartAsImage(chartGradeDistribution, 200, 150)
+            If gradeDistImage IsNot Nothing Then
+                Dim gradeCell As New iTextSharp.text.pdf.PdfPCell(gradeDistImage)
+                gradeCell.Border = iTextSharp.text.Rectangle.BOX
+                gradeCell.Padding = 5
+                gradeCell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER
+                gradeCell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE
+                gaugeTable.AddCell(gradeCell)
+            Else
+                AddChartPlaceholder(gaugeTable, "Grade Distribution")
+            End If
+
+            ' Add Performance Summary text cell
+            Dim summaryCell As New iTextSharp.text.pdf.PdfPCell()
+            summaryCell.Border = iTextSharp.text.Rectangle.BOX
+            summaryCell.Padding = 8
+            summaryCell.BackgroundColor = New iTextSharp.text.BaseColor(250, 250, 255)
+
+            Dim summaryHeaderPara As New iTextSharp.text.Paragraph("📋 Performance Summary", boldFont)
+            summaryHeaderPara.SpacingAfter = 5
+            summaryCell.AddElement(summaryHeaderPara)
+
+            If Not String.IsNullOrEmpty(lblAnalyticsSummary.Text) Then
+                Dim summaryLines() As String = lblAnalyticsSummary.Text.Split(New String() {vbCrLf, vbLf}, StringSplitOptions.RemoveEmptyEntries)
+                For Each line In summaryLines
+                    Dim linePara As New iTextSharp.text.Paragraph(line, smallFont)
+                    linePara.SpacingAfter = 2
+                    summaryCell.AddElement(linePara)
+                Next
+            End If
+            gaugeTable.AddCell(summaryCell)
+
+            doc.Add(gaugeTable)
+            doc.Add(New iTextSharp.text.Paragraph(" "))
+
+            ' Create a table for bar charts (2 columns)
+            Dim barChartsTable As New iTextSharp.text.pdf.PdfPTable(2)
+            barChartsTable.WidthPercentage = 100
+            barChartsTable.SpacingBefore = 5
+
+            ' Capture and add Department Performance Bar Chart
+            Dim deptBarImage As iTextSharp.text.Image = CaptureChartAsImage(chartPerformanceBar, 380, 180)
+            If deptBarImage IsNot Nothing Then
+                Dim deptCell As New iTextSharp.text.pdf.PdfPCell()
+                deptCell.Border = iTextSharp.text.Rectangle.BOX
+                deptCell.Padding = 5
+
+                Dim deptTitle As New iTextSharp.text.Paragraph("📊 Course Performance by Department", boldFont)
+                deptTitle.SpacingAfter = 5
+                deptCell.AddElement(deptTitle)
+                deptCell.AddElement(deptBarImage)
+                barChartsTable.AddCell(deptCell)
+            Else
+                AddChartPlaceholder(barChartsTable, "Course Performance by Department")
+            End If
+
+            ' Capture and add Pass vs Fail Comparison Bar Chart
+            Dim compBarImage As iTextSharp.text.Image = CaptureChartAsImage(chartDepartmentComparison, 380, 180)
+            If compBarImage IsNot Nothing Then
+                Dim compCell As New iTextSharp.text.pdf.PdfPCell()
+                compCell.Border = iTextSharp.text.Rectangle.BOX
+                compCell.Padding = 5
+
+                Dim compTitle As New iTextSharp.text.Paragraph("📈 Pass vs Fail Comparison", boldFont)
+                compTitle.SpacingAfter = 5
+                compCell.AddElement(compTitle)
+                compCell.AddElement(compBarImage)
+                barChartsTable.AddCell(compCell)
+            Else
+                AddChartPlaceholder(barChartsTable, "Pass vs Fail Comparison")
+            End If
+
+            doc.Add(barChartsTable)
+
+            ' Add new page for data table
+            doc.NewPage()
 
             ' Add course performance data table
             Dim dataTitle As New iTextSharp.text.Paragraph("COURSE PERFORMANCE DATA", boldFont)
@@ -1021,13 +1636,17 @@ Public Class ReportsForm
                 analyticsTable.WidthPercentage = 100
                 analyticsTable.SpacingBefore = 5
 
+                ' Set smaller font size for cells to fit more data
+                Dim cellFont As New iTextSharp.text.Font(baseFont, 7, iTextSharp.text.Font.NORMAL, iTextSharp.text.BaseColor.Black)
+
                 ' Add header row
                 For Each col As DataGridViewColumn In dgvAnalytics.Columns
                     If col.Visible Then
                         Dim headerCell As New iTextSharp.text.pdf.PdfPCell(New iTextSharp.text.Phrase(col.HeaderText, headerFont))
                         headerCell.BackgroundColor = New iTextSharp.text.BaseColor(0, 122, 204)
                         headerCell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER
-                        headerCell.Padding = 3
+                        headerCell.Padding = 2
+                        headerCell.PaddingBottom = 3
                         analyticsTable.AddCell(headerCell)
                     End If
                 Next
@@ -1036,26 +1655,26 @@ Public Class ReportsForm
                 For Each row As DataGridViewRow In dgvAnalytics.Rows
                     For Each col As DataGridViewColumn In dgvAnalytics.Columns
                         If col.Visible Then
-                            Dim cellValue As String = If(row.Cells(col.Index).Value IsNot Nothing,
-              row.Cells(col.Index).Value.ToString(), "")
+                            Dim cellValue As String = If(row.Cells(col.Index).Value IsNot Nothing, row.Cells(col.Index).Value.ToString(), "")
 
-                            Dim dataCell As New iTextSharp.text.pdf.PdfPCell(New iTextSharp.text.Phrase(cellValue, normalFont))
+                            Dim dataCell As New iTextSharp.text.pdf.PdfPCell(New iTextSharp.text.Phrase(cellValue, cellFont))
                             dataCell.Padding = 2
                             dataCell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER
+                            dataCell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE
 
                             ' Color code Performance column
                             If col.HeaderText = "Performance" Then
                                 Select Case cellValue
                                     Case "Excellent"
                                         dataCell.BackgroundColor = New iTextSharp.text.BaseColor(0, 128, 0)
-                                        dataCell.Phrase = New iTextSharp.text.Phrase(cellValue, New iTextSharp.text.Font(baseFont, 9, iTextSharp.text.Font.BOLD, iTextSharp.text.BaseColor.White))
+                                        dataCell.Phrase = New iTextSharp.text.Phrase(cellValue, New iTextSharp.text.Font(baseFont, 7, iTextSharp.text.Font.BOLD, iTextSharp.text.BaseColor.White))
                                     Case "Very Good"
                                         dataCell.BackgroundColor = New iTextSharp.text.BaseColor(144, 238, 144)
                                     Case "Good"
                                         dataCell.BackgroundColor = New iTextSharp.text.BaseColor(255, 255, 224)
                                     Case "Fair"
                                         dataCell.BackgroundColor = New iTextSharp.text.BaseColor(255, 165, 0)
-                                        dataCell.Phrase = New iTextSharp.text.Phrase(cellValue, New iTextSharp.text.Font(baseFont, 9, iTextSharp.text.Font.BOLD, iTextSharp.text.BaseColor.White))
+                                        dataCell.Phrase = New iTextSharp.text.Phrase(cellValue, New iTextSharp.text.Font(baseFont, 7, iTextSharp.text.Font.BOLD, iTextSharp.text.BaseColor.White))
                                     Case "Needs Improvement"
                                         dataCell.BackgroundColor = New iTextSharp.text.BaseColor(255, 182, 193)
                                 End Select
@@ -1066,10 +1685,10 @@ Public Class ReportsForm
                                 Select Case cellValue
                                     Case "High Risk", "High Attrition"
                                         dataCell.BackgroundColor = New iTextSharp.text.BaseColor(139, 0, 0)
-                                        dataCell.Phrase = New iTextSharp.text.Phrase(cellValue, New iTextSharp.text.Font(baseFont, 9, iTextSharp.text.Font.BOLD, iTextSharp.text.BaseColor.White))
+                                        dataCell.Phrase = New iTextSharp.text.Phrase(cellValue, New iTextSharp.text.Font(baseFont, 7, iTextSharp.text.Font.BOLD, iTextSharp.text.BaseColor.White))
                                     Case "Medium Risk", "Moderate Attrition"
                                         dataCell.BackgroundColor = New iTextSharp.text.BaseColor(255, 165, 0)
-                                        dataCell.Phrase = New iTextSharp.text.Phrase(cellValue, New iTextSharp.text.Font(baseFont, 9, iTextSharp.text.Font.BOLD, iTextSharp.text.BaseColor.White))
+                                        dataCell.Phrase = New iTextSharp.text.Phrase(cellValue, New iTextSharp.text.Font(baseFont, 7, iTextSharp.text.Font.BOLD, iTextSharp.text.BaseColor.White))
                                     Case "Low Risk", "Low Attrition"
                                         dataCell.BackgroundColor = New iTextSharp.text.BaseColor(144, 238, 144)
                                 End Select
@@ -1085,7 +1704,7 @@ Public Class ReportsForm
 
             ' Add footer
             doc.Add(New iTextSharp.text.Paragraph(" "))
-            Dim footer As New iTextSharp.text.Paragraph($"End of Analytics Report - Generated by MGOD LMS", smallFont)
+            Dim footer As New iTextSharp.text.Paragraph("End of Analytics Report - Generated by MGOD LMS", smallFont)
             footer.Alignment = iTextSharp.text.Element.ALIGN_CENTER
             doc.Add(footer)
 
@@ -1094,16 +1713,83 @@ Public Class ReportsForm
         End Try
     End Sub
 
+    ' Helper method to capture chart as image for PDF
+    Private Function CaptureChartAsImage(chart As Control, width As Integer, height As Integer) As iTextSharp.text.Image
+        Try
+            If chart Is Nothing OrElse chart.Width = 0 OrElse chart.Height = 0 Then
+                Return Nothing
+       End If
+
+        ' Create bitmap from control
+       Dim bmp As New Bitmap(chart.Width, chart.Height)
+        chart.DrawToBitmap(bmp, New System.Drawing.Rectangle(0, 0, chart.Width, chart.Height))
+
+       ' Convert to memory stream
+   Using ms As New System.IO.MemoryStream()
+           bmp.Save(ms, System.Drawing.Imaging.ImageFormat.Png)
+             ms.Position = 0
+
+          ' Create iTextSharp image
+         Dim img As iTextSharp.text.Image = iTextSharp.text.Image.GetInstance(ms.ToArray())
+     img.ScaleToFit(width, height)
+     Return img
+       End Using
+        Catch ex As Exception
+            Return Nothing
+        End Try
+    End Function
+
+    ' Helper method to add KPI cell
+Private Sub AddKPICell(table As iTextSharp.text.pdf.PdfPTable, title As String, value As String, accentColor As iTextSharp.text.BaseColor)
+Dim cell As New iTextSharp.text.pdf.PdfPCell()
+  cell.Border = iTextSharp.text.Rectangle.BOX
+        cell.Padding = 8
+        cell.BackgroundColor = New iTextSharp.text.BaseColor(250, 250, 255)
+
+    ' Title
+        Dim titlePara As New iTextSharp.text.Paragraph(title, smallFont)
+    titlePara.Alignment = iTextSharp.text.Element.ALIGN_CENTER
+        cell.AddElement(titlePara)
+
+        ' Value
+  Dim valueFont As New iTextSharp.text.Font(baseFont, 16, iTextSharp.text.Font.BOLD, accentColor)
+        Dim valuePara As New iTextSharp.text.Paragraph(value, valueFont)
+        valuePara.Alignment = iTextSharp.text.Element.ALIGN_CENTER
+        valuePara.SpacingBefore = 5
+        cell.AddElement(valuePara)
+
+      table.AddCell(cell)
+    End Sub
+
+    ' Helper method to add chart placeholder if capture fails
+    Private Sub AddChartPlaceholder(table As iTextSharp.text.pdf.PdfPTable, chartName As String)
+        Dim cell As New iTextSharp.text.pdf.PdfPCell()
+        cell.Border = iTextSharp.text.Rectangle.BOX
+        cell.Padding = 20
+        cell.BackgroundColor = New iTextSharp.text.BaseColor(245, 245, 245)
+        cell.MinimumHeight = 150
+
+Dim placeholder As New iTextSharp.text.Paragraph($"[{chartName}]" & vbCrLf & "(Chart image not available)", normalFont)
+        placeholder.Alignment = iTextSharp.text.Element.ALIGN_CENTER
+        cell.AddElement(placeholder)
+
+        table.AddCell(cell)
+    End Sub
+
     Private Sub AddFilterRow(table As iTextSharp.text.pdf.PdfPTable, label As String, value As String)
         Dim labelCell As New iTextSharp.text.pdf.PdfPCell(New iTextSharp.text.Phrase(label & ":", boldFont))
         labelCell.Border = iTextSharp.text.Rectangle.NO_BORDER
         labelCell.PaddingBottom = 3
 
-        Dim valueCell As New iTextSharp.text.pdf.PdfPCell(New iTextSharp.text.Phrase(value, normalFont))
-        valueCell.Border = iTextSharp.text.Rectangle.NO_BORDER
-        valueCell.PaddingBottom = 3
+      Dim valueCell As New iTextSharp.text.pdf.PdfPCell(New iTextSharp.text.Phrase(value, normalFont))
+valueCell.Border = iTextSharp.text.Rectangle.NO_BORDER
+      valueCell.PaddingBottom = 3
 
-        table.AddCell(labelCell)
+  table.AddCell(labelCell)
         table.AddCell(valueCell)
+    End Sub
+
+    Private Sub btnClose_Click(sender As Object, e As EventArgs) Handles btnClose.Click
+        Me.Close()
     End Sub
 End Class

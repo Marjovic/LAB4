@@ -25,7 +25,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="iTextSharp.LGPLv2.Core" Version="3.7.12" />
+    <PackageReference Include="iTextSharp.LGPLv2.Core" Version="3.4.21" />
+    <PackageReference Include="LiveChartsCore.SkiaSharpView.WinForms" Version="2.0.0-rc2" />
     <PackageReference Include="MySql.Data" Version="9.4.0" />
   </ItemGroup>
 
